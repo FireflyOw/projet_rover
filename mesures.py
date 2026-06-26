@@ -33,8 +33,8 @@ def capt_air():
 def temp_hum():
 
     try:
-        temperature = capt_temp.temperature
-        humidite = capt_temp.humidity
+        temperature = capteur.temperature
+        humidite = capteur.humidity
 
         return {
             "temperature": temperature, 
