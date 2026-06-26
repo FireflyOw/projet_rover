@@ -1,5 +1,5 @@
 import smbus2, time
-
+    
 adress = 0x40
 bus = smbus2.SMBus(1)
 
