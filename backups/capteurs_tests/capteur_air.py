@@ -1,6 +1,6 @@
 import smbus2, time
 
-adress = 0x70
+adress = 0x50
 bus = smbus2.SMBus(1)
 
 def mesure():
