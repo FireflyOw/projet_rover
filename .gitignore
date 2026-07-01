@@ -3,4 +3,3 @@ __pycache__/
 *.pyc
 mesures.csv
 .vscode/
-backups/rover_tests/
