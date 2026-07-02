@@ -63,7 +63,7 @@ try:
 
         print(distance)
         goForward(speed)
-        if distance[-5:] <= 35:
+        if len(set(distance[-5:])) <= 35:
             evitement()
             run = False
     
