@@ -56,6 +56,6 @@ try:
     time.sleep(3)
     goRight()
     time.sleep(3)
-    goForward()
+    goForward(speed)
 finally : 
     rover.cleanup()
