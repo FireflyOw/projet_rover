@@ -1,11 +1,10 @@
 import csv, smbus2, time, adafruit_dht, adafruit_blinka, board
 
-adress = 0x40
 bus = smbus2.SMBus(1)
 capteur = adafruit_dht.DHT22(board.D12)
 
 
-def capt_air():
+def capt_air(adress):
     try:
         bus.write_byte(adress, 0x88)
         time.sleep(0.3)
@@ -50,15 +49,15 @@ def temp_hum():
             "unite_temp": "", 
             "unite_hum": ""
         }
+    
+def ecriture(adresse):
+    valeur_air = capt_air(adresse)
+    val_temp_hum = temp_hum()
 
-valeur_air = capt_air()
-val_temp_hum = temp_hum()
-
-
-with open("mesures.csv", mode="a", newline="") as f:
-    writer = csv.writer(f)
-    writer.writerow({val_temp_hum["temperature"]},
-                    {val_temp_hum["humidite"]}, 
-                    {valeur_air['pm1_atm']}, 
-                    {valeur_air['pm25_atm']}, 
-                    {valeur_air['pm10_atm']})
+    with open("mesures.csv", mode="a", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow({val_temp_hum["temperature"]},
+                        {val_temp_hum["humidite"]}, 
+                        {valeur_air['pm1_atm']}, 
+                        {valeur_air['pm25_atm']}, 
+                        {valeur_air['pm10_atm']})
