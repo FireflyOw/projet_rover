@@ -50,6 +50,7 @@ def goRight():
 
 def evitement():
     goReverse
+    print("blabla")
     time.sleep(3)
 
 rover.init(0)
