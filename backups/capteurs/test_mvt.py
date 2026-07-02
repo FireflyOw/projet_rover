@@ -5,7 +5,7 @@ import tty
 import termios
 import sys, os, time
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "rover"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "capteurs"))
 
 try:
     import rover
@@ -47,16 +47,28 @@ def goRight():
     rover.setServo(servo_Arrière_G, -20)
     rover.setServo(servo_Arrière_D, -20)
 
-rover.init(0)
-try:
-    goForward(speed) 
-    time.sleep(3)
-    goLeft()
-    time.sleep(3)
-    goForward(speed)  
-    time.sleep(3)
+
+def evitement():
     goRight()
+    print("blabla")
     time.sleep(3)
-    goForward(speed)
-finally : 
+
+rover.init(0)
+
+distance = []
+run = True
+try:
+    while run:
+        distance.append(rover.getDistance())
+
+        print(distance[-1:])
+        goForward(speed)
+        if all(x<=35 for x in distance[-5:]):
+            evitement()
+            run = False
+    
+finally: 
     rover.cleanup()
+
+
+
