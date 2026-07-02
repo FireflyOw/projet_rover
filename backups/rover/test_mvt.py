@@ -62,7 +62,7 @@ try:
         distance.append(rover.getDistance())
 
         print(distance[-1:])
-        goForward(speed)
+        goRight()
         if all(x<=35 for x in distance[-5:]):
             evitement()
             run = False
