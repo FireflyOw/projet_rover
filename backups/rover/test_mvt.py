@@ -60,8 +60,8 @@ try:
         distance = rover.getDistance()
         print(distance)
         goForward(speed)
-        if distance <= 20:
-            evitement()
+        if distance <= 35:
+            rover.brake
     
 finally: 
     rover.cleanup()
