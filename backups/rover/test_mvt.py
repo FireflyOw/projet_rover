@@ -47,7 +47,7 @@ def goRight():
     rover.setServo(servo_Arrière_D, -20)
 
 
-goForward() 
+goForward(speed) 
 time.sleep(3)
 goLeft()
 time.sleep(3)
