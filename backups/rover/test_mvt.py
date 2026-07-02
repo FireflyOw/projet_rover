@@ -52,7 +52,7 @@ try:
     time.sleep(3)
     goLeft()
     time.sleep(3)
-    goForward()  
+    goForward(speed)  
     time.sleep(3)
     goRight()
     time.sleep(3)
