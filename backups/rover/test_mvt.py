@@ -9,7 +9,7 @@ import sys, os, time
 try:
     import rover
     print("[mouvement.py] rover.py chargé (Raspberry Pi Zero)")
-except ModuleNotFoundError:
+except RuntimeError:
     import fakeRover as rover
     print("[mouvements.py] fakeRover.py chargé (PC)")
 
@@ -19,6 +19,7 @@ servo_Arrière_G = 11
 servo_Arrière_D = 13
 servo_Sonar = 0
 speed = 60
+
 def goForward():
     rover.setServo(servo_Avant_G, 0)
     rover.setServo(servo_Avant_D, 0)
@@ -46,11 +47,8 @@ def goRight():
     rover.setServo(servo_Arrière_D, -20)
 
 
-
-path = [
-    (goForward, 3),   
-    (goLeft,    1.5), 
-    (goForward, 2),   
-    (goRight,   1.5),
-    (goForward, 3),  
-]
+(goForward, 3),   
+(goLeft,    1.5), 
+(goForward, 2),   
+(goRight,   1.5),
+(goForward, 3),  
