@@ -62,7 +62,7 @@ try:
         print(distance)
         goForward(speed)
         if distance <= 35:
-            rover.brake
+            evitement()
             run = False
     
 finally: 
