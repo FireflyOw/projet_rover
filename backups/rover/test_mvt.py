@@ -49,7 +49,7 @@ def goRight():
 
 
 def evitement():
-    goReverse(speed)
+    goRight()
     print("blabla")
     time.sleep(3)
 
@@ -62,7 +62,7 @@ try:
         distance.append(rover.getDistance())
 
         print(distance[-1:])
-        goRight()
+        goForward(speed)
         if all(x<=35 for x in distance[-5:]):
             evitement()
             run = False
