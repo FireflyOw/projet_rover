@@ -55,13 +55,15 @@ def evitement():
 
 rover.init(0)
 
+run = True
 try:
-    while True:
+    while run:
         distance = rover.getDistance()
         print(distance)
         goForward(speed)
         if distance <= 35:
             rover.brake
+            run = False
     
 finally: 
     rover.cleanup()
