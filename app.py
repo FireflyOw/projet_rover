@@ -18,10 +18,15 @@ def readCSV():
 def index():
     return render_template("index.html")
 
-@app.route
+@app.route("/api/sensor/latest")
 def latest():
     rows = readCSV()
     if not rows:
         return jsonify({"error": "Aucune donnée disponible!"})
     
+    return jsonify(rows[-1:])
+
+@app.route("/api/sensor/historque")
+def historque():
+    rows = readCSV()
     return jsonify(rows[-100:])
