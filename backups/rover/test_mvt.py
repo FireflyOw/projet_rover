@@ -58,6 +58,7 @@ rover.init(0)
 try:
     while True:
         distance = rover.getDistance()
+        print(distance)
         goForward(speed)
         if distance <= 20:
             evitement()
