@@ -5,7 +5,7 @@ import tty
 import termios
 import sys, os, time
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "capteurs"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "rover"))
 
 try:
     import rover
