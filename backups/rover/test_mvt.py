@@ -1,10 +1,11 @@
 from __future__ import print_function
-import rover, time
+import time
 import sys
 import tty
 import termios
 import sys, os, time
 
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "capteurs"))
 
 try:
     import rover
