@@ -49,9 +49,8 @@ def goRight():
 
 
 def evitement():
-    goLeft()
+    goReverse
     time.sleep(3)
-    goForward(speed)
 
 rover.init(0)
 
