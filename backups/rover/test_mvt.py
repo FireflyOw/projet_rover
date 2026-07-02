@@ -49,7 +49,7 @@ def goRight():
 
 
 def evitement():
-    goReverse
+    goReverse()
     print("blabla")
     time.sleep(3)
 
