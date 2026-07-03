@@ -62,6 +62,7 @@ def evitement():
 rover.init(0)
 
 init_servo()
+time.sleep(3)
 
 rover.setServo(servo_Sonar, -60)
 
