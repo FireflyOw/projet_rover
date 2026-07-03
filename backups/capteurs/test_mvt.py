@@ -65,7 +65,7 @@ def evitement():
 
 rover.init(0)
 
-print("bloblo")
+
 init_servo()
 time.sleep(2)
 
@@ -74,6 +74,7 @@ time.sleep(1)
 rover.setServo(servo_Sonar, 200)
 time.sleep(1)
 init_servo()
+print("bloblo")
 rover.cleanup()
 
 
