@@ -71,11 +71,11 @@ time.sleep(2)
 
 rover.setServo(servo_Sonar, 84)
 time.sleep(0.5)
-rover.setServo(servo_Sonar, -96)
+rover.setServo(servo_Sonar, -84)
 time.sleep(0.5)
 rover.setServo(servo_Sonar, 84)
 time.sleep(0.5)
-rover.setServo(servo_Sonar, -96)
+rover.setServo(servo_Sonar, -84)
 
 time.sleep(0.5)
 init_servo()
