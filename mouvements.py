@@ -70,7 +70,7 @@ run = True
 
 try:
     while run:
-        tempHum = temp_hum(capteur, bus)
+        tempHum = temp_hum(capteur)
         distance.append(rover.getDistance())
 
         if time() >= lastPrint + intervalPrint:
