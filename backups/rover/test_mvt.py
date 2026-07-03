@@ -49,19 +49,23 @@ def goRight():
 
 
 def evitement():
-    rover.init(0)
-    goLeft()
+    goRight()
+    print("blabla")
     time.sleep(3)
-    goForward(speed)
 
 rover.init(0)
 
+distance = []
+run = True
 try:
-    while True:
-        distance = rover.getDistance()
+    while run:
+        distance.append(rover.getDistance())
+
+        print(distance[-1:])
         goForward(speed)
-        if distance <= 20:
+        if all(x<=35 for x in distance[-5:]):
             evitement()
+            run = False
     
 finally: 
     rover.cleanup()
