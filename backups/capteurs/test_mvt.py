@@ -65,6 +65,7 @@ def evitement():
 
 rover.init(0)
 
+print("bloblo")
 init_servo()
 time.sleep(2)
 
