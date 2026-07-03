@@ -15,7 +15,7 @@ except RuntimeError:
 # Paramètres capteurs:
 adresse = 0x40
 bus = smbus2.SMBus(1)
-capteur = adafruit_dht.DHT22(board.D12)
+capteur = adafruit_dht.DHT22(board.D25)
 
 # Paramètres rover:
 servo_Avant_G = 9
