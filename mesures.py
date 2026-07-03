@@ -1,4 +1,4 @@
-import csv, smbus2, time, adafruit_dht, adafruit_blinka, board
+import csv, time
 
 def capt_air(adress, bus):
     try:
