@@ -54,15 +54,14 @@ def init_servo():
     rover.setServo(servo_Arrière_D, 0)
     rover.setServo(servo_Sonar, 0)
 
-
-
-
 def evitement():
     goRight()
     print("blabla")
     time.sleep(3)
 
 rover.init(0)
+
+init_servo()
 
 rover.setServo(servo_Sonar, -60)
 
