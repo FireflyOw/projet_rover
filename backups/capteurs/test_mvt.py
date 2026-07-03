@@ -55,20 +55,26 @@ def evitement():
 
 rover.init(0)
 
-distance = []
-run = True
-try:
-    while run:
-        distance.append(rover.getDistance())
+rover.setServo(servo_Sonar, -20)
 
-        print(distance[-1:])
-        goForward(speed)
-        if all(x<=35 for x in distance[-5:]):
-            evitement()
-            run = False
+
+
+
+
+#distance = []
+#run = True
+#try:
+#    while run:
+#        distance.append(rover.getDistance())
+#
+#        print(distance[-1:])
+#        goForward(speed)
+#        if all(x<=35 for x in distance[-5:]):
+#            evitement()
+#            run = False
     
-finally: 
-    rover.cleanup()
+#finally: 
+#    rover.cleanup()
 
 
 
