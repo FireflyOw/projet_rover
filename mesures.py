@@ -1,10 +1,6 @@
 import csv, smbus2, time, adafruit_dht, adafruit_blinka, board
 
-bus = smbus2.SMBus(1)
-capteur = adafruit_dht.DHT22(board.D12)
-
-
-def capt_air(adress):
+def capt_air(adress, bus):
     try:
         bus.write_byte(adress, 0x88)
         time.sleep(0.3)
@@ -29,7 +25,7 @@ def capt_air(adress):
             "unite": "",
         }
 
-def temp_hum():
+def temp_hum(capteur):
 
     try:
         temperature = capteur.temperature
