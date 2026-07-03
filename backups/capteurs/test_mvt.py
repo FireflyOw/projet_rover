@@ -69,9 +69,9 @@ rover.init(0)
 init_servo()
 time.sleep(2)
 
-rover.setServo(servo_Sonar, -95)
+rover.setServo(servo_Sonar, 95)
 time.sleep(1)
-rover.setServo(servo_Sonar, 90)
+rover.setServo(servo_Sonar, -30)
 time.sleep(1)
 
 print("bloblo")
