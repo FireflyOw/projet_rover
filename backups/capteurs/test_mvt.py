@@ -49,9 +49,13 @@ def goRight():
 
 def init_servo():
     rover.setServo(servo_Avant_G, 0)
+    time.sleep(0.01)
     rover.setServo(servo_Avant_D, 0)
+    time.sleep(0.01)
     rover.setServo(servo_Arrière_G, 0)
+    time.sleep(0.01)
     rover.setServo(servo_Arrière_D, 0)
+    time.sleep(0.01)
     rover.setServo(servo_Sonar, 0)
 
 def evitement():
