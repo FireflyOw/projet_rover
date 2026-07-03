@@ -73,6 +73,8 @@ time.sleep(1)
 rover.setServo(servo_Sonar, 200)
 time.sleep(1)
 init_servo()
+rover.cleanup()
+
 
 
 
