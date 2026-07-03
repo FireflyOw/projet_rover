@@ -1,6 +1,6 @@
+from __future__ import print_function
 import sys, os, time, adafruit_dht, adafruit_blinka, board, smbus2
 from mesures import temp_hum
-from __future__ import print_function
 import termios, tty
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "backups", "rover"))
