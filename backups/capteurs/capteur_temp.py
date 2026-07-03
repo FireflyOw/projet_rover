@@ -1,6 +1,6 @@
 import time, adafruit_dht, adafruit_blinka, board
 
-capteur = adafruit_dht.DHT22(board.D29)
+capteur = adafruit_dht.DHT22(board.D25)
 
 try:
     temperature = capteur.temperature
