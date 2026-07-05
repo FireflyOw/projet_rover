@@ -47,6 +47,16 @@ def goRight():
     rover.setServo(servo_Arrière_G, -20)
     rover.setServo(servo_Arrière_D, -20)
 
+def init_servo():
+    rover.setServo(servo_Avant_G, 0)
+    time.sleep(0.01)
+    rover.setServo(servo_Avant_D, 0)
+    time.sleep(0.01)
+    rover.setServo(servo_Arrière_G, 0)
+    time.sleep(0.01)
+    rover.setServo(servo_Arrière_D, 0)
+    time.sleep(0.01)
+    rover.setServo(servo_Sonar, 0)
 
 def evitement():
     goRight()
@@ -55,7 +65,23 @@ def evitement():
 
 rover.init(0)
 
-rover.setServo(servo_Sonar, -20)
+
+init_servo()
+time.sleep(2)
+
+rover.setServo(servo_Sonar, 84)
+time.sleep(0.5)
+rover.setServo(servo_Sonar, -84)
+time.sleep(0.5)
+rover.setServo(servo_Sonar, 84)
+time.sleep(0.5)
+rover.setServo(servo_Sonar, -84)
+
+time.sleep(0.5)
+init_servo()
+
+print("bloblo")
+rover.cleanup()
 
 
 
