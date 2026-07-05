@@ -26,7 +26,6 @@ servo_Sonar = 0
 
 speed = 60
 
-
 # Mouvements rover:
 def goForward(speed):
     rover.setServo(servo_Avant_G, 0)
@@ -60,29 +59,31 @@ def evitement():
     time.sleep(3)
 
 
-# Boucle test :
+# ---- Boucle test : ----
 rover.init(0)
 
-lastPrint = 0
-intervalPrint = 2
+# Paramètres mesure:
+lastMesure = 0
+intervalMesure = 3
 distance = []
-run = True
 
+# Main:
+run = True
 try:
     while run:
-        tempHum = temp_hum(capteur)
         distance.append(rover.getDistance())
 
-        if time() >= lastPrint + intervalPrint:
-            print(f"Distance: {distance[-1:]} cm")
-            print(f"Temp: {tempHum["temperature"]} {tempHum["unite_temp"]} | Hum: {tempHum["humidite"]} {tempHum["unite_hum"]}")
-            lastPrint = time()
-        
-        goForward(speed)
-        
         if all(x<=35 for x in distance[-5:]):
             evitement()
             run = False
+
+        goForward(speed)
+
+        if time.time() >= lastMesure + intervalMesure:
+            tempHum = temp_hum(capteur)
+            print(f"Distance: {distance[-1:]} cm")
+            print(f"Temp: {tempHum["temperature"]} {tempHum["unite_temp"]} | Hum: {tempHum["humidite"]} {tempHum["unite_hum"]}")
+            lastPrint = time.time()
 
 finally: 
     rover.cleanup()
