@@ -1,7 +1,6 @@
 from __future__ import print_function
-import sys, os, time, adafruit_dht, adafruit_blinka, board, smbus2
+import sys, os, time, adafruit_dht, board, smbus2
 from mesures import temp_hum
-import termios, tty
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "backups", "rover"))
 
@@ -12,12 +11,9 @@ except RuntimeError:
     import fakeRover as rover
     print("[mouvements.py] fakeRover.py chargé (PC)")
 
-# Paramètres capteurs:
-adresse = 0x40
-bus = smbus2.SMBus(1)
-capteur = adafruit_dht.DHT22(board.D25)
-
 # Paramètres rover:
+rover.init(0)
+
 servo_Avant_G = 9
 servo_Avant_D = 15
 servo_Arrière_G = 11
@@ -25,6 +21,11 @@ servo_Arrière_D = 13
 servo_Sonar = 0
 
 speed = 60
+
+# Paramètres capteurs:
+adresse = 0x40
+bus = smbus2.SMBus(1)
+capteur = adafruit_dht.DHT22(board.D25)
 
 # Mouvements rover:
 def goForward(speed):
@@ -60,7 +61,6 @@ def evitement():
 
 
 # ---- Boucle test : ----
-rover.init(0)
 
 # Paramètres mesure:
 lastMesure = 0
@@ -73,17 +73,19 @@ try:
     while run:
         distance.append(rover.getDistance())
 
-        if all(x<=35 for x in distance[-5:]):
+        if len(distance) >= 5 and all(x<=35 for x in distance[-5:]):
+            rover.brake()
             evitement()
+            distance.clear()
             run = False
-
-        goForward(speed)
+        else:
+            goForward(speed)
 
         if time.time() >= lastMesure + intervalMesure:
             tempHum = temp_hum(capteur)
             print(f"Distance: {distance[-1:]} cm")
             print(f"Temp: {tempHum["temperature"]} {tempHum["unite_temp"]} | Hum: {tempHum["humidite"]} {tempHum["unite_hum"]}")
-            lastPrint = time.time()
+            lastMesure = time.time()
 
 finally: 
     rover.cleanup()
