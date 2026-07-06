@@ -1,8 +1,6 @@
 from __future__ import print_function
 import time
 import sys
-import tty
-import termios
 import sys, os, time
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "rover"))
@@ -76,8 +74,9 @@ time.sleep(0.5)
 rover.setServo(servo_Sonar, 84)
 time.sleep(0.5)
 rover.setServo(servo_Sonar, -84)
-
 time.sleep(0.5)
+
+stepSpinL()
 init_servo()
 
 print("bloblo")
