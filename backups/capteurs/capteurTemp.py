@@ -16,6 +16,8 @@ try:
 
         except RuntimeError as e:
             print(f"Erreur de lecture {e}")
+        
+        time.sleep(2)
 
 finally:
     capteur.exit()
