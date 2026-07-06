@@ -76,7 +76,7 @@ time.sleep(0.5)
 rover.setServo(servo_Sonar, -84)
 time.sleep(0.5)
 
-rover.stepSpinL(50,1)
+rover.SpinL(50)
 init_servo()
 
 print("bloblo")
