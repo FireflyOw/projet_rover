@@ -6,12 +6,11 @@ nbMesures = 0
 
 capteur = adafruit_dht.DHT22(board.D25, use_pulseio=False)
 
-run = True
 try:
-    while run:
+    while True:
         if nbMesures >= timeout:
             print(f"Erreur: {erreur}")
-            run = False
+            break
 
         try:
             temperature = capteur.temperature
