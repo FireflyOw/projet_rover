@@ -1,8 +1,18 @@
 import time, adafruit_dht, board
 
+erreur = ""
+timeout = 5
+nbMesures = 0
+
 capteur = adafruit_dht.DHT22(board.D25, use_pulseio=False)
+
+run = True
 try:
-    while True:
+    while run:
+        if nbMesures >= timeout:
+            print(f"Erreur: {erreur}")
+            run = False
+
         try:
             temperature = capteur.temperature
             humidite = capteur.humidity
@@ -15,9 +25,11 @@ try:
                       Nouvelle tentative...""")
 
         except RuntimeError as e:
-            print(f"Erreur de lecture {e}")
-        
-        time.sleep(2)
+            erreur = e
+            nbMesures += 1
+            print(".", end="", flush=True)
+
+        time.sleep(3)
 
 finally:
     capteur.exit()
