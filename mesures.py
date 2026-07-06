@@ -1,4 +1,5 @@
 import csv, time
+from numpy import random
 
 def capt_air(adress, bus):
     try:
@@ -57,3 +58,28 @@ def ecriture(adresse):
                         {valeur_air['pm1_atm']}, 
                         {valeur_air['pm25_atm']}, 
                         {valeur_air['pm10_atm']})
+        
+        
+# Fausses fonction pour les essais de mesure sans la Pi Zero:        
+def fakeTemp():
+    temperature = random.randint(10, 70)
+    humidite = random.randint(35, 90)    
+
+    return {
+            "temperature": temperature, 
+            "humidite": humidite, 
+            "unite_temp": "°C", 
+            "unite_hum": "%",
+        }
+
+def fakeAir():
+    pm1_atm = random.randint(1, 10)
+    pm25_atm = random.randint(1, 10)
+    pm10_atm = random.randint(1, 10)
+
+    return {
+            "pm1_atm": pm1_atm,
+            "pm25_atm": pm25_atm,
+            "pm10_atm": pm10_atm,
+            "unite": "µg/m3",
+        }
