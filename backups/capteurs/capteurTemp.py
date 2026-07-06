@@ -1,6 +1,6 @@
 import time, adafruit_dht, board
 
-capteur = adafruit_dht.DHT22(board.D25)
+capteur = adafruit_dht.DHT22(board.D25, use_pulseio=False)
 try:
     while True:
         try:
@@ -12,6 +12,6 @@ try:
 
         except RuntimeError as e:
             print(f"Erreur de lecture {e}")
-            
+
 finally:
     capteur.exit()
