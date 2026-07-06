@@ -7,8 +7,12 @@ try:
             temperature = capteur.temperature
             humidite = capteur.humidity
 
-            print(f"Température : {temperature:.1f}°C")
-            print(f"Humidité : {humidite:.1f}%")
+            if temperature != None and humidite != None:
+                print(f"Température : {temperature:.1f}°C")
+                print(f"Humidité : {humidite:.1f}%")
+            else:
+                print("""Erreur: lecture impossible!
+                      Nouvelle tentative...""")
 
         except RuntimeError as e:
             print(f"Erreur de lecture {e}")
