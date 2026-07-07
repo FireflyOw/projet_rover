@@ -61,8 +61,9 @@ def evitement():
     print("blabla")
     time.sleep(3)
 
-rover.init(0)
 
+
+rover.init(0)
 
 init_servo()
 time.sleep(2)
@@ -77,12 +78,6 @@ time.sleep(2)
 # time.sleep(0.5)
 
 
-
-
-print("bloblo")
-rover.cleanup()
-
-
 distance = []
 try:
    while True:
@@ -92,6 +87,7 @@ try:
        goForward(speed)
        if all(x<=30 for x in distance[-5:]):
            rover.spinLeft(70)
+           print("bloblo")
            init_servo()
         
     
