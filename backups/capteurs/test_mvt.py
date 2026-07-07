@@ -86,9 +86,10 @@ try:
        print(distance[-1:])
        goForward(speed)
        if all(x<=30 for x in distance[-5:]):
-           rover.spinLeft(70)
-           print("bloblo")
-           init_servo()
+           while distance[-1:]<=30:
+                distance.append(rover.getDistance())
+                rover.spinLeft(70)
+                print("bloblo")
         
     
 finally: 
