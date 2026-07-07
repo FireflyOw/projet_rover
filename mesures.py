@@ -83,3 +83,5 @@ def fakeAir():
             "pm10_atm": pm10_atm,
             "unite": "µg/m3",
         }
+
+print(ecriture())
