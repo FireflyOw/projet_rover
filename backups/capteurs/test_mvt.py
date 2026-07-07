@@ -87,6 +87,7 @@ try:
        if Av==False:
         goForward(speed)
         Av=True
+        
         Spin=False
 
        if all(x<=30 for x in distance[-5:]):
