@@ -75,9 +75,9 @@ rover.setServo(servo_Sonar, 84)
 time.sleep(0.5)
 rover.setServo(servo_Sonar, -84)
 time.sleep(0.5)
-
-rover.spinLeft(50)
-init_servo()
+while True:
+    rover.spinLeft(50)
+    init_servo()
 
 print("bloblo")
 rover.cleanup()
