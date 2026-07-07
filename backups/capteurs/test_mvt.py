@@ -61,9 +61,6 @@ def evitement():
     print("blabla")
     time.sleep(3)
 
-Av = False
-Spin =False
-rover.init(0)
 
 init_servo()
 time.sleep(2)
@@ -77,7 +74,10 @@ time.sleep(2)
 # rover.setServo(servo_Sonar, -84)
 # time.sleep(0.5)
 
-
+Av = False
+Spin =False
+non = 0
+rover.init(0)
 distance = []
 try:
    while True:
@@ -90,12 +90,13 @@ try:
             Av=True            
             Spin=False
 
-        time.sleep(2)
-        rover.setServo(servo_Sonar, 84)
-        time.sleep(0.5)
-        rover.setServo(servo_Sonar, -84)
-        time.sleep(0.5)
-        rover.setServo(servo_Sonar, 84)
+
+        if non<=time.time() +4:
+            rover.setServo(servo_Sonar, 84)
+            time.sleep(0.5)
+            rover.setServo(servo_Sonar, -84)
+            time.sleep(0.5)
+            rover.setServo(servo_Sonar, 0)
         
 
 
