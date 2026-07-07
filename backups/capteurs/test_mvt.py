@@ -93,13 +93,13 @@ try:
             Spin=False
 
 
-        if non<=now +4:
-            rover.setServo(servo_Sonar, 84)
-            time.sleep(0.5)
-            rover.setServo(servo_Sonar, -84)
-            time.sleep(0.5)
-            rover.setServo(servo_Sonar, 0)
-            non = time.time()
+        # if non<=now +4:
+        #     rover.setServo(servo_Sonar, 84)
+        #     time.sleep(0.5)
+        #     rover.setServo(servo_Sonar, -84)
+        #     time.sleep(0.5)
+        #     rover.setServo(servo_Sonar, 0)
+        #     non = time.time()
         
 
 
