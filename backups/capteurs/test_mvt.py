@@ -91,7 +91,7 @@ try:
             Spin=False
 
         if all(x<=30 for x in distance[-5:]):
-           while all(x<=30 for x in distance[-3:]):
+           while all(x<=30 for x in distance[-1000:]):
                 distance.append(rover.getDistance())
                 time.sleep(0.001)
                 print(distance[-1:])
