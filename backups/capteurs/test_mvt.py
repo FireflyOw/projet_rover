@@ -83,18 +83,23 @@ try:
    while True:
         distance.append(rover.getDistance())
 
+
         print(distance[-1:])
         if Av==False:
             goForward(speed)
-
             Av=True            
             Spin=False
 
+
+
         if all(x<=30 for x in distance[-5:]):
-            while all(x<=100 for x in distance[-5:]):
+            while all(int(distance[-1:]) -1 <x and x<  int(distance[-1:]) +1 for x in distance[-10:]):
                 distance.append(rover.getDistance())
                 time.sleep(0.001)
                 print(distance[-1:])
+                rover.setServo(servo_Sonar, 84)
+                time.sleep(0.5)
+                rover.setServo(servo_Sonar, -84)
                 if Spin==False:
                     rover.spinLeft(70)
                     Spin=True
