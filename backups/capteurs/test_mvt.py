@@ -17,7 +17,7 @@ servo_Avant_D = 15
 servo_Arrière_G = 11
 servo_Arrière_D = 13
 servo_Sonar = 0
-speed = 60
+speed = 50
 
 def goForward(speed):
     rover.setServo(servo_Avant_G, 0)
@@ -67,39 +67,36 @@ rover.init(0)
 init_servo()
 time.sleep(2)
 
-rover.setServo(servo_Sonar, 84)
-time.sleep(0.5)
-rover.setServo(servo_Sonar, -84)
-time.sleep(0.5)
-rover.setServo(servo_Sonar, 84)
-time.sleep(0.5)
-rover.setServo(servo_Sonar, -84)
-time.sleep(0.5)
-while True:
-    rover.spinLeft(50)
-    init_servo()
+# rover.setServo(servo_Sonar, 84)
+# time.sleep(0.5)
+# rover.setServo(servo_Sonar, -84)
+# time.sleep(0.5)
+# rover.setServo(servo_Sonar, 84)
+# time.sleep(0.5)
+# rover.setServo(servo_Sonar, -84)
+# time.sleep(0.5)
+
+
+
 
 print("bloblo")
 rover.cleanup()
 
 
+distance = []
+try:
+   while True:
+       distance.append(rover.getDistance())
 
-
-
-#distance = []
-#run = True
-#try:
-#    while run:
-#        distance.append(rover.getDistance())
-#
-#        print(distance[-1:])
-#        goForward(speed)
-#        if all(x<=35 for x in distance[-5:]):
-#            evitement()
-#            run = False
+       print(distance[-1:])
+       goForward(speed)
+       if all(x<=30 for x in distance[-5:]):
+           rover.spinLeft(70)
+           init_servo()
+        
     
-#finally: 
-#    rover.cleanup()
+finally: 
+   rover.cleanup()
 
 
 
