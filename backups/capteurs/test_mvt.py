@@ -23,7 +23,7 @@ def goForward(speed):
     rover.setServo(servo_Avant_G, 0)
     rover.setServo(servo_Avant_D, 0)
     rover.setServo(servo_Arrière_G, 0)
-    rover.setServo(servo_Arrière_D, 0)
+    rover.setServo(servo_Arrière_D, 0)  
     rover.forward(speed)
 
 def goReverse(speed):
@@ -76,7 +76,7 @@ time.sleep(0.5)
 rover.setServo(servo_Sonar, -84)
 time.sleep(0.5)
 
-rover.SpinL(50)
+rover.spinLeft(50)
 init_servo()
 
 print("bloblo")
