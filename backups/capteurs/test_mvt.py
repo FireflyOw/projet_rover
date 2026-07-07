@@ -88,6 +88,7 @@ try:
        if all(x<=30 for x in distance[-5:]):
            while (x<=30 for x in distance[-1:]):
                 distance.append(rover.getDistance())
+                print(distance[-1:])
                 rover.spinLeft(70)
                 print("bloblo")
         
