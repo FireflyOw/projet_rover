@@ -81,17 +81,17 @@ time.sleep(2)
 distance = []
 try:
    while True:
-       distance.append(rover.getDistance())
+        distance.append(rover.getDistance())
 
-       print(distance[-1:])
-       if Av==False:
-        goForward(speed)
-        Av=True
-        
-        Spin=False
+        print(distance[-1:])
+        if Av==False:
+            goForward(speed)
 
-       if all(x<=30 for x in distance[-5:]):
-           while (x<=30 for x in distance[-3:]):
+            Av=True            
+            Spin=False
+
+        if all(x<=30 for x in distance[-5:]):
+           while all(x<=30 for x in distance[-3:]):
                 distance.append(rover.getDistance())
                 time.sleep(0.001)
                 print(distance[-1:])
@@ -100,7 +100,6 @@ try:
                     Spin=True
                     Av=False
                 print("bloblo")
-   
     
 finally: 
    rover.cleanup()
