@@ -86,7 +86,7 @@ try:
        print(distance[-1:])
        goForward(speed)
        if all(x<=30 for x in distance[-5:]):
-           while (x<=30 for x in distance[-1:]):
+           while (x<=30 for x in distance[-3:]):
                 distance.append(rover.getDistance())
                 time.sleep(0.001)
                 print(distance[-1:])
