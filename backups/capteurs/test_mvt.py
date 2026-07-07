@@ -77,10 +77,12 @@ time.sleep(2)
 Av = False
 Spin =False
 non = 0
+now = 0
 rover.init(0)
 distance = []
 try:
    while True:
+        now=time.time()
         distance.append(rover.getDistance())
 
 
@@ -91,12 +93,13 @@ try:
             Spin=False
 
 
-        if non<=time.time() +4:
+        if non<=now +4:
             rover.setServo(servo_Sonar, 84)
             time.sleep(0.5)
             rover.setServo(servo_Sonar, -84)
             time.sleep(0.5)
             rover.setServo(servo_Sonar, 0)
+            non = time.time()
         
 
 
