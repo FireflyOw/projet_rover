@@ -25,7 +25,7 @@ def mesures(adresse, capteur, bus):
             "unite_temp": "°C", 
             "unite_hum": "%",
         }            
-    except RuntimeError:
+    except (RuntimeError, AttributeError):
         pass
 
     try:
@@ -43,7 +43,7 @@ def mesures(adresse, capteur, bus):
             "pm10_atm": pm10_atm,
             "unite": "µg/m3",
         }
-    except OSError:
+    except (OSError, AttributeError):
         pass
 
     return { **temp_hum, **air}
