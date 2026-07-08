@@ -95,10 +95,11 @@ try:
 
 #aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         if all(x<=30 for x in distance[-5:]):
+            print("blabla")
             rover.spinLeft(70)
             Spin=True
             Av=False
-            
+
             turn_readings = []
 
             while True:
