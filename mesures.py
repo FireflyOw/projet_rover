@@ -1,5 +1,6 @@
-import csv, time, numpy
+import os, csv, time, numpy
 
+# Fonctions de mesures avec les capteurs HM3301 (particules) et DHT22 (temp/hum):
 def capt_air(adress, bus):
     try:
         bus.write_byte(adress, 0x88)
@@ -26,11 +27,9 @@ def capt_air(adress, bus):
         }
 
 def temp_hum(capteur):
-
     try:
         temperature = capteur.temperature
         humidite = capteur.humidity
-
         return {
             "temperature": temperature, 
             "humidite": humidite, 
@@ -46,36 +45,7 @@ def temp_hum(capteur):
             "unite_hum": ""
         }
     
-def ecriture(adresse=None, capteur=None, bus=None):
-    try:
-        valeur_air = capt_air(adresse, bus)
-        val_temp_hum = temp_hum(capteur)
-
-        if "Erreur!" in valeur_air.values() and "Erreur!" in val_temp_hum.values():
-            raise RuntimeError("[HM3301, DHT22] Capteurs indisponibles!")        
-        elif "Erreur!" in valeur_air.values():
-            raise RuntimeError("[HM3301] Capteur indisponible!")        
-        elif "Erreur!" in val_temp_hum.values():
-            raise RuntimeError("[DHT22] Capteur indisponible!")
-    
-    except (Exception, RuntimeError, TypeError, NameError):
-        print("[mesures.py] Simulation de mesures.")
-
-        val_temp_hum = fakeTemp()
-        valeur_air = fakeAir()
-
-    with open("mesures.csv", mode="a", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow([{val_temp_hum["temperature"]},
-                        {val_temp_hum["humidite"]}, 
-                        {valeur_air['pm1_atm']}, 
-                        {valeur_air['pm25_atm']}, 
-                        {valeur_air['pm10_atm']}])
-        
-    return "Mesures enregistrées!"
-        
-        
-# Fausses fonction pour les essais de mesure sans la Pi Zero:        
+# Fausses fonction pour les essais de mesure sans la Pi Zero ou les capteurs:        
 def fakeTemp():
     temperature = numpy.random.randint(10, 70)
     humidite = numpy.random.randint(35, 90)    
@@ -98,5 +68,39 @@ def fakeAir():
             "pm10_atm": pm10_atm,
             "unite": "µg/m3",
         }
+
+def ecriture(adresse=None, capteur=None, bus=None):
+    try:
+        valeur_air = capt_air(adresse, bus)
+        val_temp_hum = temp_hum(capteur)
+
+        if "Erreur!" in valeur_air.values() and "Erreur!" in val_temp_hum.values():
+            raise RuntimeError("[HM3301, DHT22] Capteurs indisponibles!")        
+        elif "Erreur!" in valeur_air.values():
+            raise RuntimeError("[HM3301] Capteur indisponible!")        
+        elif "Erreur!" in val_temp_hum.values():
+            raise RuntimeError("[DHT22] Capteur indisponible!")
+    
+    except (Exception, RuntimeError, TypeError, NameError):
+        print("[mesures.py] Simulation de mesures.")
+
+        val_temp_hum = fakeTemp()
+        valeur_air = fakeAir()
+
+    colonnes = ["temperature", "humidite", "pm1", "pm2.5", "pm10"]
+    fichier = os.path.exists("mesures.csv")    
+
+    with open("mesures.csv", mode="a", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=colonnes)
+        if not fichier:
+            writer.writeheader()
+
+        writer.writerow({"temperature": val_temp_hum["temperature"],
+                        "humidite": val_temp_hum["humidite"], 
+                        "pm1": valeur_air['pm1_atm'], 
+                        "pm2.5": valeur_air['pm25_atm'], 
+                        "pm10": valeur_air['pm10_atm']})
+        
+    return "Mesures enregistrées!"
 
 print(ecriture())
