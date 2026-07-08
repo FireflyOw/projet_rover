@@ -2,15 +2,8 @@ from __future__ import print_function
 import time
 import sys
 import sys, os, time
-
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "rover"))
-
-try:
-    import rover
-    print("[mouvement.py] rover.py chargé (Raspberry Pi Zero)")
-except RuntimeError:
-    import fakeRover as rover
-    print("[mouvements.py] fakeRover.py chargé (PC)")
+import rover
 
 servo_Avant_G = 9
 servo_Avant_D = 15
@@ -104,7 +97,7 @@ try:
 
 
         if all(x<=30 for x in distance[-5:]):
-            while all(int(distance[-3:]) -1 <x and x<  int(distance[-3:]) +1 for x in distance[-10:]):
+            while all(int(distance[-1]) -1 <x and x<  int(distance[-1]) +1 for x in distance[-50:]):
                 distance.append(rover.getDistance())
                 time.sleep(0.001)
                 print(distance[-1:])
@@ -121,7 +114,6 @@ try:
 
     
 finally: 
-   rover.cleanup()
    print(len(distance))
 
 
