@@ -91,4 +91,4 @@ def ecriture(adressee=None, capteur=None, bus=None):
                         "pm2.5": valeurs['pm25_atm'], 
                         "pm10": valeurs['pm10_atm']})
         
-    return "Mesures enregistrées!"
+    return "[mesures.py] Mesures enregistrées!"
