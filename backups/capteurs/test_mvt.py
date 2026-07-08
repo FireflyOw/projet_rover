@@ -96,9 +96,24 @@ try:
 #aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         if all(x<=30 for x in distance[-5:]):
             print("blabla")
-            rover.spinLeft(30)
-            Spin=True
-            Av=False
+            direction_G =[]
+            rover.setServo(servo_Sonar, 84)
+            direction_G.append(rover.getDistance())
+            time.sleep(1)
+            direction_D =[]
+            rover.setServo(servo_Sonar, -84)
+            direction_D.append(rover.getDistance())
+            time.sleep(1)
+            rover.setServo(servo_Sonar, 0)
+
+            if direction_D[-1:]>direction_G[-1:]:
+                rover.spinRight(70)
+                Spin = True
+                Av = False
+            else:
+                rover.spinLeft(70)
+                Spin = True
+                Av = False
 
             turn_readings = []
 
