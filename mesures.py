@@ -46,9 +46,23 @@ def temp_hum(capteur):
             "unite_hum": ""
         }
     
-def ecriture(adresse):
-    valeur_air = capt_air(adresse)
-    val_temp_hum = temp_hum()
+def ecriture(adresse, capteur, bus):
+    try:
+        valeur_air = capt_air(adresse, bus)
+        val_temp_hum = temp_hum(capteur)
+
+        if "Erreur!" in valeur_air.values() and "Erreur!" in val_temp_hum.values():
+            raise RuntimeError("[HM3301, DHT22] Capteurs indisponibles!")        
+        elif "Erreur!" in valeur_air.values():
+            raise RuntimeError("[HM3301] Capteur indisponible!")        
+        elif "Erreur!" in val_temp_hum.values():
+            raise RuntimeError("[DHT22] Capteur indisponible!")
+    
+    except (Exception, RuntimeError, TypeError, NameError):
+        print("[mesures.py] Simulation de mesures.")
+        
+        val_temp_hum = fakeTemp()
+        valeur_air = fakeAir()
 
     with open("mesures.csv", mode="a", newline="") as f:
         writer = csv.writer(f)
@@ -57,6 +71,8 @@ def ecriture(adresse):
                         {valeur_air['pm1_atm']}, 
                         {valeur_air['pm25_atm']}, 
                         {valeur_air['pm10_atm']})
+        
+    return "Mesures enregistrées!"
         
         
 # Fausses fonction pour les essais de mesure sans la Pi Zero:        
