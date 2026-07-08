@@ -10,7 +10,7 @@ servo_Avant_D = 15
 servo_Arrière_G = 11
 servo_Arrière_D = 13
 servo_Sonar = 0
-speed = 50
+speed = 80
 
 def goForward(speed):
     rover.setServo(servo_Avant_G, 0)
@@ -96,7 +96,7 @@ try:
 #aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         if all(x<=30 for x in distance[-5:]):
             print("blabla")
-            rover.spinLeft(50)
+            rover.spinLeft(30)
             Spin=True
             Av=False
 
@@ -109,8 +109,8 @@ try:
                 print("bloblo", rover.getDistance())
                 
                 if len(turn_readings) >= 10:
-                    window = turn_readings[-10:]
-                    if (max(window) - min(window)) <= 1:
+                    window = turn_readings[-3:]
+                    if (max(window) - min(window)) <= 1.5:
                         break
                 
                 time.sleep(0.05)
