@@ -97,7 +97,7 @@ try:
 
 
         if all(x<=30 for x in distance[-5:]):
-            while all(int(distance[-1]) -1 <x and x<  int(distance[-1]) +1 for x in distance[-10:]):
+            while all(int(distance[-1]) -1 <x and x<  int(distance[-1]) +1 for x in distance[-100:]):
                 distance.append(rover.getDistance())
                 time.sleep(0.001)
                 print(distance[-1:])
