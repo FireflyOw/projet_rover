@@ -45,8 +45,3 @@ def goRight():
     rover.setServo(servoAvD, 20)
     rover.setServo(servoArG, -20)
     rover.setServo(servoArD, -20)
-
-def evitement():
-    rover.spinRight(speed)
-    print("blabla")
-    time.sleep(3)
