@@ -96,7 +96,7 @@ try:
 #aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         if all(x<=30 for x in distance[-5:]):
             print("blabla")
-            rover.spinLeft(50)
+            rover.spinLeft(30)
             Spin=True
             Av=False
 
@@ -109,7 +109,7 @@ try:
                 print("bloblo", rover.getDistance())
                 
                 if len(turn_readings) >= 10:
-                    window = turn_readings[-10:]
+                    window = turn_readings[-5:]
                     if (max(window) - min(window)) <= 1:
                         break
                 
