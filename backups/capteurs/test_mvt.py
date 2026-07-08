@@ -1,24 +1,9 @@
 from __future__ import print_function
 import time
 import sys
-<<<<<<< HEAD
-import tty
-import termios
-import sys, os, time
-
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "rover"))
-
-try:
-    import rover
-    print("[mouvement.py] rover.py chargé (Raspberry Pi Zero)")
-except RuntimeError:
-    import fakeRover as rover
-    print("[mouvements.py] fakeRover.py chargé (PC)")
-=======
 import sys, os, time
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "rover"))
 import rover
->>>>>>> test
 
 servo_Avant_G = 9
 servo_Avant_D = 15
