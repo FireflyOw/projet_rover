@@ -22,10 +22,18 @@ servo_Sonar = 0
 
 speed = 60
 
+avancer = False
+reculer = False
+spinD = False
+spinG = False
+
 # Paramètres capteurs:
 adresse = 0x40
 bus = smbus2.SMBus(1)
-capteur = adafruit_dht.DHT22(board.D25)
+try:
+    capteur = adafruit_dht.DHT22(board.D25)
+except AttributeError:
+    print("[DHT22] Capteur indisponible!")
 
 # Mouvements rover:
 def goForward(speed):
@@ -55,7 +63,7 @@ def goRight():
     rover.setServo(servo_Arrière_D, -20)
 
 def evitement():
-    goRight()
+    spinRight(speed)
     print("blabla")
     time.sleep(3)
 
