@@ -44,5 +44,4 @@ try:
 
 finally: 
     run = False
-    print(distance[-5:], len(distance))
     rover.cleanup()
