@@ -28,5 +28,4 @@ def setServo(servo, degrees):
     print(f"[rover] setServo({servo}, {degrees})")
 
 def getDistance():
-    print("[rover] getDistance()")
     return 50.0
