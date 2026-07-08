@@ -133,7 +133,7 @@ try:
 
     
 finally: 
-   print(len(distance))
+#    print(len(distance))
    rover.cleanup()
 
 
