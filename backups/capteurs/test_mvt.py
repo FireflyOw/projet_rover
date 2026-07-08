@@ -108,7 +108,7 @@ try:
                 print("bloblo", rover.getDistance())
                 
                 if len(turn_readings) >= 10:
-                    window = turn_readings[-5:]
+                    window = turn_readings[-10:]
                     if (max(window) - min(window)) <= 1:
                         break
                 
