@@ -67,7 +67,7 @@ time.sleep(2)
 # rover.setServo(servo_Sonar, -84)
 # time.sleep(0.5)
 
-Av = Falsex
+Av = False
 Spin =False
 non = 0
 now = 0
