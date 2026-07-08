@@ -22,26 +22,54 @@ except AttributeError:
 
 # Paramètres mesure:
 lastMesure = 0
-intervalMesure = 3
+intervalMesure = 1
 distance = []
 
-# ---- Boucle test : ----
+# Paramètres rover:
+avancer = False
+spin = False
+
+# ---- Boucle principale : ----
 rover.init(0)
 
 # Main:
 run = True
 try:
     while run:
+        # --Bloc mesures--
+        
         distance.append(rover.getDistance())
-        if len(distance) >= 10000:
+        if len(distance) >= 5000:
             distance.pop(0)
 
         if time.time() >= lastMesure + intervalMesure:
             valeurs = mesures(adresse, capteur, bus)
+            ecriture()
+            
             print(f"Temp: {valeurs['temperature']} {valeurs['unite_temp']} | Hum: {valeurs['humidite']} {valeurs['unite_hum']}")
             print(f"Distance: {int(distance[-1])}cm")
             lastMesure = time.time()
 
+        # --Bloc déplacements--
+
+        if avancer == False:
+            goForward(speed)
+            avancer = True            
+            spin = False
+
+        if all(x<=30 for x in distance[-5:]):
+            while all(int(distance[-1])-1 < x and x <  int(distance[-1])+1 for x in distance[-50:]):
+                distance.append(rover.getDistance())
+                time.sleep(0.001)
+                print(distance[-1:])
+                
+                if spin == False:
+                    rover.spinLeft(speed)
+                    spin = True
+                    avancer = False
+                print("bloblo")
+
+        time.sleep(0.001)
+
 finally: 
-    run = False
     rover.cleanup()
