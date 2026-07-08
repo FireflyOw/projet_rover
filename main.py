@@ -6,10 +6,10 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "backups", "rover"))
 
 try:
     import rover
-    print("[mouvements.py] rover.py chargé (Raspberry Pi Zero)")
+    print("[main.py] rover.py chargé (Raspberry Pi Zero)")
 except RuntimeError:
     import fakeRover as rover
-    print("[mouvements.py] fakeRover.py chargé (PC)")
+    print("[main.py] fakeRover.py chargé (PC)")
 
 # Paramètres capteurs:
 adresse = 0x40
@@ -18,7 +18,7 @@ try:
     capteur = adafruit_dht.DHT22(board.D25)
 except AttributeError:
     capteur = None
-    print("[DHT22] Capteur indisponible!")
+    print("[main.py][DHT22] Capteur indisponible!")
 
 # Paramètres mesure:
 lastMesure = 0
@@ -44,7 +44,7 @@ try:
 
         if time.time() >= lastMesure + intervalMesure:
             valeurs = mesures(adresse, capteur, bus)
-            ecriture()
+            ecriture(adresse, capteur, bus)
             
             print(f"Temp: {valeurs['temperature']} {valeurs['unite_temp']} | Hum: {valeurs['humidite']} {valeurs['unite_hum']}")
             print(f"Distance: {int(distance[-1])}cm")
