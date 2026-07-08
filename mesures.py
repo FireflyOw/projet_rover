@@ -61,6 +61,7 @@ def fakeMesures():
             "unite": "µg/m3",
         }
 
+# Fonction pour l'écriture des données de mesure dans un fichier csv:
 def ecriture(adresse=None, capteur=None, bus=None):
     try:
         valeurs = mesures(adresse, capteur, bus)
