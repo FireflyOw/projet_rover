@@ -104,7 +104,6 @@ try:
 
             while True:
                 distance.append(rover.getDistance())
-                time.sleep(0.001)
                 turn_readings.append(rover.getDistance())
                 print("bloblo", rover.getDistance())
                 
@@ -113,14 +112,13 @@ try:
                     if (max(window) - min(window)) <= 1:
                         break
                 
-                time.sleep(0.05)
+                time.sleep(0.01)
             Spin = False
 
-        time.sleep(0.001)
 
     
 finally: 
    print(len(distance))
-
+   rover.cleanup()
 
 
