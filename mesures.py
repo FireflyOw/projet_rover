@@ -66,11 +66,11 @@ def ecriture(adresse=None, capteur=None, bus=None):
 
     with open("mesures.csv", mode="a", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow({val_temp_hum["temperature"]},
+        writer.writerow([{val_temp_hum["temperature"]},
                         {val_temp_hum["humidite"]}, 
                         {valeur_air['pm1_atm']}, 
                         {valeur_air['pm25_atm']}, 
-                        {valeur_air['pm10_atm']})
+                        {valeur_air['pm10_atm']}])
         
     return "Mesures enregistrées!"
         
