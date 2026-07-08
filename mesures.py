@@ -46,7 +46,7 @@ def temp_hum(capteur):
             "unite_hum": ""
         }
     
-def ecriture(adresse, capteur, bus):
+def ecriture(adresse=None, capteur=None, bus=None):
     try:
         valeur_air = capt_air(adresse, bus)
         val_temp_hum = temp_hum(capteur)
@@ -60,7 +60,7 @@ def ecriture(adresse, capteur, bus):
     
     except (Exception, RuntimeError, TypeError, NameError):
         print("[mesures.py] Simulation de mesures.")
-        
+
         val_temp_hum = fakeTemp()
         valeur_air = fakeAir()
 
