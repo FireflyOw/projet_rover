@@ -61,19 +61,19 @@ def fakeMesures():
             "unite": "µg/m3",
         }
 
-def ecriture(adressee=None, capteur=None, bus=None):
+def ecriture(adresse=None, capteur=None, bus=None):
     try:
-        valeurs = mesures()
+        valeurs = mesures(adresse, capteur, bus)
 
-        if valeurs["temperature"] == "Erreur!" and valeurs["pm1"] == "Erreur!":
-            raise RuntimeError("[HM3301, DHT22] Capteurs indisponibles!")
+        if valeurs["temperature"] == "Erreur!" and valeurs["pm1_atm"] == "Erreur!":
+            raise RuntimeError("[mesures.py][HM3301, DHT22] Capteurs indisponibles!")
         elif valeurs["temperature"] == "Erreur!":
-            raise RuntimeError("[DHT22] Capteur indisponible!")
-        elif valeurs["pm1"] == "Erreur!":
-            raise RuntimeError("[HM3301] Capteur indisponible!")
+            raise RuntimeError("[mesures.py][DHT22] Capteur indisponible!")
+        elif valeurs["pm1_atm"] == "Erreur!":
+            raise RuntimeError("[mesures.py][HM3301] Capteur indisponible!")
     
     except (Exception, RuntimeError, TypeError, NameError) as e:
-        print(f"[mesures.py] Simulation de mesures forcée: {e}")
+        print(f"[mesures.py] Simulation: {e}")
 
         valeurs = fakeMesures()
 
