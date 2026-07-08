@@ -78,9 +78,9 @@ def ecriture(adresse=None, capteur=None, bus=None):
         valeurs = fakeMesures()
 
     colonnes = ["temperature", "humidite", "pm1", "pm2.5", "pm10"]
-    fichier = os.path.exists("mesures.csv")    
+    fichier = os.path.exists(time.strftime("mesures%b%d.csv"))    
 
-    with open("mesures.csv", mode="a", newline="") as f:
+    with open(time.strftime("mesures%b%d.csv"), mode="a", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=colonnes)
         if not fichier:
             writer.writeheader()
