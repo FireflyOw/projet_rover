@@ -75,11 +75,9 @@ rover.init(0)
 distance = []
 try:
    while True:
-        now=time.time()
         distance.append(rover.getDistance())
-
-
         print(distance[-1:])
+
         if Av==False:
             goForward(speed)
             Av=True            
@@ -95,20 +93,27 @@ try:
         #     non = time.time()
         
 
-
+#aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         if all(x<=30 for x in distance[-5:]):
-            while all(int(distance[-1]) -1 <x and x<  int(distance[-1]) +1 for x in distance[-50:]):
+            rover.spinLeft(70)
+            Spin=True
+            Av=False
+            
+            turn_readings = []
+
+            while True:
                 distance.append(rover.getDistance())
                 time.sleep(0.001)
-                print(distance[-1:])
+                turn_readings.append(rover.getDistance())
+                print("bloblo", rover.getDistance())
                 
-                if Spin==False:
-                    rover.spinLeft(70)
-                    Spin=True
-                    Av=False
-                print("bloblo")
-            
-            
+                if len(turn_readings) >= 10:
+                    window = turn_readings[-10:]
+                    if (max(window) - min(window)) <= 1:
+                        break
+                
+                time.sleep(0.05)
+            Spin = False
 
         time.sleep(0.001)
 
