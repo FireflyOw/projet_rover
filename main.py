@@ -1,5 +1,5 @@
 import sys, os, time, adafruit_dht, board, smbus2
-from mouvements import goForward, evitement, speed
+from mouvements import goForward, speed
 from mesures import mesures, ecriture
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "backups", "rover"))
