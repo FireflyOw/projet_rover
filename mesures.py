@@ -63,6 +63,8 @@ def fakeMesures():
 
 # Fonction pour l'écriture des données de mesure dans un fichier csv:
 def ecriture(adresse=None, capteur=None, bus=None):
+    os.makedirs(os.path.join(os.path.dirname(__file__), "données"), exist_ok=True)
+
     try:
         valeurs = mesures(adresse, capteur, bus)
 
@@ -78,15 +80,17 @@ def ecriture(adresse=None, capteur=None, bus=None):
 
         valeurs = fakeMesures()
 
-    colonnes = ["temperature", "humidite", "pm1", "pm2.5", "pm10"]
-    fichier = os.path.exists(time.strftime("mesures%b%d.csv"))    
+    CSV_PATH = os.path.join(os.path.dirname(__file__), "données", time.strftime("mesures%b%d.csv"))
+    colonnes = ["heures", "temperature", "humidite", "pm1", "pm2.5", "pm10"]
+    fichier = os.path.exists(CSV_PATH)    
 
-    with open(time.strftime("mesures%b%d.csv"), mode="a", newline="") as f:
+    with open(CSV_PATH, mode="a", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=colonnes)
         if not fichier:
             writer.writeheader()
 
-        writer.writerow({"temperature": valeurs["temperature"],
+        writer.writerow({"heures": time.strftime("%H:%M:%S"),
+                        "temperature": valeurs["temperature"],
                         "humidite": valeurs["humidite"], 
                         "pm1": valeurs['pm1_atm'], 
                         "pm2.5": valeurs['pm25_atm'], 
