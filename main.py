@@ -37,9 +37,8 @@ try:
             distance.pop(0)
 
         if time.time() >= lastMesure + intervalMesure:
-            if capteur != None:
-                valeurs = mesures(adresse, capteur, bus)
-                print(f"Temp: {valeurs['temperature']} {valeurs['unite_temp']} | Hum: {valeurs['humidite']} {valeurs['unite_hum']}")
+            valeurs = mesures(adresse, capteur, bus)
+            print(f"Temp: {valeurs['temperature']} {valeurs['unite_temp']} | Hum: {valeurs['humidite']} {valeurs['unite_hum']}")
             print(f"Distance: {int(distance[-1])}cm")
             lastMesure = time.time()
 
