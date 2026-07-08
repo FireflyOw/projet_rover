@@ -1,31 +1,31 @@
 import time
 
 def init(brightness=40):
-    print("[rover] init()")
+    print("[rover.py] init()")
 
 def cleanup():
-    print("[rover] cleanup()")
+    print("[rover.py] cleanup()")
 
 def forward(speed):
-    print(f"[rover] forward({speed})")
+    print(f"[rover.py] forward({speed})")
 
 def reverse(speed):
-    print(f"[rover] reverse({speed})")
+    print(f"[rover.py] reverse({speed})")
 
 def stop():
-    print("[rover] stop()")
+    print("[rover.py] stop()")
 
 def brake():
-    print("[rover] brake()")
+    print("[rover.py] brake()")
 
 def spinLeft(speed):
-    print(f"[rover] spinLeft({speed})")
+    print(f"[rover.py] spinLeft({speed})")
 
 def spinRight(speed):
-    print(f"[rover] spinRight({speed})")
+    print(f"[rover.py] spinRight({speed})")
 
 def setServo(servo, degrees):
-    print(f"[rover] setServo({servo}, {degrees})")
+    print(f"[rover.py] setServo({servo}, {degrees})")
 
 def getDistance():
     return 50.0
