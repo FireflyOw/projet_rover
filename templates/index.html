@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mars Rover — Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      padding: 1.5rem;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    header h1 { font-size: 1.2rem; font-weight: 500; }
+
+    #status {
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: #d4edda;
+      color: #1a5c2a;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+    }
+    .card .label {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 6px;
+    }
+    .card .value {
+      font-size: 28px;
+      font-weight: 500;
+    }
+    .card .unit { font-size: 14px; color: #888; margin-left: 3px; }
+    .card .updated { font-size: 11px; color: #aaa; margin-top: 4px; }
+
+    .panels {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .panel {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+    }
+    .panel h2 {
+      font-size: 13px;
+      font-weight: 500;
+      color: #666;
+      margin-bottom: 1rem;
+    }
+
+    /* Grille rover */
+    #grid-container {
+      display: grid;
+      gap: 6px;
+    }
+    .grid-cell {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      border: 1px solid #e5e5e5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #888;
+      background: #f9f9f9;
+    }
+    .grid-cell .cell-val {
+      font-size: 13px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+    .grid-cell.done { background: #e1f5ee; border-color: #9fe1cb; }
+    .grid-cell.current { background: #e6f1fb; border-color: #378add; }
+
+    /* Tableau */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 500;
+      color: #888;
+      padding: 0 0 8px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    td {
+      padding: 7px 0;
+      border-bottom: 1px solid #f0f0f0;
+      color: #1a1a1a;
+    }
+    td:first-child { color: #aaa; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🤖 Mars Rover — Dashboard</h1>
+  <span id="status">⏳ Connexion...</span>
+</header>
+
+<!-- Cartes valeurs instantanées -->
+<div class="cards">
+  <div class="card">
+    <div class="label">Température</div>
+    <div class="value"><span id="val-temp">—</span><span class="unit">°C</span></div>
+    <div class="updated" id="ts-temp"></div>
+  </div>
+  <div class="card">
+    <div class="label">Humidité</div>
+    <div class="value"><span id="val-hum">—</span><span class="unit">%</span></div>
+    <div class="updated" id="ts-hum"></div>
+  </div>
+  <div class="card">
+    <div class="label">PM2.5</div>
+    <div class="value"><span id="val-pm">—</span><span class="unit">µg/m³</span></div>
+    <div class="updated" id="ts-pm"></div>
+  </div>
+</div>
+
+<div class="panels">
+  <!-- Graphique température -->
+  <div class="panel">
+    <h2>Température — historique</h2>
+    <canvas id="chart-temp" height="120"></canvas>
+  </div>
+
+  <!-- Grille rover -->
+  <div class="panel">
+    <h2>Progression sur la grille</h2>
+    <div id="grid-container"></div>
+  </div>
+</div>
+
+<!-- Tableau dernières mesures -->
+<div class="panel">
+  <h2>Dernières mesures</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Heure</th>
+        <th>Position</th>
+        <th>Temp.</th>
+        <th>Humidité</th>
+        <th>PM2.5</th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
+</div>
+
+<script>
+  const API_LATEST  = "/api/sensors/latest";
+  const API_HISTORY = "/api/sensors/history/20";
+  const REFRESH_MS  = 5000;
+
+  // --- Graphique Chart.js ---
+  const ctx = document.getElementById("chart-temp").getContext("2d");
+  const chart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: [],
+      datasets: [{
+        data: [],
+        borderColor: "#378add",
+        backgroundColor: "rgba(55,138,221,0.08)",
+        borderWidth: 1.5,
+        pointRadius: 2,
+        tension: 0.3,
+        fill: true,
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: false },
+        y: { ticks: { font: { size: 11 } } }
+      },
+      animation: false,
+    }
+  });
+
+  // --- Grille ---
+  function buildGrid(rows) {
+    if (!rows.length) return;
+
+    // Détermine les dimensions de la grille depuis les données
+    const xs = rows.map(r => parseInt(r.grid_x));
+    const ys = rows.map(r => parseInt(r.grid_y));
+    const maxX = Math.max(...xs);
+    const maxY = Math.max(...ys);
+
+    const container = document.getElementById("grid-container");
+    container.style.gridTemplateColumns = `repeat(${maxX + 1}, 1fr)`;
+    container.innerHTML = "";
+
+    // Dernière position = position actuelle du rover
+    const last = rows[rows.length - 1];
+
+    for (let y = 0; y <= maxY; y++) {
+      for (let x = 0; x <= maxX; x++) {
+        const cell = document.createElement("div");
+        cell.className = "grid-cell";
+
+        const match = rows.find(r => parseInt(r.grid_x) === x && parseInt(r.grid_y) === y);
+        const isLast = last && parseInt(last.grid_x) === x && parseInt(last.grid_y) === y;
+
+        if (match) {
+          cell.classList.add(isLast ? "current" : "done");
+          cell.innerHTML = `<span class="cell-val">${parseFloat(match.temp_c).toFixed(1)}°</span>(${x},${y})`;
+        } else {
+          cell.innerHTML = `<span class="cell-val" style="color:#ccc">—</span>(${x},${y})`;
+        }
+        container.appendChild(cell);
+      }
+    }
+  }
+
+  // --- Tableau ---
+  function buildTable(rows) {
+    const tbody = document.getElementById("table-body");
+    tbody.innerHTML = "";
+    [...rows].reverse().slice(0, 10).forEach(r => {
+      const tr = document.createElement("tr");
+      const time = r.timestamp ? r.timestamp.split(" ")[1] : "—";
+      tr.innerHTML = `
+        <td>${time}</td>
+        <td>(${r.grid_x ?? "—"},${r.grid_y ?? "—"})</td>
+        <td>${parseFloat(r.temp_c).toFixed(1)} °C</td>
+        <td>${parseFloat(r.humidity).toFixed(1)} %</td>
+        <td>${r.pm2_5 ? parseFloat(r.pm2_5).toFixed(1) : "—"} µg/m³</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // --- Mise à jour des cartes ---
+  function updateCards(row) {
+    document.getElementById("val-temp").textContent = parseFloat(row.temp_c).toFixed(1);
+    document.getElementById("val-hum").textContent  = parseFloat(row.humidity).toFixed(1);
+    document.getElementById("val-pm").textContent   = row.pm2_5 ? parseFloat(row.pm2_5).toFixed(1) : "—";
+
+    const ts = row.timestamp ?? "";
+    document.getElementById("ts-temp").textContent = ts ? `Dernière mesure : ${ts}` : "";
+    document.getElementById("ts-hum").textContent  = ts ? `Dernière mesure : ${ts}` : "";
+    document.getElementById("ts-pm").textContent   = ts ? `Dernière mesure : ${ts}` : "";
+  }
+
+  // --- Mise à jour du graphique ---
+  function updateChart(rows) {
+    chart.data.labels   = rows.map(r => r.timestamp?.split(" ")[1] ?? "");
+    chart.data.datasets[0].data = rows.map(r => parseFloat(r.temp_c));
+    chart.update();
+  }
+
+  // --- Rafraîchissement ---
+  async function refresh() {
+    try {
+      const [latest, history] = await Promise.all([
+        fetch(API_LATEST).then(r => r.json()),
+        fetch(API_HISTORY).then(r => r.json()),
+      ]);
+
+      updateCards(latest);
+      updateChart(history);
+      buildGrid(history);
+      buildTable(history);
+
+      document.getElementById("status").textContent = "● En ligne";
+      document.getElementById("status").style.background = "#d4edda";
+      document.getElementById("status").style.color = "#1a5c2a";
+
+    } catch (e) {
+      document.getElementById("status").textContent = "✕ Hors ligne";
+      document.getElementById("status").style.background = "#fde8e8";
+      document.getElementById("status").style.color = "#8b1a1a";
+    }
+  }
+
+  refresh();
+  setInterval(refresh, REFRESH_MS);
+</script>
+</body>
+</html>

@@ -1,12 +1,14 @@
 import smbus2, time
 
-adress = 0x50
+adress = 0x40
 bus = smbus2.SMBus(1)
 
 def mesure():
     bus.write_byte(adress, 0x88)
     time.sleep(1)
-    data = bus.read_i2c_block_data(adress, 0x00, 29)
+    read = smbus2.i2c_msg.read(adress, 29)
+    bus.i2c_rdwr(read)
+    data = list(read)
 
     pm1_atm = (data[10] << 8) | data[11]
     pm25_atm = (data[12] << 8) | data[13]
