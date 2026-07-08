@@ -56,7 +56,8 @@ def evitement():
 
 
 init_servo()
-time.sleep(2)
+time.sleep(1)
+
 try:
     rover.setServo(servo_Sonar, 84)
     time.sleep(0.5)
