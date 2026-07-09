@@ -96,7 +96,7 @@ try:
             direction_D =[]
             rover.setServo(servo_Sonar, 84)
             direction_D.append(rover.getDistance())
-            time.sleep(1)
+            time.sleep(2)
             rover.setServo(servo_Sonar, 0)
 
             if direction_D[-1] > 80 or direction_G[-1] > 80:
