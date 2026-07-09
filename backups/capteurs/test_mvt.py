@@ -99,6 +99,9 @@ try:
             time.sleep(1)
             rover.setServo(servo_Sonar, 0)
 
+            if direction_D[-1] > 80 or direction_G[-1] > 80:
+                    print("GG")
+                    spin_speed = 10
 
             if direction_D[-1:]>direction_G[-1:]:
                 rover.spinRight(spin_speed)
@@ -114,9 +117,7 @@ try:
             turn_readings = []
 
             while True:
-                if direction_D[-1] > 80 or direction_G[-1] > 80:
-                    print("GG")
-                    spin_speed = 10
+                
                 distance.append(rover.getDistance())
                 turn_readings.append(rover.getDistance())
                 print("bloblo", rover.getDistance())
