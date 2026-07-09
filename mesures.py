@@ -80,7 +80,7 @@ def ecriture(adresse=None, capteur=None, bus=None, grid_x=0, grid_y=0):
             raise RuntimeError("[mesures.py][HM3301] Capteur indisponible!")
     
     except (Exception, RuntimeError, TypeError, NameError) as e:
-        print(f"[mesures.py] Simulation: {e}")
+        print(e)
 
         valeurs = fakeMesures()   
 
