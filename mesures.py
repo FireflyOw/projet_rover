@@ -62,7 +62,7 @@ def fakeMesures():
         }
 
 # Fonction pour l'écriture des données de mesure dans un fichier csv:
-def ecriture(adresse=None, capteur=None, bus=None):
+def ecriture(adresse=None, capteur=None, bus=None, grid_x=0, grid_y=0):
     os.makedirs(os.path.join(os.path.dirname(__file__), "données"), exist_ok=True)
 
     try:
@@ -81,7 +81,7 @@ def ecriture(adresse=None, capteur=None, bus=None):
         valeurs = fakeMesures()
 
     CSV_PATH = os.path.join(os.path.dirname(__file__), "données", time.strftime("mesures%b%d.csv"))
-    colonnes = ["heures", "temperature", "humidite", "pm1", "pm2.5", "pm10"]
+    colonnes = ["timestamp", "temp_c", "humidity", "pm1", "pm2_5", "pm10", "grid_x", "grid_y"]
     fichier = os.path.exists(CSV_PATH)    
 
     with open(CSV_PATH, mode="a", newline="") as f:
@@ -89,11 +89,14 @@ def ecriture(adresse=None, capteur=None, bus=None):
         if not fichier:
             writer.writeheader()
 
-        writer.writerow({"heures": time.strftime("%H:%M:%S"),
-                        "temperature": valeurs["temperature"],
-                        "humidite": valeurs["humidite"], 
+        writer.writerow({"timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "temp_c": valeurs["temperature"],
+                        "humidity": valeurs["humidite"], 
                         "pm1": valeurs['pm1_atm'], 
-                        "pm2.5": valeurs['pm25_atm'], 
-                        "pm10": valeurs['pm10_atm']})
+                        "pm2_5": valeurs['pm25_atm'], 
+                        "pm10": valeurs['pm10_atm'],
+                        "grid_x": grid_x,
+                        "grid_y": grid_y
+        })
         
     return "[mesures.py] Mesures enregistrées!"
