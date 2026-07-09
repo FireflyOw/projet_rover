@@ -54,7 +54,7 @@ def evitement():
     print("blabla")
     time.sleep(3)
 
-
+rover.init(0)
 init_servo()
 time.sleep(1)
 
@@ -72,7 +72,6 @@ try:
 # Spin =False
 # non = 0
 # now = 0
-# rover.init(0)
 # distance = []
 # try:
 #    while True:
