@@ -83,14 +83,15 @@ try:
             goForward(speed)
             Av=True            
             Spin=False
-            
+
    
         if all(x<=30 for x in distance[-5:]):
             print("blabla")
+            rover.stop()
             direction_G =[]
             rover.setServo(servo_Sonar, 84)
             direction_G.append(rover.getDistance())
-            time.sleep(1)
+            time.sleep(2)
             direction_D =[]
             rover.setServo(servo_Sonar, -84)
             direction_D.append(rover.getDistance())
