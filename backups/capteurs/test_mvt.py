@@ -58,82 +58,73 @@ rover.init(0)
 init_servo()
 time.sleep(1)
 
-try:
-    rover.setServo(servo_Sonar, 84)
-    time.sleep(0.5)
-    rover.setServo(servo_Sonar, -84)
-    time.sleep(0.5)
-    rover.setServo(servo_Sonar, 84)
-    time.sleep(0.5)
-    rover.setServo(servo_Sonar, -84)
-    time.sleep(0.5)
-
-# Av = False
-# Spin =False
-# non = 0
-# now = 0
-# distance = []
 # try:
-#    while True:
-#         distance.append(rover.getDistance())
-#         print(distance[-1:])
+#     rover.setServo(servo_Sonar, 84)
+#     time.sleep(0.5)
+#     rover.setServo(servo_Sonar, -84)
+#     time.sleep(0.5)
+#     rover.setServo(servo_Sonar, 84)
+#     time.sleep(0.5)
+#     rover.setServo(servo_Sonar, -84)
+#     time.sleep(0.5)
 
-#         if Av==False:
-#             goForward(speed)
-#             Av=True            
-#             Spin=False
+Av = False
+Spin =False
+non = 0
+now = 0
+distance = []
 
+try:
+   while True:
+        distance.append(rover.getDistance())
+        print(distance[-1:])
 
-        # if non<=now +4:
-        #     rover.setServo(servo_Sonar, 84)
-        #     time.sleep(0.5)
-        #     rover.setServo(servo_Sonar, -84)
-        #     time.sleep(0.5)
-        #     rover.setServo(servo_Sonar, 0)
-        #     non = time.time()
-        
+        if Av==False:
+            goForward(speed)
+            Av=True            
+            Spin=False
+            
+   
+        if all(x<=30 for x in distance[-5:]):
+            print("blabla")
+            direction_G =[]
+            rover.setServo(servo_Sonar, 84)
+            direction_G.append(rover.getDistance())
+            time.sleep(1)
+            direction_D =[]
+            rover.setServo(servo_Sonar, -84)
+            direction_D.append(rover.getDistance())
+            time.sleep(1)
+            rover.setServo(servo_Sonar, 0)
 
-#aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-        # if all(x<=30 for x in distance[-5:]):
-        #     print("blabla")
-        #     direction_G =[]
-        #     rover.setServo(servo_Sonar, 84)
-        #     direction_G.append(rover.getDistance())
-        #     time.sleep(1)
-        #     direction_D =[]
-        #     rover.setServo(servo_Sonar, -84)
-        #     direction_D.append(rover.getDistance())
-        #     time.sleep(1)
-        #     rover.setServo(servo_Sonar, 0)
+            if direction_D[-1:]>direction_G[-1:]:
+                rover.spinRight(70)
+                Spin = True
+                Av = False
+            else:
+                rover.spinLeft(70)
+                Spin = True
+                Av = False
 
-        #     if direction_D[-1:]>direction_G[-1:]:
-        #         rover.spinRight(70)
-        #         Spin = True
-        #         Av = False
-        #     else:
-        #         rover.spinLeft(70)
-        #         Spin = True
-        #         Av = False
+            turn_readings = []
 
-        #     turn_readings = []
-
-        #     while True:
-        #         distance.append(rover.getDistance())
-        #         turn_readings.append(rover.getDistance())
-        #         print("bloblo", rover.getDistance())
+            while True:
+                distance.append(rover.getDistance())
+                turn_readings.append(rover.getDistance())
+                print("bloblo", rover.getDistance())
                 
-        #         if len(turn_readings) >= 10:
-        #             window = turn_readings[-10:]
-        #             if (max(window) - min(window)) <= 1:
-        #                 break
+                if len(turn_readings) >= 10:
+                    window = turn_readings[-10:]
+                    if (max(window) - min(window)) <= 1:
+                        break
                 
-        #         time.sleep(0.01)
-        #     Spin = False
+                time.sleep(0.01)
+            Spin = False
 
 
     
 finally: 
-#    print(len(distance))
+   print(len(distance))
    rover.cleanup()
 
 
