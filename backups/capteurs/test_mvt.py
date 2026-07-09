@@ -104,11 +104,11 @@ try:
                     spin_speed = 10
 
             if direction_D[-1:]>direction_G[-1:]:
-                rover.spinRight(spin_speed)
+                rover.spinRight(70)
                 Spin = True
-                Av = False
+                Av = False  
             else:
-                rover.spinLeft(spin_speed)
+                rover.spinLeft(70)
                 Spin = True
                 Av = False
             
