@@ -115,6 +115,7 @@ try:
 
             while True:
                 if direction_D[-1] > 80 or direction_G[-1] > 80:
+                    print("GG")
                     spin_speed = 10
                 distance.append(rover.getDistance())
                 turn_readings.append(rover.getDistance())
