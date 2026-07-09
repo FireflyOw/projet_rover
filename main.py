@@ -1,6 +1,7 @@
-import sys, os, time, adafruit_dht, board, smbus2
+import sys, os, time, adafruit_dht, board, smbus2, threading
 from mouvements import goForward, speed
 from mesures import mesures, ecriture
+from app import app
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "backups", "rover"))
 
@@ -20,14 +21,24 @@ except AttributeError:
     capteur = None
     print("[main.py][DHT22] Capteur indisponible!")
 
+# Lancement du serveur en arrière-plan:
+flaskThread = threading.Thread(
+    target=lambda: app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False),
+    daemon=True
+)
+flaskThread.start()
+print("[main.py] Serveur démarré sur le port 5000!")
+
 # Paramètres mesure:
 lastMesure = 0
-intervalMesure = 1
+intervalMesure = 3
 distance = []
 
 # Paramètres rover:
 avancer = False
 spin = False
+posX = 0
+posY = 0
 
 # ---- Boucle principale : ----
 rover.init(0)
@@ -44,11 +55,17 @@ try:
 
         if time.time() >= lastMesure + intervalMesure:
             valeurs = mesures(adresse, capteur, bus)
-            ecriture(adresse, capteur, bus)
+            ecriture(adresse, capteur, bus, posX, posY)
             
             print(f"Temp: {valeurs['temperature']} {valeurs['unite_temp']} | Hum: {valeurs['humidite']} {valeurs['unite_hum']}")
             print(f"Distance: {int(distance[-1])}cm")
             lastMesure = time.time()
+
+            # Faux changements de position pour test du site:
+            posX += 1
+            if posX > 9:
+                posX = 0
+                posY += 1
 
         # --Bloc déplacements--
 
