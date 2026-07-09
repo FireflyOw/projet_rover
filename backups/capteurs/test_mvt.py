@@ -99,7 +99,7 @@ try:
             time.sleep(2)
             rover.setServo(servo_Sonar, 0)
 
-            if direction_D[-1] > 80 or direction_G[-1] > 80:
+            if distance[-1] > 80:
                     print("GG")
                     spin_speed = 10
 
