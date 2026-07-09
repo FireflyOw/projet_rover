@@ -10,7 +10,7 @@ servo_Avant_D = 15
 servo_Arrière_G = 11
 servo_Arrière_D = 13
 servo_Sonar = 0
-speed = 80
+speed = 100
 
 def goForward(speed):
     rover.setServo(servo_Avant_G, 0)
@@ -73,6 +73,7 @@ Spin =False
 non = 0
 now = 0
 distance = []
+spin_speed = 70
 
 try:
    while True:
@@ -98,6 +99,7 @@ try:
             time.sleep(1)
             rover.setServo(servo_Sonar, 0)
 
+
             if direction_D[-1:]>direction_G[-1:]:
                 rover.spinRight(70)
                 Spin = True
@@ -106,10 +108,14 @@ try:
                 rover.spinLeft(70)
                 Spin = True
                 Av = False
+            
+
 
             turn_readings = []
 
             while True:
+                if direction_D[-1] > 80 or direction_G[-1] > 80:
+                    spin_speed = 10
                 distance.append(rover.getDistance())
                 turn_readings.append(rover.getDistance())
                 print("bloblo", rover.getDistance())
