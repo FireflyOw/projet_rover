@@ -51,7 +51,7 @@ initServos()
 run = True
 try:
     while run:
-        # --Bloc mesures--
+        # --- Bloc mesures ---
         
         distance.append(rover.getDistance())
         if len(distance) >= 5000:
@@ -65,7 +65,7 @@ try:
 --- Mesures: ---                  
 Temp: {valeurs['temperature']} {valeurs['unite_temp']} | Hum: {valeurs['humidite']} {valeurs['unite_hum']}
 Distance: {int(distance[-1])}cm
-                  """)
+            """)
             lastMesure = time.time()
 
             # Faux changements de position pour test du site:
@@ -74,34 +74,44 @@ Distance: {int(distance[-1])}cm
                 posX = 0
                 posY += 1
 
-        # --Bloc déplacements--
+        # --- Bloc déplacements ---
 
         if avancer == False:
             goForward(speed)
             avancer = True
-            spinL = True
-            spinR = True
+            spinL = False
+            spinR = False
 
         if all(x<=30 for x in distance[-5:]):
+            rover.brake()
+            avancer = False
+
             dirL, dirR = scan()
+            print(f"""
+--- Distances: ---
+gauche = {dirL[-1]}cm
+centre = {distance[-1]}cm
+droite = {dirR}cm
+""")
 
             if dirR[-1] > dirL[-1]:
                 rover.spinRight(speed)
                 spinR = True
+                avancer = False
             else:
                 rover.spinLeft(speed)
                 spinL = True
+                avancer = False
             
             while (max(distSpin[-10:]) - min(distSpin[-10:])) <= 1:
                 distSpin.append(rover.getDistance())
                 time.sleep(0.001)
-                print(distSpin[-1])
-                print("bloblo")
+            print(f"Finale: max = {max(distSpin[-10:])}cm | min = {min(distSpin[-10:])}")
 
             spinL = False
             spinR = False
             distSpin = []
-            
+
         time.sleep(0.001)
 
 finally: 
