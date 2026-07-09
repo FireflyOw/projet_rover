@@ -17,9 +17,15 @@ servoArG = 11
 servoArD = 13
 servoSonar = 0
 
-speed = 60
-
-# Mouvements rover:
+# Fonction d'initialisation des servos (mis à 0):
+def initServos():
+    rover.setServo(servoAvG, 0)
+    rover.setServo(servoAvD, 0)
+    rover.setServo(servoArG, 0)
+    rover.setServo(servoArD, 0)
+    rover.setServo(servoSonar, 0)
+    
+# Mouvements du rover:
 def goForward(speed):
     rover.setServo(servoAvG, 0)
     rover.setServo(servoAvD, 0)
@@ -45,3 +51,19 @@ def goRight():
     rover.setServo(servoAvD, 20)
     rover.setServo(servoArG, -20)
     rover.setServo(servoArD, -20)
+
+# Gestion d'obstacles:
+
+def scan():
+    dirL = []
+    dirR = []
+
+    rover.setServo(servoSonar, -84)
+    dirL.append(rover.getDistance())
+    time.sleep(2)    
+    rover.setServo(servoSonar, 84)
+    dirR.append(rover.getDistance())
+    time.sleep(2)
+    rover.setServo(servoSonar, 0)
+
+    return dirL, dirR
