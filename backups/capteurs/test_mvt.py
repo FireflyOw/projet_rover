@@ -89,11 +89,11 @@ try:
             print("blabla")
             rover.stop()
             direction_G =[]
-            rover.setServo(servo_Sonar, 84)
+            rover.setServo(servo_Sonar, -84)
             direction_G.append(rover.getDistance())
             time.sleep(2)
             direction_D =[]
-            rover.setServo(servo_Sonar, -84)
+            rover.setServo(servo_Sonar, 84)
             direction_D.append(rover.getDistance())
             time.sleep(1)
             rover.setServo(servo_Sonar, 0)
