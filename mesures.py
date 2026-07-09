@@ -65,6 +65,10 @@ def fakeMesures():
 def ecriture(adresse=None, capteur=None, bus=None, grid_x=0, grid_y=0):
     os.makedirs(os.path.join(os.path.dirname(__file__), "données"), exist_ok=True)
 
+    CSV_PATH = os.path.join(os.path.dirname(__file__), "données", time.strftime("mesures%b%d.csv"))
+    colonnes = ["timestamp", "temp_c", "humidity", "pm1", "pm2_5", "pm10", "grid_x", "grid_y"]
+    fichier = os.path.exists(CSV_PATH) 
+
     try:
         valeurs = mesures(adresse, capteur, bus)
 
@@ -78,11 +82,7 @@ def ecriture(adresse=None, capteur=None, bus=None, grid_x=0, grid_y=0):
     except (Exception, RuntimeError, TypeError, NameError) as e:
         print(f"[mesures.py] Simulation: {e}")
 
-        valeurs = fakeMesures()
-
-    CSV_PATH = os.path.join(os.path.dirname(__file__), "données", time.strftime("mesures%b%d.csv"))
-    colonnes = ["timestamp", "temp_c", "humidity", "pm1", "pm2_5", "pm10", "grid_x", "grid_y"]
-    fichier = os.path.exists(CSV_PATH)    
+        valeurs = fakeMesures()   
 
     with open(CSV_PATH, mode="a", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=colonnes)
