@@ -1,5 +1,5 @@
 import sys, os, time, adafruit_dht, board, smbus2, threading
-from mouvements import goForward, speed
+from mouvements import goForward, initServos, scan
 from mesures import mesures, ecriture
 from app import app
 
@@ -33,15 +33,19 @@ print("[main.py] Serveur démarré sur le port 5000!")
 lastMesure = 0
 intervalMesure = 3
 distance = []
+distSpin = []
 
 # Paramètres rover:
 avancer = False
-spin = False
+spinL = False
+spinR = False
+speed = 70
 posX = 0
 posY = 0
 
 # ---- Boucle principale : ----
 rover.init(0)
+initServos()
 
 # Main:
 run = True
@@ -56,9 +60,12 @@ try:
         if time.time() >= lastMesure + intervalMesure:
             valeurs = mesures(adresse, capteur, bus)
             ecriture(adresse, capteur, bus, posX, posY)
-            
-            print(f"Temp: {valeurs['temperature']} {valeurs['unite_temp']} | Hum: {valeurs['humidite']} {valeurs['unite_hum']}")
-            print(f"Distance: {int(distance[-1])}cm")
+
+            print(f"""
+--- Mesures: ---                  
+Temp: {valeurs['temperature']} {valeurs['unite_temp']} | Hum: {valeurs['humidite']} {valeurs['unite_hum']}
+Distance: {int(distance[-1])}cm
+                  """)
             lastMesure = time.time()
 
             # Faux changements de position pour test du site:
@@ -71,21 +78,30 @@ try:
 
         if avancer == False:
             goForward(speed)
-            avancer = True            
-            spin = False
+            avancer = True
+            spinL = True
+            spinR = True
 
         if all(x<=30 for x in distance[-5:]):
-            while all(int(distance[-1])-1 < x and x <  int(distance[-1])+1 for x in distance[-50:]):
-                distance.append(rover.getDistance())
+            dirL, dirR = scan()
+
+            if dirR[-1] > dirL[-1]:
+                rover.spinRight(speed)
+                spinR = True
+            else:
+                rover.spinLeft(speed)
+                spinL = True
+            
+            while (max(distSpin[-10:]) - min(distSpin[-10:])) <= 1:
+                distSpin.append(rover.getDistance())
                 time.sleep(0.001)
-                print(distance[-1:])
-                
-                if spin == False:
-                    rover.spinLeft(speed)
-                    spin = True
-                    avancer = False
+                print(distSpin[-1])
                 print("bloblo")
 
+            spinL = False
+            spinR = False
+            distSpin = []
+            
         time.sleep(0.001)
 
 finally: 
