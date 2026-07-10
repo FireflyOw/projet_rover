@@ -36,8 +36,8 @@ rover.init(0)
 initServos(rover)
 print("[main.py] rover initialisé!")
 
-while True:
-    try:
+try:
+    while True:
         distance.append(rover.getDistance())
 
         if avancer == False:
@@ -50,5 +50,5 @@ while True:
 
         time.sleep(0.05)
 
-    finally:
-        rover.cleanup()
+finally:
+    rover.cleanup()
