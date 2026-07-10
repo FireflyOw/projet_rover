@@ -1,5 +1,5 @@
 from __future__ import print_function
-import sys, os, time
+import time
 
 # Paramètres rover:
 servoAvG = 9
