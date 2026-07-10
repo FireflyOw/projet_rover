@@ -58,16 +58,6 @@ rover.init(0)
 init_servo()
 time.sleep(1)
 
-# try:
-#     rover.setServo(servo_Sonar, 84)
-#     time.sleep(0.5)
-#     rover.setServo(servo_Sonar, -84)
-#     time.sleep(0.5)
-#     rover.setServo(servo_Sonar, 84)
-#     time.sleep(0.5)
-#     rover.setServo(servo_Sonar, -84)
-#     time.sleep(0.5)
-
 Av = False
 Spin =False
 non = 0
@@ -99,28 +89,32 @@ try:
             time.sleep(2)
             rover.setServo(servo_Sonar, 0)
 
-            if distance[-1] > 80:
-                    print("GG")
-                    spin_speed = 10
 
-            if direction_D[-1:]>direction_G[-1:]:
-                rover.spinRight(spin_speed)
-                Spin = True
-                Av = False  
+            if direction_D[-1]>direction_G[-1]:
+                spin_func = rover.spinRight
+                
             else:
-                rover.spinLeft(spin_speed)
-                Spin = True
-                Av = False
-            
-
+                spin_func = rover.spinLeft
+                
+            spin_func(spin_speed)
+            Spin = True
+            Av = False
 
             turn_readings = []
-
+            slowed = False
+            
             while True:
                 
                 distance.append(rover.getDistance())
                 turn_readings.append(rover.getDistance())
                 print("bloblo", rover.getDistance())
+
+                if not slowed and  rover.getDistance() > 80:
+                    print("ralentissement")
+                    spin_speed = 10
+                    spin_func(spin_speed)  
+                    slowed = True
+
                 
                 if len(turn_readings) >= 10:
                     window = turn_readings[-10:]
