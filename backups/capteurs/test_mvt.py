@@ -54,6 +54,15 @@ def evitement():
     print("blabla")
     time.sleep(3)
 
+def getValidDistance():
+                d = rover.getDistance()
+                if d > MAX_VALID_DISTANCE:
+                    return None  
+                return d
+
+
+
+
 rover.init(0)
 init_servo()
 time.sleep(1)
@@ -64,6 +73,8 @@ non = 0
 now = 0
 distance = []
 spin_speed = 70
+MAX_VALID_DISTANCE = 300 
+MAX_TURN_DURATION = 5.0
 
 try:
    while True:
@@ -102,27 +113,43 @@ try:
 
             turn_readings = []
             slowed = False
+            turn_start = time.time()
             
+            far_readings_count = 0
+            REQUIRED_CONSECUTIVE = 3
+
             while True:
 
                 d = rover.getDistance() 
-                distance.append(d)
-                turn_readings.append(d)
                 print(d)
 
-                if not slowed and d > 80:
+                if d <= MAX_VALID_DISTANCE:
+                    distance.append(d)
+                    turn_readings.append(d)
+
+                    if d > 80:
+                        far_readings_count += 1
+                    else:
+                        far_readings_count = 0
+
+                if not slowed and far_readings_count > REQUIRED_CONSECUTIVE:
                     print("ralentissement")
-                    spin_speed = 10
+                    spin_speed = 50
                     spin_func(spin_speed)  
                     slowed = True
 
                 
                 if len(turn_readings) >= 10:
-                    window = turn_readings[-100:]
+                    window = turn_readings[-20:]
                     if (max(window) - min(window)) <= 1:
                         break
                 
+                if time.time() - turn_start > MAX_TURN_DURATION:
+                    print("timeout de sécurité - sortie forcée")
+                    break
+
                 time.sleep(0.01)
+
             Spin = False
 
 
