@@ -113,7 +113,7 @@ droite = {dirR}cm
             spinR = False
             distSpin = []
 
-        time.sleep(0.001)
+        time.sleep(0.05)
 
 finally: 
     rover.cleanup()
