@@ -11,18 +11,9 @@ except RuntimeError:
     import fakeRover as rover
     print("[main.py] fakeRover.py chargé (PC)")
 
-# Paramètres capteurs:
-adresse = 0x50
-try:
-    capteur = adafruit_dht.DHT22(board.D25)
-except AttributeError:
-    capteur = None
-    print("[main.py][DHT22] Capteur indisponible!")
-
-# Paramètres mesure:
-lastMesure = 0
-intervalMesure = 3
-distance = []
+# Initialisation du rover:
+rover.init(0)
+print("[main.py] rover initialisé!")
 
 # Paramètres rover:
 avancer = False
@@ -30,10 +21,20 @@ speed = 70
 posX = 0
 posY = 0
 
+# Paramètres capteurs:
+adresse = 0x50
+try:
+    capteur = adafruit_dht.DHT22(board.D4)
+except AttributeError:
+    capteur = None
+
+# Paramètres mesure:
+lastMesure = 0
+intervalMesure = 3
+distance = []
+
 # ---- Boucle principale : ----
-rover.init(0)
 initServos(rover)
-print("[main.py] rover initialisé!")
 
 try:
     while True:
