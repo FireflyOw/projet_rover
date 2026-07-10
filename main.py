@@ -1,7 +1,6 @@
 import sys, os, time, threading
 from mouvements import goForward, initServos, scan
 from mesures import mesures, ecriture
-from app import app
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "backups", "rover"))
 
@@ -15,14 +14,6 @@ except RuntimeError:
 # Paramètres capteurs:
 adresse = 0x50
 capteur = None
-
-# # Lancement du serveur en arrière-plan:
-# flaskThread = threading.Thread(
-#     target=lambda: app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False),
-#     daemon=True
-# )
-# flaskThread.start()
-# print("[main.py] Serveur démarré sur le port 5000!")
 
 # Paramètres mesure:
 lastMesure = 0
@@ -100,11 +91,14 @@ droite = {dirR:.2f}cm
                 spinL = True
                 avancer = False
             
+            distSpin.append(distance[-1])
+            
             while (max(distSpin[-10:]) - min(distSpin[-10:])) <= 1:
                 distSpin.append(rover.getDistance())
                 time.sleep(0.001)
             print(f"Finale: max = {max(distSpin[-10:])}cm | min = {min(distSpin[-10:])}")
 
+            rover.stop()
             spinL = False
             spinR = False
             distSpin = []
