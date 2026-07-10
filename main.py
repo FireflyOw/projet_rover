@@ -64,26 +64,21 @@ Distance: {float(distance[-1]):.1f}cm
 
         # --- Bloc déplacements ---
 
-        if avancer == False:
-            goForward(rover, speed)
-            avancer = True
-            spinL = False
-            spinR = False
-
         if all(x<=30 for x in distance[-5:]):
             rover.brake()
             avancer = False
 
-            print(f"""Obstacle dans {distance[-1]}cm 
-Scanning.....
-                  """)
+            print(f"""Obstacle dans {distance[-1]:.2f}cm
+Scanning.....""")
+            
             dirL, dirR = scan(rover)
+
             print(f"""
 --- Distances: ---
 gauche = {dirL:.2f}cm
 centre = {distance[-1]:.2f}cm
-droite = {dirR:.2f}cm
-""")
+droite = {dirR:.2f}cm""")
+            
             if dirR > dirL:
                 rover.spinRight(speed)
                 spinR = True
@@ -100,12 +95,18 @@ droite = {dirR:.2f}cm
                 if len(distSpin) > 10:
                     distSpin.pop(0)
 
-            print(f"Chemin trouvé! Prochain obstacle dans {float(distSpin[-1]):.2f}\n")
+            print(f"Chemin trouvé! Prochain obstacle dans {distSpin[-1]:.2f}cm\n")
 
             rover.stop()
             spinL = False
             spinR = False
             distSpin = []
+
+        if avancer == False:
+            goForward(rover, speed)
+            avancer = True
+            spinL = False
+            spinR = False
 
         time.sleep(0.05)
 
