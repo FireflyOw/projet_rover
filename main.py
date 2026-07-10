@@ -46,6 +46,7 @@ posY = 0
 # ---- Boucle principale : ----
 rover.init(0)
 initServos()
+print("[main.py] rover initialisé!")
 
 # Main:
 run = True
