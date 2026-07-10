@@ -47,11 +47,11 @@ def goRight(rover):
 
 def scan(rover):
     rover.setServo(servoSonar, -84)
-    dirL = rover.getDistance()
-    time.sleep(1)    
-    rover.setServo(servoSonar, 84)
-    dirR = rover.getDistance()
     time.sleep(1)
+    dirL = rover.getDistance()
+    rover.setServo(servoSonar, 84)
+    time.sleep(1)
+    dirR = rover.getDistance()
     rover.setServo(servoSonar, 0)
 
     return dirL, dirR
