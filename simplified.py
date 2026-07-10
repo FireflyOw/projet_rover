@@ -39,6 +39,7 @@ print("[main.py] rover initialisé!")
 try:
     while True:
         distance.append(rover.getDistance())
+        valeurs = mesures(adresse, capteur, bus)
 
         if avancer == False:
             goForward(rover, speed)
