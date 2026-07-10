@@ -60,7 +60,8 @@ try:
             print(f"""
 --- Mesures: ---                  
 Temp: {valeurs['temperature']} {valeurs['unite_temp']} | Hum: {valeurs['humidite']} {valeurs['unite_hum']}
-Distance: {int(distance[-1])}cm
+Particules: PM1 = {valeurs['pm1_atm']} {valeurs['unite']} | PM2.5 = {valeurs['pm1_atm']} {valeurs['unite']} | PM10 = {valeurs['pm1_atm']} {valeurs['unite']}
+Distance: {float(distance[-1]):.1f}cm
             """)
             lastMesure = time.time()
 
@@ -86,17 +87,16 @@ Distance: {int(distance[-1])}cm
             dirL, dirR = scan(rover)
             print(f"""
 --- Distances: ---
-gauche = {dirL}cm
-centre = {distance[-1]}cm
-droite = {dirR}cm
+gauche = {dirL:.2f}cm
+centre = {distance[-1]:.2f}cm
+droite = {dirR:.2f}cm
 """)
-
             if dirR > dirL:
-                rover.spinRight(rover, speed)
+                rover.spinRight(speed)
                 spinR = True
                 avancer = False
             else:
-                rover.spinLeft(rover, speed)
+                rover.spinLeft(speed)
                 spinL = True
                 avancer = False
             
