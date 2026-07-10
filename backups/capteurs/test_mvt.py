@@ -90,6 +90,7 @@ try:
         if all(x<=30 for x in distance[-5:]):
             print("blabla")
             rover.stop()
+            spin_speed = 70
             direction_G =[]
             rover.setServo(servo_Sonar, -84)
             direction_G.append(rover.getDistance())
