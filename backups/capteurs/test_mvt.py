@@ -95,7 +95,7 @@ try:
                 
             else:
                 spin_func = rover.spinLeft
-                
+
             spin_func(spin_speed)
             Spin = True
             Av = False
@@ -104,12 +104,13 @@ try:
             slowed = False
             
             while True:
-                
-                distance.append(rover.getDistance())
-                turn_readings.append(rover.getDistance())
-                print("bloblo", rover.getDistance())
 
-                if not slowed and  rover.getDistance() > 80:
+                d = rover.getDistance() 
+                distance.append(d)
+                turn_readings.append(d)
+                print(d)
+
+                if not slowed and d > 80:
                     print("ralentissement")
                     spin_speed = 10
                     spin_func(spin_speed)  
@@ -117,7 +118,7 @@ try:
 
                 
                 if len(turn_readings) >= 10:
-                    window = turn_readings[-10:]
+                    window = turn_readings[-20:]
                     if (max(window) - min(window)) <= 1:
                         break
                 
