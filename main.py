@@ -91,7 +91,7 @@ centre = {distance[-1]}cm
 droite = {dirR}cm
 """)
 
-            if dirR[-1] > dirL[-1]:
+            if dirR > dirL:
                 rover.spinRight(rover, speed)
                 spinR = True
                 avancer = False
