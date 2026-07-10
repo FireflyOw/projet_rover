@@ -12,7 +12,7 @@ except RuntimeError:
     print("[main.py] fakeRover.py chargé (PC)")
 
 # Paramètres capteurs:
-adresse = 0x50
+adresse = 0x40
 capteur = None
 
 # Paramètres mesure:
@@ -92,7 +92,7 @@ droite = {dirR:.2f}cm
                 avancer = False
             
             distSpin.append(distance[-1])
-            
+
             while (max(distSpin[-10:]) - min(distSpin[-10:])) <= 1:
                 distSpin.append(rover.getDistance())
                 time.sleep(0.001)
