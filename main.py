@@ -1,4 +1,4 @@
-import sys, os, time, adafruit_dht, board, smbus2, threading
+import sys, os, time, threading
 from mouvements import goForward, initServos, scan
 from mesures import mesures, ecriture
 from app import app
@@ -14,12 +14,7 @@ except RuntimeError:
 
 # Paramètres capteurs:
 adresse = 0x50
-bus = smbus2.SMBus(1)
-try:
-    capteur = adafruit_dht.DHT22(board.D25)
-except AttributeError:
-    capteur = None
-    print("[main.py][DHT22] Capteur indisponible!")
+capteur = None
 
 # # Lancement du serveur en arrière-plan:
 # flaskThread = threading.Thread(
@@ -59,8 +54,8 @@ try:
             distance.pop(0)
 
         if time.time() >= lastMesure + intervalMesure:
-            valeurs = mesures(adresse, capteur, bus)
-            ecriture(adresse, capteur, bus, posX, posY)
+            valeurs = mesures(adresse, capteur, rover.bus)
+            ecriture(adresse, capteur, rover.bus, posX, posY)
 
             print(f"""
 --- Mesures: ---                  
@@ -87,10 +82,11 @@ Distance: {int(distance[-1])}cm
             rover.brake()
             avancer = False
 
+            print("Scanning.....")
             dirL, dirR = scan(rover)
             print(f"""
 --- Distances: ---
-gauche = {dirL[-1]}cm
+gauche = {dirL}cm
 centre = {distance[-1]}cm
 droite = {dirR}cm
 """)
