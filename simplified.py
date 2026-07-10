@@ -1,4 +1,4 @@
-import sys, os, time, adafruit_dht, board, smbus2, threading
+import sys, os, time, adafruit_dht, board, threading
 from mouvements import goForward, initServos, scan
 from mesures import mesures, ecriture
 
@@ -13,7 +13,6 @@ except RuntimeError:
 
 # Paramètres capteurs:
 adresse = 0x50
-bus = smbus2.SMBus(1)
 try:
     capteur = adafruit_dht.DHT22(board.D25)
 except AttributeError:
@@ -39,7 +38,7 @@ print("[main.py] rover initialisé!")
 try:
     while True:
         distance.append(rover.getDistance())
-        valeurs = mesures(adresse, capteur, bus)
+        valeurs = mesures(adresse, capteur, rover.bus)
 
         if avancer == False:
             goForward(rover, speed)
