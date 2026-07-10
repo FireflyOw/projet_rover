@@ -72,7 +72,7 @@ Spin =False
 non = 0
 now = 0
 distance = []
-spin_speed = 70
+spin_speed = 80
 MAX_VALID_DISTANCE = 300 
 MAX_TURN_DURATION = 5.0
 
@@ -90,7 +90,7 @@ try:
         if all(x<=30 for x in distance[-5:]):
             print("blabla")
             rover.stop()
-            spin_speed = 70
+            spin_speed = 80
             direction_G =[]
             rover.setServo(servo_Sonar, -84)
             direction_G.append(rover.getDistance())
@@ -135,7 +135,7 @@ try:
 
                 if not slowed and far_readings_count > REQUIRED_CONSECUTIVE:
                     print("ralentissement")
-                    spin_speed = 50
+                    spin_speed = 30
                     spin_func(spin_speed)  
                     slowed = True
 
