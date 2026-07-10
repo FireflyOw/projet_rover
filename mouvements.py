@@ -60,10 +60,10 @@ def scan():
 
     rover.setServo(servoSonar, -84)
     dirL.append(rover.getDistance())
-    time.sleep(2)    
+    time.sleep(1)    
     rover.setServo(servoSonar, 84)
     dirR.append(rover.getDistance())
-    time.sleep(2)
+    time.sleep(1)
     rover.setServo(servoSonar, 0)
 
     return dirL, dirR
