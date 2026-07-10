@@ -44,17 +44,6 @@ while True:
             goForward(rover, speed)
             avancer = True
 
-        if time.time() >= lastMesure + intervalMesure:
-            valeurs = mesures(adresse, capteur, bus)
-            ecriture(adresse, capteur, bus, posX, posY)
-
-            print(f"""
---- Mesures: ---                  
-Temp: {valeurs['temperature']} {valeurs['unite_temp']} | Hum: {valeurs['humidite']} {valeurs['unite_hum']}
-Distance: {int(distance[-1])}cm
-            """)
-            lastMesure = time.time()
-
         if distance[-1] <= 35:
             rover.stop()
             avancer = False
