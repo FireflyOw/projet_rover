@@ -13,7 +13,7 @@ except RuntimeError:
     print("[main.py] fakeRover.py chargé (PC)")
 
 # Paramètres capteurs:
-adresse = 0x40
+adresse = 0x50
 bus = smbus2.SMBus(1)
 try:
     capteur = adafruit_dht.DHT22(board.D25)
@@ -21,13 +21,13 @@ except AttributeError:
     capteur = None
     print("[main.py][DHT22] Capteur indisponible!")
 
-# Lancement du serveur en arrière-plan:
-flaskThread = threading.Thread(
-    target=lambda: app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False),
-    daemon=True
-)
-flaskThread.start()
-print("[main.py] Serveur démarré sur le port 5000!")
+# # Lancement du serveur en arrière-plan:
+# flaskThread = threading.Thread(
+#     target=lambda: app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False),
+#     daemon=True
+# )
+# flaskThread.start()
+# print("[main.py] Serveur démarré sur le port 5000!")
 
 # Paramètres mesure:
 lastMesure = 0
@@ -45,7 +45,7 @@ posY = 0
 
 # ---- Boucle principale : ----
 rover.init(0)
-initServos()
+initServos(rover)
 print("[main.py] rover initialisé!")
 
 # Main:
@@ -78,7 +78,7 @@ Distance: {int(distance[-1])}cm
         # --- Bloc déplacements ---
 
         if avancer == False:
-            goForward(speed)
+            goForward(rover, speed)
             avancer = True
             spinL = False
             spinR = False
@@ -87,7 +87,7 @@ Distance: {int(distance[-1])}cm
             rover.brake()
             avancer = False
 
-            dirL, dirR = scan()
+            dirL, dirR = scan(rover)
             print(f"""
 --- Distances: ---
 gauche = {dirL[-1]}cm
@@ -96,11 +96,11 @@ droite = {dirR}cm
 """)
 
             if dirR[-1] > dirL[-1]:
-                rover.spinRight(speed)
+                rover.spinRight(rover, speed)
                 spinR = True
                 avancer = False
             else:
-                rover.spinLeft(speed)
+                rover.spinLeft(rover, speed)
                 spinL = True
                 avancer = False
             
