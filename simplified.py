@@ -1,4 +1,4 @@
-import sys, os, time, adafruit_dht, board, threading
+import sys, os, time, threading
 from mouvements import goForward, initServos, scan
 from mesures import mesures, ecriture
 
@@ -23,10 +23,7 @@ posY = 0
 
 # Paramètres capteurs:
 adresse = 0x50
-try:
-    capteur = adafruit_dht.DHT22(board.D4)
-except AttributeError:
-    capteur = None
+capteur = None
 
 # Paramètres mesure:
 lastMesure = 0
