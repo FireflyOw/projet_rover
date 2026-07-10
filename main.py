@@ -41,7 +41,7 @@ try:
         # --- Bloc mesures ---
         
         distance.append(rover.getDistance())
-        if len(distance) >= 5000:
+        if len(distance) >= 500:
             distance.pop(0)
 
         if time.time() >= lastMesure + intervalMesure:
@@ -74,7 +74,9 @@ Distance: {float(distance[-1]):.1f}cm
             rover.brake()
             avancer = False
 
-            print("Scanning.....")
+            print(f"""Obstacle dans {distance[-1]}cm 
+Scanning.....
+                  """)
             dirL, dirR = scan(rover)
             print(f"""
 --- Distances: ---
@@ -90,13 +92,15 @@ droite = {dirR:.2f}cm
                 rover.spinLeft(speed)
                 spinL = True
                 avancer = False
-            
-            distSpin.append(distance[-1])
 
-            while (max(distSpin[-10:]) - min(distSpin[-10:])) <= 1:
+            while len(distSpin) < 10 or (max(distSpin) - min(distSpin)) > 2:
                 distSpin.append(rover.getDistance())
-                time.sleep(0.001)
-            print(f"Finale: max = {max(distSpin[-10:])}cm | min = {min(distSpin[-10:])}")
+                time.sleep(0.05)
+
+                if len(distSpin) > 10:
+                    distSpin.pop(0)
+
+            print(f"Chemin trouvé! Prochain obstacle dans {float(distSpin[-1]):.2f}\n")
 
             rover.stop()
             spinL = False
