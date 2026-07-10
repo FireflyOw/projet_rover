@@ -135,7 +135,7 @@ try:
 
                 if not slowed and far_readings_count > REQUIRED_CONSECUTIVE:
                     print("ralentissement")
-                    spin_speed = 20
+                    spin_speed = 25
                     spin_func(spin_speed)  
                     slowed = True
 
