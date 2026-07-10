@@ -46,14 +46,11 @@ def goRight(rover):
 # Gestion d'obstacles:
 
 def scan(rover):
-    dirL = []
-    dirR = []
-
     rover.setServo(servoSonar, -84)
-    dirL.append(rover.getDistance())
+    dirL = rover.getDistance()
     time.sleep(1)    
     rover.setServo(servoSonar, 84)
-    dirR.append(rover.getDistance())
+    dirR = rover.getDistance()
     time.sleep(1)
     rover.setServo(servoSonar, 0)
 
