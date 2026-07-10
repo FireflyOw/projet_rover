@@ -135,14 +135,14 @@ try:
 
                 if not slowed and far_readings_count > REQUIRED_CONSECUTIVE:
                     print("ralentissement")
-                    spin_speed = 30
+                    spin_speed = 20
                     spin_func(spin_speed)  
                     slowed = True
 
                 
                 if len(turn_readings) >= 10:
                     window = turn_readings[-20:]
-                    if (max(window) - min(window)) <= 1:
+                    if (max(window) - min(window)) <= 1.5:
                         break
                 
                 if time.time() - turn_start > MAX_TURN_DURATION:
