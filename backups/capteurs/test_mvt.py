@@ -118,7 +118,7 @@ try:
 
                 
                 if len(turn_readings) >= 10:
-                    window = turn_readings[-10:]
+                    window = turn_readings[-20:]
                     if (max(window) - min(window)) <= 1:
                         break
                 
