@@ -1,4 +1,6 @@
-import time
+import time, smbus
+
+bus = smbus.SMBus(1)
 
 def init(brightness=40):
     print("[rover.py] init()")
