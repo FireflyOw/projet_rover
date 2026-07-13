@@ -185,7 +185,7 @@ while True:
     rover.brake()
     time.sleep(1.5)
     rover.spinLeft(speed)
-    time.sleep(2.7)
+    time.sleep(1.95)
     rover.brake()
     time.sleep(1.5)
     goForward(speed)
@@ -197,7 +197,7 @@ while True:
     rover.brake()
     time.sleep(1.5)
     rover.spinLeft(speed)
-    time.sleep(2.7)
+    time.sleep(1.95)
     rover.brake()
     time.sleep(1.5)
 
