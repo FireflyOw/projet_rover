@@ -53,10 +53,10 @@ def mesures(adresse, capteur, bus):
         elif temp_hum["temperature"] == "Erreur!":
             raise RuntimeError("[DHT22] Capteur indisponible!")
         elif air["pm1_atm"] == "Erreur!":
-            raise RuntimeError("[HM3301] Capteur indisponible sex!")
+            raise RuntimeError("[HM3301] Capteur indisponible!")
         
     except RuntimeError as e:
-        print(f"[mesures.py]{e}")
+        pass
 
     return { **temp_hum, **air}
     
