@@ -95,7 +95,7 @@ droite = {dirR:.2f}cm""")
                 spinL = True
                 avancer = False
 
-            while (len(distSpin) < 10 or (max(distSpin) - min(distSpin)) > 2) and distSpin[-1] > 50:
+            while len(distSpin) < 10 or ((max(distSpin) - min(distSpin)) > 2 and distSpin[-1] > 50):
                 distSpin.append(rover.getDistance())
                 time.sleep(0.05)
 
