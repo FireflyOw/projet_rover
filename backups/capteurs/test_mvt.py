@@ -4,10 +4,7 @@ import sys, os, time
 
 dossier = os.path.dirname(__file__)
 racineProjet = os.path.abspath(os.path.join(dossier, "..", ".."))
-dirMarsRover = os.path.join(racineProjet, "backups", "marsRover")
-
 sys.path.append(racineProjet)
-sys.path.append(dirMarsRover)
 
 import backups.marsRover.rover as rover
 
@@ -184,6 +181,6 @@ time.sleep(1.5)
 rover.brake()
 time.sleep(1.5)
 rover.spinLeft(speed)
-time.sleep(1.5)
+time.sleep(2)
 
 rover.cleanup()
