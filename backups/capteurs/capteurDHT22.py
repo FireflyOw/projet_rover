@@ -1,4 +1,10 @@
-import time, pigpio, config.DHT22 as DHT22
+import time, sys, os,  pigpio
+
+dossier = os.path.dirname(__file__)
+racineProjet = os.path.abspath(os.path.join(dossier, "..", ".."))
+sys.path.append(racineProjet)
+
+import config.DHT22 as DHT22
 
 pi = pigpio.pi()
 capteur = DHT22.sensor(pi, 25)
