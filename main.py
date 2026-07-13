@@ -84,7 +84,7 @@ Scanning.....""")
 --- Distances: ---
 gauche = {dirL:.2f}cm
 centre = {distance[-1]:.2f}cm
-droite = {dirR:.2f}cm""")
+droite = {dirR:.2f}cm\n""")
             
             if dirR > dirL:
                 rover.spinRight(speed)
