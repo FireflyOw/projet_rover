@@ -2,59 +2,63 @@ import os, csv, time, numpy
 
 # Fonction de mesure avec les capteurs HM3301 (particules) et DHT22 (temp/hum):
 def mesures(adresse, capteur, bus):
-    temp_hum = {
-            "temperature": "Erreur!", 
-            "humidite": "Erreur!", 
-            "unite_temp": "", 
-            "unite_hum": "",
-        }    
-    air = {
-            "pm1_atm": "Erreur!",
-            "pm25_atm": "Erreur!",
-            "pm10_atm": "Erreur!",
-            "unite": "",
-        }
-    
     try:
-        temperature = capteur.temperature()
-        humidite = capteur.humidity()
-
         temp_hum = {
-            "temperature": temperature, 
-            "humidite": humidite, 
-            "unite_temp": "°C", 
-            "unite_hum": "%",
-        }
-        if temperature == -999 or humidite == -999:
-            raise RuntimeError   
-
-    except (RuntimeError, AttributeError):
-        pass
-
-    try:
-        bus.write_byte(adresse, 0x88)
-        time.sleep(0.3)
-        data = bus.read_i2c_block_data(adresse, 0x00, 29)
-
-        pm1_atm = (data[10] << 8) | data[11]
-        pm25_atm = (data[12] << 8) | data[13]
-        pm10_atm = (data[14] << 8) | data[15]
-
+                "temperature": "Erreur!", 
+                "humidite": "Erreur!", 
+                "unite_temp": "", 
+                "unite_hum": "",
+            }    
         air = {
-            "pm1_atm": pm1_atm,
-            "pm25_atm": pm25_atm,
-            "pm10_atm": pm10_atm,
-            "unite": "µg/m3",
-        }
-    except (OSError, AttributeError):
-        pass
+                "pm1_atm": "Erreur!",
+                "pm25_atm": "Erreur!",
+                "pm10_atm": "Erreur!",
+                "unite": "",
+            }
+        
+        try:
+            temperature = capteur.temperature()
+            humidite = capteur.humidity()
 
-    if temp_hum["temperature"] == "Erreur!" and air["pm1_atm"] == "Erreur!":
-            raise RuntimeError("[mesures.py][HM3301, DHT22] Aucune valeur à écrire!")
-    elif temp_hum["temperature"] == "Erreur!":
-        raise RuntimeError("[mesures.py][DHT22] Aucune valeur à écrire!")
-    elif air["pm1_atm"] == "Erreur!":
-        raise RuntimeError("[mesures.py][HM3301] Aucune valeur à écrire!")
+            temp_hum = {
+                "temperature": temperature, 
+                "humidite": humidite, 
+                "unite_temp": "°C", 
+                "unite_hum": "%",
+            }
+            if temperature == -999 or humidite == -999:
+                raise RuntimeError   
+
+        except (RuntimeError, AttributeError):
+            pass
+
+        try:
+            bus.write_byte(adresse, 0x88)
+            time.sleep(0.3)
+            data = bus.read_i2c_block_data(adresse, 0x00, 29)
+
+            pm1_atm = (data[10] << 8) | data[11]
+            pm25_atm = (data[12] << 8) | data[13]
+            pm10_atm = (data[14] << 8) | data[15]
+
+            air = {
+                "pm1_atm": pm1_atm,
+                "pm25_atm": pm25_atm,
+                "pm10_atm": pm10_atm,
+                "unite": "µg/m3",
+            }
+        except (OSError, AttributeError):
+            pass
+        
+        if temp_hum["temperature"] == "Erreur!" and air["pm1_atm"] == "Erreur!":
+                raise RuntimeError("[HM3301, DHT22] Capteurs indisponibles!")
+        elif temp_hum["temperature"] == "Erreur!":
+            raise RuntimeError("[DHT22] Capteur indisponible!")
+        elif air["pm1_atm"] == "Erreur!":
+            raise RuntimeError("[HM3301] Capteur indisponible!")
+        
+    except RuntimeError as e:
+        print(f"[mesures.py]{e}")
 
     return { **temp_hum, **air}
     
