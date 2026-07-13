@@ -1,6 +1,8 @@
-import time, threading, flask, pigpio, config.DHT22 as DHT22
+import time, sys, os, threading, flask, pigpio, config.DHT22 as DHT22
 from mouvements import goForward, initServos, scan
 from mesures import mesures, ecriture
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "backups", "marsRover"))
 
 try:
     import backups.marsRover.rover as rover
