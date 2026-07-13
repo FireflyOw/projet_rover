@@ -18,16 +18,18 @@ def mesures(adresse, capteur, bus):
         
         try:
             capteur.trigger()
-            
-            temperature = capteur.temperature()
-            humidite = capteur.humidity()
+            lastTrigger = time.time()
 
-            temp_hum = {
+            if lastTrigger < time.time() + 0.05:
+                temperature = capteur.temperature()
+                humidite = capteur.humidity()
+
+                temp_hum = {
                 "temperature": round(temperature, 1), 
                 "humidite": humidite, 
                 "unite_temp": "°C", 
                 "unite_hum": "%",
-            } 
+                }
 
         except (RuntimeError, AttributeError):
             pass
