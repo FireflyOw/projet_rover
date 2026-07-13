@@ -26,7 +26,7 @@ def mesures(adresse, capteur, bus):
 
                 temp_hum = {
                 "temperature": round(temperature, 1), 
-                "humidite": humidite, 
+                "humidite": round(humidite, 1), 
                 "unite_temp": "°C", 
                 "unite_hum": "%",
                 }
