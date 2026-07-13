@@ -79,7 +79,7 @@
 import RPi.GPIO as GPIO, sys, time, os
 from rpi_ws281x import *
 import pca9685
-import smbus
+import smbus2
 
 # Define Model
 PGNone = 0
@@ -114,7 +114,7 @@ keypadIn = 25
 
 # EEROM
 EEROM = 0x50
-bus = smbus.SMBus(1)
+bus = smbus2.SMBus(1)
 offsets = [0]*16
 
 #======================================================================

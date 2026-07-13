@@ -31,11 +31,55 @@
       color: #1a5c2a;
     }
 
+    /* Configuration de la grille principale des cartes */
     .cards {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1fr; /* Par défaut sur mobile : une seule colonne */
       gap: 12px;
       margin-bottom: 1.5rem;
+    }
+
+    /* Sur les écrans d'ordinateur ou de tablette (>= 768px) */
+    @media (min-width: 768px) {
+      .cards {
+        /* Gauche (1 part), Milieu large (1.8 part), Droite (1 part) */
+        grid-template-columns: 1fr 1.8fr 1fr; 
+      }
+    }
+
+    /* Conteneur pour aligner les 3 types de particules côte à côte */
+    .pm-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    /* Design de chaque petite boîte de particule */
+    .pm-box {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .pm-box .pm-title {
+      font-size: 11px;
+      color: #6c757d;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .pm-box .pm-value {
+      font-size: 20px;
+      font-weight: bold;
+      color: #212529;
+    }
+
+    .pm-box .pm-unit {
+      font-size: 11px;
+      color: #888;
     }
     .card {
       background: #fff;
@@ -135,15 +179,33 @@
     <div class="value"><span id="val-temp">—</span><span class="unit">°C</span></div>
     <div class="updated" id="ts-temp"></div>
   </div>
+
+  <div class="card">
+    <div class="label">Qualité de l'air (Particules fines)</div>
+    <div class="pm-container">
+      <div class="pm-box">
+        <div class="pm-title">PM 1.0</div>
+        <div class="pm-value" id="val-pm1">—</div>
+        <div class="pm-unit">µg/m³</div>
+      </div>
+      <div class="pm-box">
+        <div class="pm-title">PM 2.5</div>
+        <div class="pm-value" id="val-pm25">—</div>
+        <div class="pm-unit">µg/m³</div>
+      </div>
+      <div class="pm-box">
+        <div class="pm-title">PM 10</div>
+        <div class="pm-value" id="val-pm10">—</div>
+        <div class="pm-unit">µg/m³</div>
+      </div>
+    </div>
+    <div class="updated" id="ts-pm" style="margin-top: 8px;"></div>
+  </div>
+
   <div class="card">
     <div class="label">Humidité</div>
     <div class="value"><span id="val-hum">—</span><span class="unit">%</span></div>
     <div class="updated" id="ts-hum"></div>
-  </div>
-  <div class="card">
-    <div class="label">PM2.5</div>
-    <div class="value"><span id="val-pm">—</span><span class="unit">µg/m³</span></div>
-    <div class="updated" id="ts-pm"></div>
   </div>
 </div>
 
@@ -265,14 +327,26 @@
 
   // --- Mise à jour des cartes ---
   function updateCards(row) {
-    document.getElementById("val-temp").textContent = parseFloat(row.temp_c).toFixed(1);
-    document.getElementById("val-hum").textContent  = parseFloat(row.humidity).toFixed(1);
-    document.getElementById("val-pm").textContent   = row.pm2_5 ? parseFloat(row.pm2_5).toFixed(1) : "—";
+    if (!row || row.error) return;
 
+    // Mise à jour Température et Humidité (on garde tes lignes d'origine)
+    if (document.getElementById("val-temp")) {
+      document.getElementById("val-temp").textContent = row.temp_c ? parseFloat(row.temp_c).toFixed(1) : "—";
+    }
+    if (document.getElementById("val-hum")) {
+      document.getElementById("val-hum").textContent = row.humidity ? parseFloat(row.humidity).toFixed(1) : "—";
+    }
+
+    // MISE À JOUR DES 3 PARTICULES (en ciblant les clés exactes de ton CSV)
+    document.getElementById("val-pm1").textContent  = row.pm1 ? parseFloat(row.pm1).toFixed(1) : "—";
+    document.getElementById("val-pm25").textContent = row.pm2_5 ? parseFloat(row.pm2_5).toFixed(1) : "—";
+    document.getElementById("val-pm10").textContent = row.pm10 ? parseFloat(row.pm10).toFixed(1) : "—";
+
+    // Gestion de la date/heure de rafraîchissement
     const ts = row.timestamp ?? "";
-    document.getElementById("ts-temp").textContent = ts ? `Dernière mesure : ${ts}` : "";
-    document.getElementById("ts-hum").textContent  = ts ? `Dernière mesure : ${ts}` : "";
-    document.getElementById("ts-pm").textContent   = ts ? `Dernière mesure : ${ts}` : "";
+    if (document.getElementById("ts-temp")) document.getElementById("ts-temp").textContent = ts ? `Dernière mesure : ${ts}` : "";
+    if (document.getElementById("ts-hum"))  document.getElementById("ts-hum").textContent  = ts ? `Dernière mesure : ${ts}` : "";
+    if (document.getElementById("ts-pm"))   document.getElementById("ts-pm").textContent   = ts ? `Dernière mesure : ${ts}` : "";
   }
 
   // --- Mise à jour du graphique ---

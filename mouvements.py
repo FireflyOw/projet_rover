@@ -1,14 +1,5 @@
 from __future__ import print_function
-import sys, os, time
-
-sys.path.append(os.path.join(os.path.dirname(__file__), "backups", "rover"))
-
-try:
-    import rover
-    print("[mouvements.py] rover.py chargé (Raspberry Pi Zero)")
-except RuntimeError:
-    import fakeRover as rover
-    print("[mouvements.py] fakeRover.py chargé (PC)")
+import time
 
 # Paramètres rover:
 servoAvG = 9
@@ -17,36 +8,52 @@ servoArG = 11
 servoArD = 13
 servoSonar = 0
 
-speed = 60
-
-# Mouvements rover:
-def goForward(speed):
+# Fonction d'initialisation des servos (mis à 0):
+def initServos(rover):
+    rover.setServo(servoAvG, 0)
+    rover.setServo(servoAvD, 0)
+    rover.setServo(servoArG, 0)
+    rover.setServo(servoArD, 0)
+    rover.setServo(servoSonar, 0)
+    
+# Mouvements du rover:
+def goForward(rover, speed):
     rover.setServo(servoAvG, 0)
     rover.setServo(servoAvD, 0)
     rover.setServo(servoArG, 0)
     rover.setServo(servoArD, 0)
     rover.forward(speed)
 
-def goReverse(speed):
+def goReverse(rover, speed):
     rover.setServo(servoAvG, 0)
     rover.setServo(servoAvD, 0)
     rover.setServo(servoArG, 0)
     rover.setServo(servoArD, 0)
     rover.reverse(speed)
 
-def goLeft():
+def goLeft(rover):
     rover.setServo(servoAvG, -20)
     rover.setServo(servoAvD, -20)
     rover.setServo(servoArG, 20)
     rover.setServo(servoArD, 20)
 
-def goRight():
+def goRight(rover):
     rover.setServo(servoAvG, 20)
     rover.setServo(servoAvD, 20)
     rover.setServo(servoArG, -20)
     rover.setServo(servoArD, -20)
 
-def evitement():
-    rover.spinRight(speed)
-    print("blabla")
-    time.sleep(3)
+# Gestion d'obstacles:
+
+def scan(rover):
+    rover.setServo(servoSonar, -84)
+    time.sleep(1)
+    dirL = rover.getDistance()
+    time.sleep(0.05)
+    rover.setServo(servoSonar, 84)
+    time.sleep(1)
+    dirR = rover.getDistance()
+    time.sleep(0.05)
+    rover.setServo(servoSonar, 0)
+
+    return dirL, dirR
