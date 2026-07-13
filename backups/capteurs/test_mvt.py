@@ -165,11 +165,12 @@ def evitement():
 #    print(len(distance))
 #    rover.cleanup()
 
+rover.init(0)
+init_servo()
+time.sleep(1)
 
 while True:
-    rover.init(0)
-    init_servo()
-    time.sleep(1)
+    
 
     goForward(speed)
     time.sleep(1.5)
@@ -184,7 +185,7 @@ while True:
     rover.brake()
     time.sleep(1.5)
     rover.spinLeft(speed)
-    time.sleep(2.5)
+    time.sleep(2.7)
     rover.brake()
     time.sleep(1.5)
     goForward(speed)
@@ -196,7 +197,7 @@ while True:
     rover.brake()
     time.sleep(1.5)
     rover.spinLeft(speed)
-    time.sleep(2.5)
+    time.sleep(2.7)
     rover.brake()
     time.sleep(1.5)
 
