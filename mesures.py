@@ -54,6 +54,7 @@ def mesures(adresse, capteur, pi, SDA):
                     "pm1_atm": pm1_atm,
                     "pm25_atm": pm25_atm,
                     "pm10_atm": pm10_atm,
+                    "unite": "µg/m3"
                 }
 
                 lastMesure = time.time()
