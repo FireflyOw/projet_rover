@@ -1,9 +1,12 @@
 from __future__ import print_function
 import time
-import sys
 import sys, os, time
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "rover"))
-import rover
+
+dossier = os.path.dirname(__file__)
+racineProjet = os.path.abspath(os.path.join(dossier, "..", ".."))
+sys.path.append(racineProjet)
+
+import backups.marsRover.rover as rover
 
 servo_Avant_G = 9
 servo_Avant_D = 15
