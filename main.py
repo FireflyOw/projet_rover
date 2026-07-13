@@ -22,9 +22,9 @@ adresse = 0x40
 try:
     pi = pigpio.pi()
     capteur = DHT22.sensor(pi, 25)
-    print("[main.py][DHT22] Capteur initialisé!")
+    print("[main.py][DHT22] Capteur initialisé!\n")
 except AttributeError:
-    print("[main.py][DHT22] Capteur non initialisé!")
+    print("[main.py][DHT22] Capteur non initialisé!\n")
     capteur = None
 
 # Paramètres mesure:
