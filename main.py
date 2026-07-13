@@ -1,4 +1,4 @@
-import sys, os, time, threading
+import time, threading, flask, pigpio, config.DHT22 as DHT22
 from mouvements import goForward, initServos, scan
 from mesures import mesures, ecriture
 
@@ -9,9 +9,21 @@ except RuntimeError:
     import backups.marsRover.fakeRover as rover
     print("[main.py] fakeRover.py chargé (PC)")
 
+
+# Initialisation rover:
+rover.init(0)
+initServos(rover)
+print("[main.py] rover initialisé!")
+
 # Paramètres capteurs:
 adresse = 0x40
-capteur = None
+try:
+    pi = pigpio.pi()
+    capteur = DHT22.sensor(pi, 25)
+    print("[main.py][DHT22] Capteur initialisé!")
+except AttributeError:
+    print("[main.py][DHT22] Capteur non initialisé!")
+    capteur = None
 
 # Paramètres mesure:
 lastMesure = 0
@@ -28,11 +40,6 @@ posX = 0
 posY = 0
 
 # ---- Boucle principale : ----
-rover.init(0)
-initServos(rover)
-print("[main.py] rover initialisé!")
-
-# Main:
 run = True
 try:
     while run:
