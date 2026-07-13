@@ -19,8 +19,8 @@ while True:
         if temperature == -999:
             raise RuntimeError("Lecture invalide!")
 
-        print(f"Température : {temperature:.1f}°C")
-        print(f"Humidité : {humidite:.1f}%")
+        print(f"Température : {float(temperature):.1f}°C")
+        print(f"Humidité : {float(humidite):.1f}%")
 
     except RuntimeError as e:
         print(f"Erreur de lecture {e}")
