@@ -16,8 +16,8 @@ def mesures(adresse, capteur, bus):
         }
     
     try:
-        temperature = capteur.temperature
-        humidite = capteur.humidity   
+        temperature = capteur.temperature()
+        humidite = capteur.humidity()
 
         temp_hum = {
             "temperature": temperature, 
