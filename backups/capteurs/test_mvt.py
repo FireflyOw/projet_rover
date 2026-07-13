@@ -3,7 +3,7 @@ import time
 import sys, os, time
 
 dossier = os.path.dirname(__file__)
-racineProjet = os.path.abspath(os.path.join(dossier, "..", "marsRover"))
+racineProjet = os.path.abspath(os.path.join(dossier, "..", ".."))
 sys.path.append(racineProjet)
 
 import backups.marsRover.rover as rover
