@@ -184,6 +184,6 @@ time.sleep(1.5)
 rover.brake()
 time.sleep(1.5)
 rover.spinLeft(speed)
-time.sleep(2)
+time.sleep(2.5)
 
 rover.cleanup()
