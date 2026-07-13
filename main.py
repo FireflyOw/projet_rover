@@ -12,27 +12,10 @@ except RuntimeError:
     import backups.marsRover.fakeRover as rover
     print("[main.py] fakeRover.py chargé (PC)")
 
-
 # Initialisation rover:
 rover.init(0)
 initServos(rover)
-print("[main.py] rover initialisé!")
-
-# Initialisation capteurs:
-SDA, SCL = 25, 5
-adresse = 0x40
-
-pi = pigpio.pi()
-pi.bb_i2c_open(SDA, SCL, 100000)
-pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 1, 0x88, 3, 0])
-time.sleep(0.3)
-
-try:
-    capteur = DHT22.sensor(pi, 24)
-    print("[main.py][DHT22] Capteur initialisé!")
-except AttributeError:
-    print("[main.py][DHT22] Capteur non initialisé!")
-    capteur = None
+print("[main.py] Rover initialisé!")
 
 # Démarrage serveur en arrière-plan:
 flaskThread = threading.Thread(
@@ -41,6 +24,22 @@ flaskThread = threading.Thread(
 )
 flaskThread.start()
 print("[main.py] Serveur démarré sur le port 5000!\n")
+
+# Initialisation capteurs:
+SDA, SCL = 25, 5
+adresse = 0x40
+
+pi = pigpio.pi()
+pi.bb_i2c_open(SDA, SCL, 100000)
+time.sleep(0.3)
+print("[main.py] Bus I2C alternatif ouvert! SDA: 25, SCL: 05")
+
+try:
+    capteur = DHT22.sensor(pi, 24)
+    print("[main.py][DHT22] Capteur initialisé!")
+except AttributeError:
+    print("[main.py][DHT22] Capteur non initialisé!")
+    capteur = None
 
 # Paramètres mesure:
 lastMesure = 0
@@ -134,3 +133,4 @@ droite = {dirR:.2f}cm\n""")
 
 finally: 
     rover.cleanup()
+    pi.bb_i2c_close(SDA)

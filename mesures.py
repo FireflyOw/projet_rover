@@ -1,7 +1,7 @@
 import os, csv, time, numpy
 
 # Fonction de mesure avec les capteurs HM3301 (particules) et DHT22 (temp/hum):
-def mesures(adresse, capteur, bus):
+def mesures(adresse, capteur, pi, SDA):
     try:
         temp_hum = {
                 "temperature": "Erreur!", 
@@ -20,7 +20,7 @@ def mesures(adresse, capteur, bus):
             capteur.trigger()
             lastTrigger = time.time()
 
-            if lastTrigger < time.time() + 0.05:
+            if lastTrigger > time.time() + 0.2:
                 temperature = capteur.temperature()
                 humidite = capteur.humidity()
 
@@ -31,25 +31,31 @@ def mesures(adresse, capteur, bus):
                 "unite_hum": "%",
                 }
 
+                lastTrigger = time.time()
+
         except (RuntimeError, AttributeError):
             pass
 
         try:
-            bus.write_byte(adresse, 0x88)
-            time.sleep(0.3)
-            data = bus.read_i2c_block_data(adresse, 0x00, 29)
+            pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 1, 0x88, 3, 0])
+            lastMesure = time.time()
 
-            pm1_atm = (data[10] << 8) | data[11]
-            pm25_atm = (data[12] << 8) | data[13]
-            pm10_atm = (data[14] << 8) | data[15]
+            if lastMesure > time.time() + 0.3:
+                count, data = pi.bb_i2c_zip(SDA, [4, 0x40, 2, 6, 29, 3, 0])
 
-            air = {
-                "pm1_atm": pm1_atm,
-                "pm25_atm": pm25_atm,
-                "pm10_atm": pm10_atm,
-                "unite": "µg/m3",
-            }
-        except (OSError, AttributeError):
+                if count < 29:
+                    raise RuntimeError(f"Erreur: lecture incomplète, {count}/29 octets reçus!")
+
+                pm1_atm = (data[10] << 8) | data[11]
+                pm25_atm = (data[12] << 8) | data[13]
+                pm10_atm = (data[14] << 8) | data[15]
+
+                air = {
+                    "pm1_atm": pm1_atm,
+                    "pm25_atm": pm25_atm,
+                    "pm10_atm": pm10_atm,
+                }
+        except (RuntimeError, OSError, AttributeError):
             pass
         
         if temp_hum["temperature"] == "Erreur!" and air["pm1_atm"] == "Erreur!":
