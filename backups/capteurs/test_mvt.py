@@ -2,8 +2,7 @@ from __future__ import print_function
 import time
 import sys
 import sys, os, time
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "rover"))
-import rover
+import backups.marsRover.rover as rover
 
 servo_Avant_G = 9
 servo_Avant_D = 15
