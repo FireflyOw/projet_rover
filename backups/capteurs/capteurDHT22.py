@@ -24,3 +24,5 @@ while True:
 
     except RuntimeError as e:
         print(f"Erreur de lecture {e}")
+
+    time.sleep(1)
