@@ -74,7 +74,7 @@ def mesures(adresse, capteur, bus):
 #         }
 
 # Fonction pour l'écriture des données de mesure dans un fichier csv:
-def ecriture(adresse=None, capteur=None, bus=None, grid_x=0, grid_y=0):
+def ecriture(valeurs=None, grid_x=0, grid_y=0):
     os.makedirs(os.path.join(os.path.dirname(__file__), "données"), exist_ok=True)
 
     CSV_PATH = os.path.join(os.path.dirname(__file__), "données", time.strftime("mesures%b%d.csv"))
@@ -82,8 +82,6 @@ def ecriture(adresse=None, capteur=None, bus=None, grid_x=0, grid_y=0):
     fichier = os.path.exists(CSV_PATH) 
 
     try:
-        valeurs = mesures(adresse, capteur, bus)
-
         if valeurs["temperature"] == "Erreur!" and valeurs["pm1_atm"] == "Erreur!":
             raise RuntimeError("[HM3301, DHT22] Écriture impossible!")
         elif valeurs["temperature"] == "Erreur!":
