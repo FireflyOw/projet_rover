@@ -20,7 +20,7 @@ def mesures(adresse, capteur, pi, SDA):
             capteur.trigger()
             lastTrigger = time.time()
 
-            if lastTrigger > time.time() + 0.2:
+            if lastTrigger < time.time() + 0.2:
                 temperature = capteur.temperature()
                 humidite = capteur.humidity()
 
@@ -40,7 +40,7 @@ def mesures(adresse, capteur, pi, SDA):
             pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 1, 0x88, 3, 0])
             lastMesure = time.time()
 
-            if lastMesure > time.time() + 0.3:
+            if lastMesure < time.time() + 0.3:
                 count, data = pi.bb_i2c_zip(SDA, [4, 0x40, 2, 6, 29, 3, 0])
 
                 if count < 29:
@@ -55,6 +55,8 @@ def mesures(adresse, capteur, pi, SDA):
                     "pm25_atm": pm25_atm,
                     "pm10_atm": pm10_atm,
                 }
+
+                lastMesure = time.time()
         except (RuntimeError, OSError, AttributeError):
             pass
         

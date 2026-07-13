@@ -137,5 +137,9 @@ droite = {dirR:.2f}cm\n""")
         time.sleep(0.05)
 
 finally: 
+    print("\n[main.py] Nettoyage et fermeture...")
     rover.cleanup()
-    pi.bb_i2c_close(SDA)
+    try:
+        pi.bb_i2c_close(SDA)
+    except:
+        pass
