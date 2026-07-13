@@ -13,8 +13,8 @@ while True:
     try:
         capteur.trigger()
         time.sleep(0.2)
-        temperature = capteur.temperature
-        humidite = capteur.humidity
+        temperature = capteur.temperature()
+        humidite = capteur.humidity()
 
         if temperature == -999:
             raise RuntimeError("Lecture invalide!")
