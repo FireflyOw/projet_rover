@@ -30,6 +30,11 @@ SDA, SCL = 25, 5
 adresse = 0x40
 
 pi = pigpio.pi()
+try:
+    pi.bb_i2c_close(SDA)
+except pigpio.error:
+    pass
+
 pi.bb_i2c_open(SDA, SCL, 100000)
 time.sleep(0.3)
 print("[main.py] Bus I2C alternatif ouvert! SDA: 25, SCL: 05")
