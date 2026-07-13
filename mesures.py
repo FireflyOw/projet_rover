@@ -17,11 +17,11 @@ def mesures(adresse, capteur, bus):
             }
         
         try:
-            if temperature == -999 or humidite == -999:
-                raise RuntimeError  
-            
             temperature = capteur.temperature()
             humidite = capteur.humidity()
+
+            if temperature == -999 or humidite == -999:
+                raise RuntimeError  
 
             temp_hum = {
                 "temperature": temperature, 
