@@ -56,7 +56,7 @@ def mesures(adresse, capteur, bus):
             raise RuntimeError("[HM3301] Capteur indisponible!")
         
     except RuntimeError as e:
-        pass
+        print(f"[mesures.py]{e}")
 
     return { **temp_hum, **air}
     
