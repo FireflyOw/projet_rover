@@ -17,11 +17,13 @@ def mesures(adresse, capteur, bus):
             }
         
         try:
+            capteur.trigger()
+            
             temperature = capteur.temperature()
             humidite = capteur.humidity()
 
             temp_hum = {
-                "temperature": temperature, 
+                "temperature": round(temperature, 1), 
                 "humidite": humidite, 
                 "unite_temp": "°C", 
                 "unite_hum": "%",
@@ -57,6 +59,7 @@ def mesures(adresse, capteur, bus):
         
     except RuntimeError as e:
         print(f"[mesures.py]{e}")
+        #return fakeMesures()
 
     return { **temp_hum, **air}
     
