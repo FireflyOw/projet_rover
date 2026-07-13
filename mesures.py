@@ -17,6 +17,9 @@ def mesures(adresse, capteur, bus):
             }
         
         try:
+            if temperature == -999 or humidite == -999:
+                raise RuntimeError  
+            
             temperature = capteur.temperature()
             humidite = capteur.humidity()
 
@@ -25,9 +28,7 @@ def mesures(adresse, capteur, bus):
                 "humidite": humidite, 
                 "unite_temp": "°C", 
                 "unite_hum": "%",
-            }
-            if temperature == -999 or humidite == -999:
-                raise RuntimeError   
+            } 
 
         except (RuntimeError, AttributeError):
             pass
@@ -51,11 +52,11 @@ def mesures(adresse, capteur, bus):
             pass
         
         if temp_hum["temperature"] == "Erreur!" and air["pm1_atm"] == "Erreur!":
-                raise RuntimeError("[HM3301, DHT22] Capteurs indisponibles!")
+            raise RuntimeError("[HM3301, DHT22] Capteurs indisponibles!")
         elif temp_hum["temperature"] == "Erreur!":
             raise RuntimeError("[DHT22] Capteur indisponible!")
         elif air["pm1_atm"] == "Erreur!":
-            raise RuntimeError("[HM3301] Capteur indisponible!")
+            raise RuntimeError("[HM3301] Capteur indisponible sex!")
         
     except RuntimeError as e:
         print(f"[mesures.py]{e}")
