@@ -21,7 +21,7 @@ print("[main.py] rover initialisé!")
 adresse = 0x40
 try:
     pi = pigpio.pi()
-    capteur = DHT22.sensor(pi, 25)
+    capteur = DHT22.sensor(pi, 24)
     print("[main.py][DHT22] Capteur initialisé!\n")
 except AttributeError:
     print("[main.py][DHT22] Capteur non initialisé!\n")
