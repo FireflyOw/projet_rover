@@ -1,6 +1,7 @@
-import time, sys, os, threading, flask, pigpio, config.DHT22 as DHT22
+import time, sys, os, threading, pigpio, config.DHT22 as DHT22
 from mouvements import goForward, initServos, scan
 from mesures import mesures, ecriture
+from app import app
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "backups", "marsRover"))
 
@@ -17,15 +18,29 @@ rover.init(0)
 initServos(rover)
 print("[main.py] rover initialisé!")
 
-# Paramètres capteurs:
+# Initialisation capteurs:
+SDA, SCL = 25, 5
 adresse = 0x40
+
+pi = pigpio.pi()
+pi.bb_i2c_open(SDA, SCL, 100000)
+pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 1, 0x88, 3, 0])
+time.sleep(0.3)
+
 try:
-    pi = pigpio.pi()
     capteur = DHT22.sensor(pi, 24)
-    print("[main.py][DHT22] Capteur initialisé!\n")
+    print("[main.py][DHT22] Capteur initialisé!")
 except AttributeError:
-    print("[main.py][DHT22] Capteur non initialisé!\n")
+    print("[main.py][DHT22] Capteur non initialisé!")
     capteur = None
+
+# Démarrage serveur en arrière-plan:
+flaskThread = threading.Thread(
+    target=lambda: app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False),
+    daemon=True
+)
+flaskThread.start()
+print("[main.py] Serveur démarré sur le port 5000!\n")
 
 # Paramètres mesure:
 lastMesure = 0
