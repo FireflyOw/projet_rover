@@ -2,13 +2,11 @@ import sys, os, time, threading
 from mouvements import goForward, initServos, scan
 from mesures import mesures, ecriture
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "backups", "rover"))
-
 try:
-    import rover
+    import backups.marsRover.rover as rover
     print("[main.py] rover.py chargé (Raspberry Pi Zero)")
 except RuntimeError:
-    import fakeRover as rover
+    import backups.marsRover.fakeRover as rover
     print("[main.py] fakeRover.py chargé (PC)")
 
 # Paramètres capteurs:
