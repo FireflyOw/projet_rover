@@ -71,7 +71,7 @@ try:
             distance.pop(0)
 
         if time.time() >= lastMesure + intervalMesure:
-            valeurs = mesures(adresse, capteur, rover.bus)
+            valeurs = mesures(adresse, capteur, pi, SDA)
             ecriture(valeurs, posX, posY)
 
             print(f"""
