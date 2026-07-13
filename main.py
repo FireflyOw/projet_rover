@@ -53,7 +53,7 @@ try:
 
         if time.time() >= lastMesure + intervalMesure:
             valeurs = mesures(adresse, capteur, rover.bus)
-            ecriture(adresse, capteur, rover.bus, posX, posY)
+            ecriture(valeurs, posX, posY)
 
             print(f"""
 --- Mesures: ---                  
