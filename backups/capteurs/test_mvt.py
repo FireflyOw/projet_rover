@@ -240,6 +240,8 @@ try:
         time.sleep(2)
         rover.brake()
         x +=1
+        time.sleep(2)
+       
 
         if x==2:
             demiTour_D()
