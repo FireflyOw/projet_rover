@@ -276,7 +276,7 @@ time.sleep(1)
 
 # Test de calibration : essaye différentes valeurs de counts
 # jusqu'à obtenir visuellement un virage de 90°
-test_counts = 5  # commence par une estimation, ajuste selon le résultat observé
+test_counts = 0  # commence par une estimation, ajuste selon le résultat observé
 rover.stepSpinR(speed, test_counts)
 
 rover.cleanup()
