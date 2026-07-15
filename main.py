@@ -20,6 +20,21 @@ flaskThread = threading.Thread(
 flaskThread.start()
 print("[main.py] Serveur démarré sur le port 5000!\n")
 
+# ---- Paramètres mesure: ----
+lastMesure = 0
+intervalMesure = 3
+valeurs = {}
+distance = []
+distSpin = []
+
+# ---- Paramètres rover: ----
+avancer = False
+spinL = False
+spinR = False
+speed = 70
+posX = 0
+posY = 0
+
 # ---- Initialisation rover: ----
 rover.init(0)
 initServos(rover)
@@ -48,25 +63,19 @@ except (AttributeError, RuntimeError):
     print("[main.py][DHT22] Capteur non initialisé!")
     capteur = None
 
-print("[main.py] Démarrage des capteurs (2s)...")
-time.sleep(2)
+def mesuresBackground():
+    global valeurs
 
-# Première mesure avant la boucle principale car elle est souvent fausse:
-valeurs = mesures(adresse, capteur, pi, SDA)
+    mesureCapteurs = mesures(adresse, capteur, pi, SDA)
+    mesurePi = infosPi()
+    valeurs = { **mesureCapteurs, **mesurePi}
 
-# ---- Paramètres mesure: ----
-lastMesure = 0
-intervalMesure = 3
-distance = []
-distSpin = []
+    print(f"\n{ecriture(valeurs, posX, posY)}")
 
-# ---- Paramètres rover: ----
-avancer = False
-spinL = False
-spinR = False
-speed = 70
-posX = 0
-posY = 0
+distance.append(rover.getDistance())
+
+capteurThread = threading.Thread(target=mesuresBackground, daemon=True)
+capteurThread.start()
 
 # ---- Boucle principale : ----
 run = True
@@ -79,20 +88,14 @@ try:
             distance.pop(0)
 
         if time.time() >= lastMesure + intervalMesure:
-            mesureCapteurs = mesures(adresse, capteur, pi, SDA)
-            mesurePi = infosPi()
-            valeurs = { **mesureCapteurs, **mesurePi}
-
             print(f"""
 --- Mesures: ---                  
 Temp: {valeurs['temperature']} {valeurs['unite_temp']} | Hum: {valeurs['humidite']} {valeurs['unite_hum']}
 Particules: PM1 = {valeurs['pm1_atm']} {valeurs['unite']} | PM2.5 = {valeurs['pm1_atm']} {valeurs['unite']} | PM10 = {valeurs['pm1_atm']} {valeurs['unite']}
 Distance: {float(distance[-1]):.1f}cm
 --- Pi Zero infos: ---
-CPU: {mesurePi['cpu']}% ({mesurePi['cpuTemp']:.1f}°C)
-RAM: {mesurePi['ramUsed']}MB / {mesurePi['ramTotale']} MB ({mesurePi['ramPercent']}%)""")
-
-            print(f"\n{ecriture(valeurs, posX, posY)}")
+CPU: {valeurs['cpu']}% ({valeurs['cpuTemp']:.1f}°C)
+RAM: {valeurs['ramUsed']}MB / {valeurs['ramTotale']} MB ({valeurs['ramPercent']}%)""")
             lastMesure = time.time()
 
             # Faux changements de position pour test du site:
