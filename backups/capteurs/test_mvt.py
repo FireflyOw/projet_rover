@@ -165,41 +165,101 @@ def evitement():
 #    print(len(distance))
 #    rover.cleanup()
 
+# rover.init(0)
+# init_servo()
+# time.sleep(1)
+
+# while True:
+    
+
+#     goForward(speed)
+#     time.sleep(1.5)
+#     rover.brake()
+#     time.sleep(1.5)
+#     goForward(speed)
+#     time.sleep(1.5)
+#     rover.brake()
+#     time.sleep(1.5)
+#     goForward(speed)
+#     time.sleep(1.5)
+#     rover.brake()
+#     time.sleep(1.5)
+#     rover.spinLeft(speed)
+#     time.sleep(1.95)
+#     rover.brake()
+#     time.sleep(1.5)
+#     goForward(speed)
+#     time.sleep(1.5)
+#     rover.brake()
+#     time.sleep(1.5)
+#     goForward(speed)
+#     time.sleep(1.5)
+#     rover.brake()
+#     time.sleep(1.5)
+#     rover.spinLeft(speed)
+#     time.sleep(1.95)
+#     rover.brake()
+#     time.sleep(1.5)
+
+
+# rover.cleanup()
+
+def demiTour_G() :
+    rover.spinLeft(speed)
+    time.sleep(1.95) # fonction 90°
+    rover.brake()
+    goForward(speed)
+    time.sleep(2)
+    rover.brake()
+    rover.spinLeft(speed)
+    time.sleep(1.95) # fonction 90°
+    rover.brake()
+
+    
+def demiTour_D() :
+    rover.spinRight(speed)
+    time.sleep(1.95) # fonction 90°
+    rover.brake()
+    goForward(speed)
+    time.sleep(2)
+    rover.brake()
+    rover.spinRight(speed)
+    time.sleep(1.95) # fonction 90°
+    rover.brake()
+
 rover.init(0)
 init_servo()
 time.sleep(1)
 
-while True:
-    
+x = 0
+y = 0
 
-    goForward(speed)
-    time.sleep(1.5)
-    rover.brake()
-    time.sleep(1.5)
-    goForward(speed)
-    time.sleep(1.5)
-    rover.brake()
-    time.sleep(1.5)
-    goForward(speed)
-    time.sleep(1.5)
-    rover.brake()
-    time.sleep(1.5)
-    rover.spinLeft(speed)
-    time.sleep(1.95)
-    rover.brake()
-    time.sleep(1.5)
-    goForward(speed)
-    time.sleep(1.5)
-    rover.brake()
-    time.sleep(1.5)
-    goForward(speed)
-    time.sleep(1.5)
-    rover.brake()
-    time.sleep(1.5)
-    rover.spinLeft(speed)
-    time.sleep(1.95)
-    rover.brake()
-    time.sleep(1.5)
+try:
+    while True:
+        goForward(speed)
+        time.sleep(2)
+        rover.brake()
+        x +=1
+
+        if x==2:
+            demiTour_D()
+            y +=1
+            while x !=0:
+                goForward(speed)
+                time.sleep(2)
+                rover.brake()
+                x -=1
+            demiTour_G()
+
+        if x==2 and y==2:
+            break
+
+finally:
+    rover.cleanup()
+
+        
 
 
-rover.cleanup()
+
+
+
