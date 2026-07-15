@@ -76,8 +76,9 @@ try:
             distance.pop(0)
 
         if time.time() >= lastMesure + intervalMesure:
-            valeurs = mesures(adresse, capteur, pi, SDA)
-            cpu, cpuTemp, ramUsed, ramTotale, ramPercent = infosPi()
+            mesureCapteurs = mesures(adresse, capteur, pi, SDA)
+            mesurePi = infosPi()
+            valeurs = { **mesureCapteurs, **mesurePi}
 
             print(f"""
 --- Mesures: ---                  
@@ -85,8 +86,8 @@ Temp: {valeurs['temperature']} {valeurs['unite_temp']} | Hum: {valeurs['humidite
 Particules: PM1 = {valeurs['pm1_atm']} {valeurs['unite']} | PM2.5 = {valeurs['pm1_atm']} {valeurs['unite']} | PM10 = {valeurs['pm1_atm']} {valeurs['unite']}
 Distance: {float(distance[-1]):.1f}cm
 --- Pi Zero infos: ---
-CPU: {cpu}% ({cpuTemp:.1f}°C)
-RAM: {ramUsed}MB / {ramTotale} MB ({ramPercent}%)""")
+CPU: {mesurePi['cpu']}% ({mesurePi['cpuTemp']:.1f}°C)
+RAM: {mesurePi['ramUsed']}MB / {mesurePi['ramTotale']} MB ({mesurePi['ramPercent']}%)""")
 
             print(f"\n{ecriture(valeurs, posX, posY)}")
             lastMesure = time.time()

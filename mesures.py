@@ -1,4 +1,4 @@
-import os, csv, time, psutil, numpy
+import os, csv, time, psutil
 
 lastTrigger = 0
 lastMesure = 0
@@ -75,26 +75,18 @@ def mesures(adresse, capteur, pi, SDA):
         #return fakeMesures()
 
     return { **temp_hum, **air}
-    
-# # Fausse fonction pour les essais de mesure sans la Pi Zero ou les capteurs:        
-# def fakeMesures():
-#     return {
-#             "temperature": numpy.random.randint(10, 70), 
-#             "humidite": numpy.random.randint(35, 90), 
-#             "unite_temp": "°C", 
-#             "unite_hum": "%",
-#             "pm1_atm": numpy.random.randint(1, 10),
-#             "pm25_atm": numpy.random.randint(1, 10),
-#             "pm10_atm": numpy.random.randint(1, 10),
-#             "unite": "µg/m3",
-#         }
 
 # Fonction pour l'écriture des données de mesure dans un fichier csv:
 def ecriture(valeurs=None, grid_x=0, grid_y=0):
     os.makedirs(os.path.join(os.path.dirname(__file__), "données"), exist_ok=True)
 
     CSV_PATH = os.path.join(os.path.dirname(__file__), "données", time.strftime("mesures%b%d.csv"))
-    colonnes = ["timestamp", "temp_c", "humidity", "pm1", "pm2_5", "pm10", "grid_x", "grid_y"]
+    colonnes = ["timestamp", 
+                "temp_c", "humidity", 
+                "pm1", "pm2_5", "pm10", 
+                "grid_x", "grid_y"
+                "cpu", "cpuTemp", "ramUsed, ramTotale", "ramPercent"
+                ]
     fichier = os.path.exists(CSV_PATH) 
 
     try:
@@ -120,7 +112,12 @@ def ecriture(valeurs=None, grid_x=0, grid_y=0):
             "pm2_5": valeurs['pm25_atm'], 
             "pm10": valeurs['pm10_atm'],
             "grid_x": grid_x,
-            "grid_y": grid_y
+            "grid_y": grid_y,
+            "cpu": valeurs['cpu'], 
+            "cpuTemp": valeurs['cpuTemp'], 
+            "ramUsed": valeurs['ramUsed'], 
+            "ramTotale": valeurs['ramTotale'], 
+            "ramPercent": valeurs['ramPercent'],
         }) 
 
     return "[mesures.py] Mesures enregistrées!"
@@ -135,4 +132,9 @@ def infosPi():
     with open('/sys/class/thermal/thermal_zone0/temp', 'r') as f:
         cpuTemp = int(f.read()) / 1000
     
-    return cpu, cpuTemp, ramUsed, ramTotale, ramPercent
+    return {"cpu": cpu, 
+            "cpuTemp": cpuTemp, 
+            "ramUsed": ramUsed, 
+            "ramTotale": ramTotale, 
+            "ramPercent": ramPercent,
+            }
