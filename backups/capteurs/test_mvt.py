@@ -185,7 +185,7 @@ def evitement():
 #     rover.brake()
 #     time.sleep(1.5)
 #     rover.spinLeft(speed)
-#     time.sleep(1.95)
+#     time.sleep(2.3)
 #     rover.brake()
 #     time.sleep(1.5)
 #     goForward(speed)
@@ -197,7 +197,7 @@ def evitement():
 #     rover.brake()
 #     time.sleep(1.5)
 #     rover.spinLeft(speed)
-#     time.sleep(1.95)
+#     time.sleep(2.3)
 #     rover.brake()
 #     time.sleep(1.5)
 
@@ -206,7 +206,7 @@ def evitement():
 
 def demiTour_G() :
     rover.spinLeft(speed)
-    time.sleep(1.95) # fonction 90°
+    time.sleep(2.3) # fonction 90°
     rover.brake()
     time.sleep(2)
     goForward(speed)
@@ -214,14 +214,15 @@ def demiTour_G() :
     rover.brake()
     time.sleep(2)
     rover.spinLeft(speed)
-    time.sleep(1.95) # fonction 90°
+    time.sleep(2.3) # fonction 90°
     rover.brake()
+    time.sleep(2)
 
 
     
 def demiTour_D() :
     rover.spinRight(speed)
-    time.sleep(1.95) # fonction 90°
+    time.sleep(2.3) # fonction 90°
     rover.brake()
     time.sleep(2)
     goForward(speed)
@@ -229,8 +230,9 @@ def demiTour_D() :
     rover.brake()
     time.sleep(2)
     rover.spinRight(speed)
-    time.sleep(1.95) # fonction 90°
+    time.sleep(2.3) # fonction 90°
     rover.brake()
+    time.sleep(2)
 
 rover.init(0)
 init_servo()
@@ -256,6 +258,7 @@ try:
                 time.sleep(2)
                 rover.brake()
                 x -=1
+                time.sleep(2)
             demiTour_G()
 
         if x==3 and y==3:
