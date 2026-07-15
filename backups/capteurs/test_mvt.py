@@ -208,21 +208,26 @@ def demiTour_G() :
     rover.spinLeft(speed)
     time.sleep(1.95) # fonction 90°
     rover.brake()
+    time.sleep(2)
     goForward(speed)
     time.sleep(2)
     rover.brake()
+    time.sleep(2)
     rover.spinLeft(speed)
     time.sleep(1.95) # fonction 90°
     rover.brake()
+
 
     
 def demiTour_D() :
     rover.spinRight(speed)
     time.sleep(1.95) # fonction 90°
     rover.brake()
+    time.sleep(2)
     goForward(speed)
     time.sleep(2)
     rover.brake()
+    time.sleep(2)
     rover.spinRight(speed)
     time.sleep(1.95) # fonction 90°
     rover.brake()
@@ -243,7 +248,7 @@ try:
         time.sleep(2)
        
 
-        if x==2:
+        if x==3:
             demiTour_D()
             y +=1
             while x !=0:
@@ -253,7 +258,7 @@ try:
                 x -=1
             demiTour_G()
 
-        if x==2 and y==2:
+        if x==3 and y==3:
             break
 
 finally:
