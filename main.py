@@ -65,14 +65,17 @@ except (AttributeError, RuntimeError):
 
 def mesuresBackground():
     global valeurs
+    while True:
+        mesureCapteurs = mesures(adresse, capteur, pi, SDA)
+        mesurePi = infosPi()
+        valeurs = { **mesureCapteurs, **mesurePi}
 
-    mesureCapteurs = mesures(adresse, capteur, pi, SDA)
-    mesurePi = infosPi()
-    valeurs = { **mesureCapteurs, **mesurePi}
+        print(f"\n{ecriture(valeurs, posX, posY)}")
 
-    print(f"\n{ecriture(valeurs, posX, posY)}")
+        time.sleep(3)
 
 distance.append(rover.getDistance())
+time.sleep(0.05)
 
 capteurThread = threading.Thread(target=mesuresBackground, daemon=True)
 capteurThread.start()
