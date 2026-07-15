@@ -12,12 +12,12 @@ except RuntimeError:
     import backups.marsRover.fakeRover as rover
     print("[main.py] fakeRover.py chargé (PC)")
 
-# Initialisation rover:
+# ---- Initialisation rover: ----
 rover.init(0)
 initServos(rover)
 print("[main.py] Rover initialisé!")
 
-# Démarrage serveur en arrière-plan:
+# ---- Démarrage serveur en arrière-plan: ----
 flaskThread = threading.Thread(
     target=lambda: app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False),
     daemon=True
@@ -25,34 +25,36 @@ flaskThread = threading.Thread(
 flaskThread.start()
 print("[main.py] Serveur démarré sur le port 5000!\n")
 
-# Initialisation capteurs:
+# ---- Initialisation capteurs: ----
 SDA, SCL = 25, 5
 adresse = 0x40
 
+print("[main.py] Démarrage capteurs et bus I2C...")
 pi = pigpio.pi()
 try:
     pi.bb_i2c_close(SDA)
 except pigpio.error:
     pass
 
+# Ouverture du bus I2C:
 pi.bb_i2c_open(SDA, SCL, 100000)
 time.sleep(0.3)
-print("[main.py] Bus I2C alternatif ouvert! SDA: 25, SCL: 05")
+print(f"[main.py] Bus I2C ouvert! SDA: {SDA}, SCL: {SCL}")
 
 try:
     capteur = DHT22.sensor(pi, 24)
     print("[main.py][DHT22] Capteur initialisé!")
-except AttributeError:
+except (AttributeError, RuntimeError):
     print("[main.py][DHT22] Capteur non initialisé!")
     capteur = None
 
-# Paramètres mesure:
+# ---- Paramètres mesure: ----
 lastMesure = 0
 intervalMesure = 3
 distance = []
 distSpin = []
 
-# Paramètres rover:
+# ---- Paramètres rover: ----
 avancer = False
 spinL = False
 spinR = False
