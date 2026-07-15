@@ -48,6 +48,14 @@ except (AttributeError, RuntimeError):
     print("[main.py][DHT22] Capteur non initialisé!")
     capteur = None
 
+# Première mesure pour vérifier que les capteurs fonctionnent:
+valeurs = mesures(adresse, capteur, pi, SDA)
+print(f"""
+--- Mesures: ---                  
+Temp: {valeurs['temperature']} {valeurs['unite_temp']} | Hum: {valeurs['humidite']} {valeurs['unite_hum']}
+Particules: PM1 = {valeurs['pm1_atm']} {valeurs['unite']} | PM2.5 = {valeurs['pm1_atm']} {valeurs['unite']} | PM10 = {valeurs['pm1_atm']} {valeurs['unite']}
+""")
+
 # ---- Paramètres mesure: ----
 lastMesure = 0
 intervalMesure = 3
