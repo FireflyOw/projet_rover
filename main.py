@@ -99,7 +99,7 @@ Distance: {float(distance[-1]):.1f}cm""")
             rover.brake()
             avancer = False
 
-            print(f"""Obstacle dans {distance[-1]:.2f}cm
+            print(f"""\nObstacle dans {distance[-1]:.2f}cm
 Scanning.....""")
             
             dirL, dirR = scan(rover)
@@ -126,7 +126,7 @@ droite = {dirR:.2f}cm\n""")
                 if len(distSpin) > 10:
                     distSpin.pop(0)
 
-            print(f"Chemin trouvé! Prochain obstacle dans {distSpin[-1]:.2f}cm\n")
+            print(f"\nChemin trouvé! Prochain obstacle dans {distSpin[-1]:.2f}cm")
 
             rover.stop()
             spinL = False
@@ -142,7 +142,7 @@ droite = {dirR:.2f}cm\n""")
         time.sleep(0.05)
 
 finally: 
-    print("\n[main.py] Nettoyage et fermeture...")
+    print("\n[main.py] Nettoyage et fermeture...\n")
     rover.cleanup()
     try:
         pi.bb_i2c_close(SDA)
