@@ -1,7 +1,10 @@
 import os, csv, time, numpy
 
+lastTrigger = 0
+
 # Fonction de mesure avec les capteurs HM3301 (particules) et DHT22 (temp/hum):
 def mesures(adresse, capteur, pi, SDA):
+    global lastTrigger
     try:
         temp_hum = {
                 "temperature": "Erreur!", 
@@ -18,9 +21,8 @@ def mesures(adresse, capteur, pi, SDA):
         
         try:
             capteur.trigger()
-            lastTrigger = time.time()
 
-            if lastTrigger < time.time() + 0.2:
+            if time.time() >= lastTrigger + 0.2:
                 temperature = capteur.temperature()
                 humidite = capteur.humidity()
 
