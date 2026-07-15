@@ -58,7 +58,7 @@ def init_servo():
 def evitement():
     goRight()
     print("blabla")
-    time.sleep(3)
+    time.sleep(5)
 
 # def getValidDistance():
 #                 d = rover.getDistance()
@@ -123,7 +123,7 @@ def evitement():
 #             turn_start = time.time()
             
 #             far_readings_count = 0
-#             REQUIRED_CONSECUTIVE = 3
+#             REQUIRED_CONSECUTIVE = 5
 
 #             while True:
 
@@ -185,7 +185,7 @@ def evitement():
 #     rover.brake()
 #     time.sleep(1.5)
 #     rover.spinLeft(speed)
-#     time.sleep(2.3)
+#     time.sleep(2.5)
 #     rover.brake()
 #     time.sleep(1.5)
 #     goForward(speed)
@@ -197,7 +197,7 @@ def evitement():
 #     rover.brake()
 #     time.sleep(1.5)
 #     rover.spinLeft(speed)
-#     time.sleep(2.3)
+#     time.sleep(2.5)
 #     rover.brake()
 #     time.sleep(1.5)
 
@@ -206,7 +206,7 @@ def evitement():
 
 def demiTour_G() :
     rover.spinLeft(speed)
-    time.sleep(2.3) # fonction 90°
+    time.sleep(2.5) # fonction 90°
     rover.brake()
     time.sleep(2)
     goForward(speed)
@@ -214,7 +214,7 @@ def demiTour_G() :
     rover.brake()
     time.sleep(2)
     rover.spinLeft(speed)
-    time.sleep(2.3) # fonction 90°
+    time.sleep(2.5) # fonction 90°
     rover.brake()
     time.sleep(2)
 
@@ -222,7 +222,7 @@ def demiTour_G() :
     
 def demiTour_D() :
     rover.spinRight(speed)
-    time.sleep(2.3) # fonction 90°
+    time.sleep(2.5) # fonction 90°
     rover.brake()
     time.sleep(2)
     goForward(speed)
@@ -230,7 +230,7 @@ def demiTour_D() :
     rover.brake()
     time.sleep(2)
     rover.spinRight(speed)
-    time.sleep(2.3) # fonction 90°
+    time.sleep(2.5) # fonction 90°
     rover.brake()
     time.sleep(2)
 
@@ -250,7 +250,7 @@ try:
         time.sleep(2)
        
 
-        if x==3:
+        if x==5:
             demiTour_D()
             y +=1
             while x !=0:
@@ -261,7 +261,7 @@ try:
                 time.sleep(2)
             demiTour_G()
 
-        if x==3 and y==3:
+        if x==5 and y==5:
             break
 
 finally:
