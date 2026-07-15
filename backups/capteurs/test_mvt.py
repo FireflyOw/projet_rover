@@ -274,7 +274,7 @@ rover.init(0)
 init_servo()
 time.sleep(1)
 
-duration_test = 3  # ajuste cette valeur à chaque essai
+duration_test = 3.3  # ajuste cette valeur à chaque essai
 rover.spinRight(CALIBRATED_SPIN_SPEED)
 time.sleep(duration_test)
 rover.brake()
