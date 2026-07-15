@@ -1,10 +1,11 @@
-import os, csv, time, numpy
+import os, csv, time, psutil, numpy
 
 lastTrigger = 0
+lastMesure = 0
 
 # Fonction de mesure avec les capteurs HM3301 (particules) et DHT22 (temp/hum):
 def mesures(adresse, capteur, pi, SDA):
-    global lastTrigger
+    global lastTrigger, lastMesure
     try:
         temp_hum = {
                 "temperature": "Erreur!", 
@@ -40,9 +41,8 @@ def mesures(adresse, capteur, pi, SDA):
 
         try:
             pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 1, 0x88, 3, 0])
-            lastMesure = time.time()
 
-            if lastMesure < time.time() + 0.3:
+            if time.time() >= lastMesure + 0.3:
                 count, data = pi.bb_i2c_zip(SDA, [4, 0x40, 2, 6, 29, 3, 0])
 
                 if count < 29:
@@ -124,3 +124,15 @@ def ecriture(valeurs=None, grid_x=0, grid_y=0):
         }) 
 
     return "[mesures.py] Mesures enregistrées!"
+
+def infosPi():
+    ram = psutil.virtual_memory()
+    ramUsed = ram.used // 1024 ** 2
+    ramTotale = ram.total // 1024 ** 2
+    ramPercent = ram.percent
+
+    cpu = psutil.cpu_percent(interval=1)
+    with open('/sys/class/thermal/thermal_zone0/temp', 'r') as f:
+        cpuTemp = int(f.read()) / 1000
+    
+    return cpu, cpuTemp, ramUsed, ramTotale, ramPercent

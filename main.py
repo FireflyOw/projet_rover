@@ -1,6 +1,6 @@
 import time, sys, os, threading, pigpio, config.DHT22 as DHT22
 from mouvements import goForward, initServos, scan
-from mesures import mesures, ecriture
+from mesures import mesures, ecriture, infosPi
 from app import app
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "backups", "marsRover"))
@@ -77,12 +77,16 @@ try:
 
         if time.time() >= lastMesure + intervalMesure:
             valeurs = mesures(adresse, capteur, pi, SDA)
+            cpu, cpuTemp, ramUsed, ramTotale, ramPercent = infosPi()
 
             print(f"""
 --- Mesures: ---                  
 Temp: {valeurs['temperature']} {valeurs['unite_temp']} | Hum: {valeurs['humidite']} {valeurs['unite_hum']}
 Particules: PM1 = {valeurs['pm1_atm']} {valeurs['unite']} | PM2.5 = {valeurs['pm1_atm']} {valeurs['unite']} | PM10 = {valeurs['pm1_atm']} {valeurs['unite']}
-Distance: {float(distance[-1]):.1f}cm""")
+Distance: {float(distance[-1]):.1f}cm
+--- Pi Zero infos: ---
+CPU: {cpu}% ({cpuTemp:.1f}°C)
+RAM: {ramUsed}MB / {ramTotale} MB ({ramPercent}%)""")
 
             print(f"\n{ecriture(valeurs, posX, posY)}")
             lastMesure = time.time()
