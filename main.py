@@ -48,6 +48,9 @@ except (AttributeError, RuntimeError):
     print("[main.py][DHT22] Capteur non initialisé!")
     capteur = None
 
+print("[main.py] Démarrage des capteurs (2s)...")
+time.sleep(2)
+
 # Première mesure avant la boucle principale car elle est souvent fausse:
 valeurs = mesures(adresse, capteur, pi, SDA)
 
