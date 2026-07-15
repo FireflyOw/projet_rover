@@ -85,7 +85,7 @@ def ecriture(valeurs=None, grid_x=0, grid_y=0):
                 "temp_c", "humidity", 
                 "pm1", "pm2_5", "pm10", 
                 "grid_x", "grid_y",
-                "cpu", "cpuTemp", "ramUsed, ramTotale", "ramPercent",
+                "cpu", "cpuTemp", "ramUsed", "ramTotale", "ramPercent",
                 ]
     fichier = os.path.exists(CSV_PATH) 
 
