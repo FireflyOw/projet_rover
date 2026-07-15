@@ -84,8 +84,8 @@ def ecriture(valeurs=None, grid_x=0, grid_y=0):
     colonnes = ["timestamp", 
                 "temp_c", "humidity", 
                 "pm1", "pm2_5", "pm10", 
-                "grid_x", "grid_y"
-                "cpu", "cpuTemp", "ramUsed, ramTotale", "ramPercent"
+                "grid_x", "grid_y",
+                "cpu", "cpuTemp", "ramUsed, ramTotale", "ramPercent",
                 ]
     fichier = os.path.exists(CSV_PATH) 
 
@@ -111,13 +111,13 @@ def ecriture(valeurs=None, grid_x=0, grid_y=0):
             "pm1": valeurs['pm1_atm'], 
             "pm2_5": valeurs['pm25_atm'], 
             "pm10": valeurs['pm10_atm'],
-            "grid_x": grid_x,
-            "grid_y": grid_y,
             "cpu": valeurs['cpu'], 
             "cpuTemp": valeurs['cpuTemp'], 
             "ramUsed": valeurs['ramUsed'], 
             "ramTotale": valeurs['ramTotale'], 
             "ramPercent": valeurs['ramPercent'],
+            "grid_x": grid_x,
+            "grid_y": grid_y,
         }) 
 
     return "[mesures.py] Mesures enregistrées!"
