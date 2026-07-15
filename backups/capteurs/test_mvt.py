@@ -250,7 +250,7 @@ try:
         time.sleep(2)
        
 
-        if x==5:
+        if x==3:
             demiTour_D()
             y +=1
             while x !=0:
@@ -261,7 +261,7 @@ try:
                 time.sleep(2)
             demiTour_G()
 
-        if x==5 and y==5:
+        if x==3 and y==3:
             break
 
 finally:
