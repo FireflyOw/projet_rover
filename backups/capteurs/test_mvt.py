@@ -204,68 +204,65 @@ def evitement():
 
 # rover.cleanup()
 
-def demiTour_G() :
-    rover.spinLeft(speed)
-    time.sleep(2.45) # fonction 90°
-    rover.brake()
-    time.sleep(2)
-    goForward(speed)
-    time.sleep(2)
-    rover.brake()
-    time.sleep(2)
-    rover.spinLeft(speed)
-    time.sleep(2.45) # fonction 90°
-    rover.brake()
-    time.sleep(2)
+# def demiTour_G() :
+#     rover.spinLeft(speed)
+#     time.sleep(2.45) # fonction 90°
+#     rover.brake()
+#     time.sleep(2)
+#     goForward(speed)
+#     time.sleep(2)
+#     rover.brake()
+#     time.sleep(2)
+#     rover.spinLeft(speed)
+#     time.sleep(2.45) # fonction 90°
+#     rover.brake()
+#     time.sleep(2)
 
 
-    
-def demiTour_D() :
-    rover.spinRight(speed)
-    time.sleep(2.45) # fonction 90°
-    rover.brake()
-    time.sleep(2)
-    goForward(speed)
-    time.sleep(2)
-    rover.brake()
-    time.sleep(2)
-    rover.spinRight(speed)
-    time.sleep(2.45) # fonction 90°
-    rover.brake()
-    time.sleep(2)
+# COUNTS_90_DEGRES = 20
 
-rover.init(0)
-init_servo()
-time.sleep(1)
+# def demiTour_D() :
+#     rover.stepSpinR(speed, COUNTS_90_DEGRES)
+#     time.sleep(0.5)
+#     goForward(speed)
+#     time.sleep(2)
+#     rover.brake()
+#     time.sleep(0.5)
+#     rover.stepSpinR(speed, COUNTS_90_DEGRES)
+#     time.sleep(0.5)
 
-x = 0
-y = 0
+# rover.init(0)
+# init_servo()
+# time.sleep(1)
 
-try:
-    while True:
-        goForward(speed)
-        time.sleep(2)
-        rover.brake()
-        x +=1
-        time.sleep(2)
+# x = 0
+# y = 0
+
+# try:
+#     while True:
+#         goForward(speed)
+#         time.sleep(2)
+#         rover.brake()
+#         x +=1
+#         time.sleep(2)
        
 
-        if x==3:
-            demiTour_D()
-            y +=1
-            while x !=0:
-                goForward(speed)
-                time.sleep(2)
-                rover.brake()
-                x -=1
-                time.sleep(2)
-            demiTour_G()
+#         if x==3:
+#             demiTour_D()
+#             y +=1
+#             while x !=0:
+#                 goForward(speed)
+#                 time.sleep(2)
+#                 rover.brake()
+#                 x -=1
+#                 time.sleep(2)
+#             demiTour_G()
 
-        if x==3 and y==3:
-            break
+#         if x==3 and y==3:
+#             break
 
-finally:
-    rover.cleanup()
+# finally:
+#     rover.cleanup()
 
         
 
@@ -273,3 +270,13 @@ finally:
 
 
 
+rover.init(0)
+init_servo()
+time.sleep(1)
+
+# Test de calibration : essaye différentes valeurs de counts
+# jusqu'à obtenir visuellement un virage de 90°
+test_counts = 0  # commence par une estimation, ajuste selon le résultat observé
+rover.stepSpinR(speed, test_counts)
+
+rover.cleanup()
