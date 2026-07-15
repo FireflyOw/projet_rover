@@ -28,10 +28,8 @@ def mesures(adresse, capteur, pi, SDA):
                 humidite = capteur.humidity()
 
                 temp_hum = {
-                "temperature": round(temperature, 1), 
-                "humidite": round(humidite, 1), 
-                "unite_temp": "°C", 
-                "unite_hum": "%",
+                "temperature": f"{round(temperature, 1)}°C", 
+                "humidite": f"{round(humidite, 1)}%",
                 }
 
                 lastTrigger = time.time()
@@ -53,10 +51,9 @@ def mesures(adresse, capteur, pi, SDA):
                 pm10_atm = (data[14] << 8) | data[15]
 
                 air = {
-                    "pm1_atm": pm1_atm,
-                    "pm25_atm": pm25_atm,
-                    "pm10_atm": pm10_atm,
-                    "unite": "µg/m3"
+                    "pm1_atm": f"{pm1_atm} µg/m3",
+                    "pm25_atm": f"{pm25_atm} µg/m3",
+                    "pm10_atm": f"{pm10_atm} µg/m3",
                 }
 
                 lastMesure = time.time()
@@ -88,7 +85,7 @@ def infosPi():
         cpuTemp = int(f.read()) / 1000
     
     return {"cpu": cpu, 
-            "cpuTemp": cpuTemp, 
+            "cpuTemp": f"{cpuTemp:.1f}", 
             "ramUsed": ramUsed, 
             "ramTotale": ramTotale, 
             "ramPercent": ramPercent,

@@ -93,12 +93,12 @@ try:
         if time.time() >= lastMesure + intervalMesure:
             print(f"""
 --- Mesures: ---                  
-Temp: {valeurs['temperature']} {valeurs['unite_temp']} | Hum: {valeurs['humidite']} {valeurs['unite_hum']}
-Particules: PM1 = {valeurs['pm1_atm']} {valeurs['unite']} | PM2.5 = {valeurs['pm1_atm']} {valeurs['unite']} | PM10 = {valeurs['pm1_atm']} {valeurs['unite']}
+Temp: {valeurs.get('temperature', 'N/A')} | Hum: {valeurs.get('humidite', 'N/A')}
+Particules: PM1 = {valeurs.get('pm1_atm', 'N/A')} | PM2.5 = {valeurs.get('pm1_atm', 'N/A')} | PM10 = {valeurs.get('pm1_atm', 'N/A')}
 Distance: {float(distance[-1]):.1f}cm
 --- Pi Zero infos: ---
-CPU: {valeurs['cpu']}% ({valeurs['cpuTemp']:.1f}°C)
-RAM: {valeurs['ramUsed']}MB / {valeurs['ramTotale']} MB ({valeurs['ramPercent']}%)""")
+CPU: {valeurs.get('cpu', 'N/A')}% ({valeurs.get('cpuTemp', 'N/A')}°C)
+RAM: {valeurs.get('ramUsed', 'N/A')}MB / {valeurs.get('ramTotale', 'N/A')} MB ({valeurs.get('ramPercent', 'N/A')}%)""")
             lastMesure = time.time()
 
             # Faux changements de position pour test du site:
