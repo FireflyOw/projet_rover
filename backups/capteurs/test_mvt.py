@@ -206,7 +206,7 @@ def evitement():
 
 def demiTour_G() :
     rover.spinLeft(speed)
-    time.sleep(2.55) # fonction 90°
+    time.sleep(2.45) # fonction 90°
     rover.brake()
     time.sleep(2)
     goForward(speed)
@@ -214,7 +214,7 @@ def demiTour_G() :
     rover.brake()
     time.sleep(2)
     rover.spinLeft(speed)
-    time.sleep(2.55) # fonction 90°
+    time.sleep(2.45) # fonction 90°
     rover.brake()
     time.sleep(2)
 
@@ -222,7 +222,7 @@ def demiTour_G() :
     
 def demiTour_D() :
     rover.spinRight(speed)
-    time.sleep(2.55) # fonction 90°
+    time.sleep(2.45) # fonction 90°
     rover.brake()
     time.sleep(2)
     goForward(speed)
@@ -230,7 +230,7 @@ def demiTour_D() :
     rover.brake()
     time.sleep(2)
     rover.spinRight(speed)
-    time.sleep(2.55) # fonction 90°
+    time.sleep(2.45) # fonction 90°
     rover.brake()
     time.sleep(2)
 
