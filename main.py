@@ -82,10 +82,9 @@ try:
 --- Mesures: ---                  
 Temp: {valeurs['temperature']} {valeurs['unite_temp']} | Hum: {valeurs['humidite']} {valeurs['unite_hum']}
 Particules: PM1 = {valeurs['pm1_atm']} {valeurs['unite']} | PM2.5 = {valeurs['pm1_atm']} {valeurs['unite']} | PM10 = {valeurs['pm1_atm']} {valeurs['unite']}
-Distance: {float(distance[-1]):.1f}cm
-            """)
-            
-            print(f"{ecriture(valeurs, posX, posY)}\n")
+Distance: {float(distance[-1]):.1f}cm""")
+
+            print(f"\n{ecriture(valeurs, posX, posY)}")
             lastMesure = time.time()
 
             # Faux changements de position pour test du site:
