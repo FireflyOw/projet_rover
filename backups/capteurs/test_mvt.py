@@ -219,20 +219,17 @@ def demiTour_G() :
     time.sleep(2)
 
 
-    
+COUNTS_90_DEGRES = 20
+
 def demiTour_D() :
-    rover.spinRight(speed)
-    time.sleep(2.45) # fonction 90°
-    rover.brake()
-    time.sleep(2)
+    rover.stepSpinR(speed, COUNTS_90_DEGRES)
+    time.sleep(0.5)
     goForward(speed)
     time.sleep(2)
     rover.brake()
-    time.sleep(2)
-    rover.spinRight(speed)
-    time.sleep(2.45) # fonction 90°
-    rover.brake()
-    time.sleep(2)
+    time.sleep(0.5)
+    rover.stepSpinR(speed, COUNTS_90_DEGRES)
+    time.sleep(0.5)
 
 rover.init(0)
 init_servo()
