@@ -76,6 +76,24 @@ def mesures(adresse, capteur, pi, SDA):
 
     return { **temp_hum, **air}
 
+# Fonction pour récupérer les infos d'utilisation CPU/RAM de la Pi Zero:
+def infosPi():
+    ram = psutil.virtual_memory()
+    ramUsed = ram.used // 1024 ** 2
+    ramTotale = ram.total // 1024 ** 2
+    ramPercent = ram.percent
+
+    cpu = psutil.cpu_percent(interval=1)
+    with open('/sys/class/thermal/thermal_zone0/temp', 'r') as f:
+        cpuTemp = int(f.read()) / 1000
+    
+    return {"cpu": cpu, 
+            "cpuTemp": cpuTemp, 
+            "ramUsed": ramUsed, 
+            "ramTotale": ramTotale, 
+            "ramPercent": ramPercent,
+            }
+
 # Fonction pour l'écriture des données de mesure dans un fichier csv:
 def ecriture(valeurs=None, grid_x=0, grid_y=0):
     os.makedirs(os.path.join(os.path.dirname(__file__), "données"), exist_ok=True)
@@ -120,21 +138,4 @@ def ecriture(valeurs=None, grid_x=0, grid_y=0):
             "grid_y": grid_y,
         }) 
 
-    return "[mesures.py] Mesures enregistrées!"
-
-def infosPi():
-    ram = psutil.virtual_memory()
-    ramUsed = ram.used // 1024 ** 2
-    ramTotale = ram.total // 1024 ** 2
-    ramPercent = ram.percent
-
-    cpu = psutil.cpu_percent(interval=1)
-    with open('/sys/class/thermal/thermal_zone0/temp', 'r') as f:
-        cpuTemp = int(f.read()) / 1000
-    
-    return {"cpu": cpu, 
-            "cpuTemp": cpuTemp, 
-            "ramUsed": ramUsed, 
-            "ramTotale": ramTotale, 
-            "ramPercent": ramPercent,
-            }
+    return "[mesures.py][capteurThread] Mesures enregistrées!"
