@@ -12,11 +12,6 @@ except RuntimeError:
     import backups.marsRover.fakeRover as rover
     print("[main.py] fakeRover.py chargé (PC)")
 
-# ---- Initialisation rover: ----
-rover.init(0)
-initServos(rover)
-print("[main.py] Rover initialisé!")
-
 # ---- Démarrage serveur en arrière-plan: ----
 flaskThread = threading.Thread(
     target=lambda: app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False),
@@ -24,6 +19,11 @@ flaskThread = threading.Thread(
 )
 flaskThread.start()
 print("[main.py] Serveur démarré sur le port 5000!\n")
+
+# ---- Initialisation rover: ----
+rover.init(0)
+initServos(rover)
+print("[main.py] Rover initialisé!")
 
 # ---- Initialisation capteurs: ----
 SDA, SCL = 25, 5
