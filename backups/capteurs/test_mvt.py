@@ -280,4 +280,39 @@ def calculVitesse(speed):
 
     return round(vitesse, 2)
 
-print(calculVitesse(speed))
+print(calculVitesse(50))
+
+
+
+
+
+rover.init(0)
+init_servo()
+time.sleep(1)
+mesures = 0
+
+
+
+distance_max=100
+ecart = 10
+tolerance = 1
+
+
+try:
+    goForward(speed)
+    while mesures!=10 :
+        d = rover.getDistance()
+        print(d)
+        if abs((distance_max - d) - ecart) <= tolerance:
+            print("babaaa")
+            rover.brake()
+            time.sleep(2)
+            mesures +=1
+            ecart +=10
+            goForward(speed)
+
+
+        time.sleep(0.02)
+       
+finally:
+     rover.cleanup()
