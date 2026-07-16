@@ -59,6 +59,11 @@ def scan(rover):
 
     return dirL, dirR
 
+# ---- Initialisation rover: ----
+rover.init(0)
+initServos(rover)
+print("[main.py] Rover initialisé!")
+
 # ---- Paramètres mesure: ----
 distance = []
 distSpin = []
@@ -74,9 +79,14 @@ spinL = False
 spinR = False
 speed = 70
 
+# ---- Boucle principale : ----
 run = True
 try:
     while run:
+        distance.append(rover.getDistance())
+        if len(distance) >= 500:
+            distance.pop(0)
+
         # --- Bloc déplacements ---
 
         if all(x<=30 for x in distance[-5:]):
