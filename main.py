@@ -1,6 +1,6 @@
 import time, sys, os, threading, pigpio, config.DHT22 as DHT22
-from mouvements import goForward, initServos, scan
-from mesures import mesures, ecriture, infosPi
+from mouvements import calculVitesse, goForward, initServos, scan
+from mesures import mesuresBackground
 from app import app
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "backups", "marsRover"))
@@ -62,17 +62,6 @@ try:
 except (AttributeError, RuntimeError):
     print("[main.py][DHT22] Capteur non initialisé!")
     capteur = None
-
-def mesuresBackground():
-    global valeurs
-    while True:
-        mesureCapteurs = mesures(adresse, capteur, pi, SDA)
-        mesurePi = infosPi()
-        valeurs = { **mesureCapteurs, **mesurePi}
-
-        print(f"\n{ecriture(valeurs, posX, posY)}")
-
-        time.sleep(3)
 
 distance.append(rover.getDistance())
 time.sleep(0.05)
