@@ -295,6 +295,7 @@ mesures = 0
 
 distance_max=100
 ecart = 10
+tolerance = 1
 
 
 try:
@@ -302,7 +303,7 @@ try:
     while mesures!=10 :
         d = rover.getDistance()
         print(d)
-        if distance_max - d == ecart :
+        if abs((distance_max - d) - ecart) <= tolerance:
             print("babaaa")
             rover.brake()
             time.sleep(2)
