@@ -291,21 +291,26 @@ init_servo()
 time.sleep(1)
 mesures = 0
 
-distance=[]
-distance.append(rover.getDistance())
-print(distance[-1:])
+
+
 distance_max=100
 ecart = 10
 
 
 try:
+    goForward(speed)
     while mesures!=10 :
-        goForward(speed)
-        if int(distance_max) - int(distance) == ecart :
+        d = rover.getDistance()
+        print(d)
+        if distance_max - d == ecart :
             rover.brake()
             time.sleep(2)
             mesures +=1
             ecart +=10
+            goForward(speed)
 
+
+        time.sleep(0.02)
+       
 finally:
      rover.cleanup()
