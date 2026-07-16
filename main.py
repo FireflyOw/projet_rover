@@ -44,7 +44,7 @@ print("[main.py] Rover initialisé!")
 SDA, SCL = 25, 5
 adresse = 0x40
 
-print("[main.py] Démarrage capteurs et bus I2C...")
+print("[main.py] Démarrage capteurs, thread et bus I2C...")
 pi = pigpio.pi()
 try:
     pi.bb_i2c_close(SDA)
@@ -80,6 +80,9 @@ time.sleep(0.05)
 capteurThread = threading.Thread(target=mesuresBackground, daemon=True)
 capteurThread.start()
 
+time.sleep(2)
+print("[main.py] Thread démarré!")
+
 # ---- Boucle principale : ----
 run = True
 try:
@@ -93,8 +96,8 @@ try:
         if time.time() >= lastMesure + intervalMesure:
             print(f"""
 --- Mesures: ---                  
-Temp: {valeurs.get('temperature', 'N/A')}{valeurs.get('uniteTemp', 'N/A')} | Hum: {valeurs.get('humidite', 'N/A')}{valeurs.get('uniteHum', 'N/A')}
-Particules: PM1 = {valeurs.get('pm1_atm', 'N/A')} {valeurs.get('uniteAir', 'N/A')} | PM2.5 = {valeurs.get('pm1_atm', 'N/A')} {valeurs.get('uniteAir', 'N/A')} | PM10 = {valeurs.get('pm1_atm', 'N/A')} {valeurs.get('uniteAir', 'N/A')}
+Temp: {valeurs.get('temperature', 'N/A')}{valeurs.get('uniteTemp')} | Hum: {valeurs.get('humidite', 'N/A')}{valeurs.get('uniteHum')}
+Particules: PM1 = {valeurs.get('pm1_atm', 'N/A')} {valeurs.get('uniteAir')} | PM2.5 = {valeurs.get('pm1_atm', 'N/A')} {valeurs.get('uniteAir')} | PM10 = {valeurs.get('pm1_atm', 'N/A')} {valeurs.get('uniteAir')}
 Distance: {float(distance[-1]):.1f}cm
 --- Pi Zero infos: ---
 CPU: {valeurs.get('cpu', 'N/A')}% ({valeurs.get('cpuTemp', 'N/A')}°C)
