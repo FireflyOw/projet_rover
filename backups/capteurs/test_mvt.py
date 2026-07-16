@@ -303,7 +303,7 @@ try:
         d = rover.getDistance()
         print(d)
         if distance_max - d == ecart :
-            print(babaaa)
+            print("babaaa")
             rover.brake()
             time.sleep(2)
             mesures +=1
