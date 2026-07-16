@@ -42,8 +42,8 @@
     /* Sur les écrans d'ordinateur ou de tablette (>= 768px) */
     @media (min-width: 768px) {
       .cards {
-        /* Gauche (1 part), Milieu large (1.8 part), Droite (1 part) */
-        grid-template-columns: 1fr 1.8fr 1fr; 
+        /* Gauche (1.5 part), Milieu (1 part), Droite (1.5 part) */
+        grid-template-columns: 1.5fr 1fr 1.5fr; 
       }
     }
 
@@ -174,26 +174,9 @@
 
 <!-- Cartes valeurs instantanées -->
 <div class="cards">
-  
-  <div class="card">
-    <div class="label">Ambiance (DHT22)</div>
-    <div class="pm-container" style="grid-template-columns: 1fr 1fr;">
-      <div class="pm-box">
-        <div class="pm-title">Température</div>
-        <div class="pm-value" id="val-temp">—</div>
-        <div class="pm-unit">°C</div>
-      </div>
-      <div class="pm-box">
-        <div class="pm-title">Humidité</div>
-        <div class="pm-value" id="val-hum">—</div>
-        <div class="pm-unit">%</div>
-      </div>
-    </div>
-    <div class="updated" id="ts-temp" style="margin-top: 8px;"></div>
-  </div>
 
   <div class="card">
-    <div class="label">Qualité de l'air (Particules fines)</div>
+    <div class="label">Qualité de l'air (HM3301)</div>
     <div class="pm-container">
       <div class="pm-box">
         <div class="pm-title">PM 1.0</div>
@@ -215,7 +198,24 @@
   </div>
 
   <div class="card">
-    <div class="label">Système (Pi Zero)</div>
+    <div class="label">Ambiance (DHT22)</div>
+    <div class="pm-container" style="grid-template-columns: 1fr 1fr;">
+      <div class="pm-box">
+        <div class="pm-title">Température</div>
+        <div class="pm-value" id="val-temp">—</div>
+        <div class="pm-unit">°C</div>
+      </div>
+      <div class="pm-box">
+        <div class="pm-title">Humidité</div>
+        <div class="pm-value" id="val-hum">—</div>
+        <div class="pm-unit">%</div>
+      </div>
+    </div>
+    <div class="updated" id="ts-temp" style="margin-top: 8px;"></div>
+  </div>
+  
+  <div class="card">
+    <div class="label">Infos Système (Pi Zero)</div>
     <div class="pm-container">
       <div class="pm-box">
         <div class="pm-title">CPU</div>
