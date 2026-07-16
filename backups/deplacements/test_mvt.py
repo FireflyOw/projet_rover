@@ -280,7 +280,7 @@ def calculVitesse(speed):
 
     return round(vitesse, 2)
 
-print(calculVitesse(50))
+
 
 
 
@@ -320,8 +320,7 @@ mesures = 0
 
 
 distance_max=100
-tolerance = 1
-d = rover.getDistance()
+d1 = rover.getDistance()
 time.sleep(1)
 start = time.time()
 
@@ -332,7 +331,7 @@ try:
         
         d = rover.getDistance()
         print(d)
-        if abs((distance_max - d)) <= tolerance:
+        if abs(( d1 - d)) >= 100 :
             print("babaaa")
             end =time.time()
             print("temps:",end-start)
