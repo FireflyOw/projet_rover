@@ -319,8 +319,7 @@ mesures = 0
 #      rover.cleanup()
 
 
-distance_max=150
-ecart = 50
+distance_max=100
 tolerance = 1
 start = time.time()
 
