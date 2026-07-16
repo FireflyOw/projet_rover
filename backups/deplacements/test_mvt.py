@@ -332,6 +332,7 @@ try:
             print("babaaa")
             end =time.time()
             print("temps:",start-end)
+            break
             
 
 
