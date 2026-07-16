@@ -324,14 +324,15 @@ tolerance = 1
 start = time.time()
 
 try:
+    d = rover.getDistance()
+    time.sleep(1)
     goForward(speed)
     while True:
-        d = rover.getDistance()
         print(d)
         if abs((distance_max - d)) <= tolerance:
             print("babaaa")
             end =time.time()
-            print("temps:",start-end)
+            print("temps:",end-start)
             break
             
 
