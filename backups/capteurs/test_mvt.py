@@ -268,15 +268,15 @@ def evitement():
 
 
 
-
+CALIBRATED_SPIN_SPEED = 40
 
 rover.init(0)
 init_servo()
 time.sleep(1)
 
-# Test de calibration : essaye différentes valeurs de counts
-# jusqu'à obtenir visuellement un virage de 90°
-test_counts = 0  # commence par une estimation, ajuste selon le résultat observé
-rover.stepSpinR(speed, test_counts)
+duration_test = 3.2  # ajuste cette valeur à chaque essai
+rover.spinRight(CALIBRATED_SPIN_SPEED)
+time.sleep(duration_test)
+rover.brake()
 
 rover.cleanup()
