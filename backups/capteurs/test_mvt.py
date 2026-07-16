@@ -302,7 +302,6 @@ try:
     while mesures!=10 :
         d = rover.getDistance()
         print(d)
-        time.sleep(0.08)
         if distance_max - d == ecart :
             rover.brake()
             time.sleep(2)
@@ -311,7 +310,7 @@ try:
             goForward(speed)
 
 
-        time.sleep(0.08)
+        time.sleep(0.02)
        
 finally:
      rover.cleanup()
