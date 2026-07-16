@@ -9,54 +9,51 @@ def mesures(adresse, capteur, pi, SDA):
     try:
         temp_hum = {
                 "temperature": "Erreur!", 
-                "humidite": "Erreur!", 
-                "unite_temp": "", 
-                "unite_hum": "",
+                "humidite": "Erreur!",
+                "uniteTemp": "",
+                "uniteHum": "",
             }    
         air = {
                 "pm1_atm": "Erreur!",
                 "pm25_atm": "Erreur!",
                 "pm10_atm": "Erreur!",
-                "unite": "",
+                "uniteAir": "",
             }
         
         try:
             capteur.trigger()
 
-            if time.time() >= lastTrigger + 0.2:
-                temperature = capteur.temperature()
-                humidite = capteur.humidity()
+            temperature = capteur.temperature()
+            humidite = capteur.humidity()
 
-                temp_hum = {
-                "temperature": f"{round(temperature, 1)}°C", 
-                "humidite": f"{round(humidite, 1)}%",
-                }
-
-                lastTrigger = time.time()
+            temp_hum = {
+            "temperature": f"{round(temperature, 1)}°C", 
+            "humidite": f"{round(humidite, 1)}%",
+            "uniteTemp": "°C",
+            "uniteHum": "%",
+            }
 
         except (RuntimeError, AttributeError):
             pass
 
         try:
             pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 1, 0x88, 3, 0])
+            count, data = pi.bb_i2c_zip(SDA, [4, 0x40, 2, 6, 29, 3, 0])
 
-            if time.time() >= lastMesure + 0.3:
-                count, data = pi.bb_i2c_zip(SDA, [4, 0x40, 2, 6, 29, 3, 0])
+            if count < 29:
+                raise RuntimeError(f"Erreur: lecture incomplète, {count}/29 octets reçus!")
 
-                if count < 29:
-                    raise RuntimeError(f"Erreur: lecture incomplète, {count}/29 octets reçus!")
+            pm1_atm = (data[10] << 8) | data[11]
+            pm25_atm = (data[12] << 8) | data[13]
+            pm10_atm = (data[14] << 8) | data[15]
 
-                pm1_atm = (data[10] << 8) | data[11]
-                pm25_atm = (data[12] << 8) | data[13]
-                pm10_atm = (data[14] << 8) | data[15]
+            air = {
+                "pm1_atm": f"{pm1_atm}",
+                "pm25_atm": f"{pm25_atm}",
+                "pm10_atm": f"{pm10_atm}",
+                "unite": "µg/m3",
+            }
 
-                air = {
-                    "pm1_atm": f"{pm1_atm} µg/m3",
-                    "pm25_atm": f"{pm25_atm} µg/m3",
-                    "pm10_atm": f"{pm10_atm} µg/m3",
-                }
-
-                lastMesure = time.time()
         except (RuntimeError, OSError, AttributeError):
             pass
         

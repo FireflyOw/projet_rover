@@ -93,8 +93,8 @@ try:
         if time.time() >= lastMesure + intervalMesure:
             print(f"""
 --- Mesures: ---                  
-Temp: {valeurs.get('temperature', 'N/A')} | Hum: {valeurs.get('humidite', 'N/A')}
-Particules: PM1 = {valeurs.get('pm1_atm', 'N/A')} | PM2.5 = {valeurs.get('pm1_atm', 'N/A')} | PM10 = {valeurs.get('pm1_atm', 'N/A')}
+Temp: {valeurs.get('temperature', 'N/A')}{valeurs.get('uniteTemp', 'N/A')} | Hum: {valeurs.get('humidite', 'N/A')}{valeurs.get('uniteHum', 'N/A')}
+Particules: PM1 = {valeurs.get('pm1_atm', 'N/A')} {valeurs.get('uniteAir', 'N/A')} | PM2.5 = {valeurs.get('pm1_atm', 'N/A')} {valeurs.get('uniteAir', 'N/A')} | PM10 = {valeurs.get('pm1_atm', 'N/A')} {valeurs.get('uniteAir', 'N/A')}
 Distance: {float(distance[-1]):.1f}cm
 --- Pi Zero infos: ---
 CPU: {valeurs.get('cpu', 'N/A')}% ({valeurs.get('cpuTemp', 'N/A')}°C)
