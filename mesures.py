@@ -88,6 +88,18 @@ def infosPi():
             "ramPercent": ramPercent,
             }
 
+# Fonction que le programme effectuera pour les mesures en arrière-plan:
+def mesuresBackground(adresse, capteur, pi, SDA, posX, posY):
+    global valeurs
+    while True:
+        mesureCapteurs = mesures(adresse, capteur, pi, SDA)
+        mesurePi = infosPi()
+        valeurs = { **mesureCapteurs, **mesurePi}
+
+        print(f"\n{ecriture(valeurs, posX, posY)}")
+
+        time.sleep(3)
+
 # Fonction pour l'écriture des données de mesure dans un fichier csv:
 def ecriture(valeurs=None, grid_x=0, grid_y=0):
     os.makedirs(os.path.join(os.path.dirname(__file__), "données"), exist_ok=True)
