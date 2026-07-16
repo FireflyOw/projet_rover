@@ -329,11 +329,11 @@ try:
     while True:
         d = rover.getDistance()
         print(d)
-        if (distance_max - ecart) <= 100:
+        if abs((distance_max - d)-ecart) <= tolerance:
             print("babaaa")
             end =time.time()
             print(start-end)
-            break
+            
 
 
         time.sleep(0.02)
