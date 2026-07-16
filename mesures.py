@@ -1,11 +1,7 @@
 import os, csv, time, psutil
 
-lastTrigger = 0
-lastMesure = 0
-
 # Fonction de mesure avec les capteurs HM3301 (particules) et DHT22 (temp/hum):
 def mesures(adresse, capteur, pi, SDA):
-    global lastTrigger, lastMesure
     try:
         temp_hum = {
                 "temperature": "Erreur!", 
@@ -22,6 +18,7 @@ def mesures(adresse, capteur, pi, SDA):
         
         try:
             capteur.trigger()
+            time.sleep(0.3)
 
             temperature = capteur.temperature()
             humidite = capteur.humidity()
@@ -39,6 +36,7 @@ def mesures(adresse, capteur, pi, SDA):
         try:
             pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 1, 0x88, 3, 0])
             count, data = pi.bb_i2c_zip(SDA, [4, 0x40, 2, 6, 29, 3, 0])
+            time.sleep(0.3)
 
             if count < 29:
                 raise RuntimeError(f"Erreur: lecture incomplète, {count}/29 octets reçus!")
@@ -87,18 +85,6 @@ def infosPi():
             "ramTotale": ramTotale, 
             "ramPercent": ramPercent,
             }
-
-# Fonction que le programme effectuera pour les mesures en arrière-plan:
-def mesuresBackground(adresse, capteur, pi, SDA, posX, posY):
-    global valeurs
-    while True:
-        mesureCapteurs = mesures(adresse, capteur, pi, SDA)
-        mesurePi = infosPi()
-        valeurs = { **mesureCapteurs, **mesurePi}
-
-        print(f"\n{ecriture(valeurs, posX, posY)}")
-
-        time.sleep(3)
 
 # Fonction pour l'écriture des données de mesure dans un fichier csv:
 def ecriture(valeurs=None, grid_x=0, grid_y=0):
