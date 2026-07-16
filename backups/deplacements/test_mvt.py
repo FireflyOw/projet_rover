@@ -269,7 +269,7 @@ def evitement():
 
 # Fonction pour estimer la vitesse de déplacement du rover:
 def calculVitesse(speed):
-    vMaxTheorique = 17.6
+    vMaxTheorique = 10.5
     vSeuil = 26
     
     if abs(speed) < vSeuil:
