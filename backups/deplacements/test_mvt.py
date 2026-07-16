@@ -269,7 +269,7 @@ def evitement():
 
 # Fonction pour estimer la vitesse de déplacement du rover:
 def calculVitesse(speed):
-    vMaxTheorique = 17.6
+    vMaxTheorique = 10.5
     vSeuil = 26
     
     if abs(speed) < vSeuil:
@@ -280,7 +280,7 @@ def calculVitesse(speed):
 
     return round(vitesse, 2)
 
-print(calculVitesse(50))
+
 
 
 
@@ -293,26 +293,55 @@ mesures = 0
 
 
 
-distance_max=100
-ecart = 10
-tolerance = 1
+# distance_max=100
+# ecart = 10
+# tolerance = 1
 
+
+
+# try:
+#     goForward(speed)
+#     while mesures!=10 :
+#         d = rover.getDistance()
+#         print(d)
+#         if abs((distance_max - d) - ecart) <= tolerance:
+#             print("babaaa")
+#             rover.brake()
+#             time.sleep(2)
+#             mesures +=1
+#             ecart +=10
+#             goForward(speed)
+
+
+#         time.sleep(0.02)
+       
+# finally:
+#      rover.cleanup()
+
+
+distance_max=100
+d1 = rover.getDistance()
+time.sleep(1)
+start = time.time()
 
 try:
     goForward(speed)
-    while mesures!=10 :
+
+    while True:  
+        
         d = rover.getDistance()
         print(d)
-        if abs((distance_max - d) - ecart) <= tolerance:
+        if abs(( d1 - d)) >= 100 :
             print("babaaa")
-            rover.brake()
-            time.sleep(2)
-            mesures +=1
-            ecart +=10
-            goForward(speed)
+            end =time.time()
+            print("temps:",end-start)
+            break
+            
 
 
         time.sleep(0.02)
        
 finally:
      rover.cleanup()
+
+
