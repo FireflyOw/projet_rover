@@ -281,3 +281,31 @@ def calculVitesse(speed):
     return round(vitesse, 2)
 
 print(calculVitesse(50))
+
+
+
+
+
+rover.init(0)
+init_servo()
+time.sleep(1)
+mesures = 0
+
+distance=[]
+distance.append(rover.getDistance())
+print(distance[-1:])
+distance_max=100
+ecart = 10
+
+
+try:
+    while mesures!=10 :
+        goForward(speed)
+        if distance_max - distance == ecart :
+            rover.brake()
+            time.sleep(2)
+            mesures +=1
+            ecart +=10
+
+finally:
+     rover.cleanup()
