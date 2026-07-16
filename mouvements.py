@@ -8,6 +8,19 @@ servoArG = 11
 servoArD = 13
 servoSonar = 0
 
+# Fonction pour estimer la vitesse de déplacement du rover:
+def calculVitesse(speed):
+    vMaxTheorique = 17.6
+    vSeuil = 20
+    
+    if abs(speed) < vSeuil:
+        return 0.0
+    
+    puissance = (abs(speed) - vSeuil) / (100 - vSeuil)
+    vitesse = puissance * vMaxTheorique
+
+    return round(vitesse, 2)
+    
 # Fonction d'initialisation des servos (mis à 0):
 def initServos(rover):
     rover.setServo(servoAvG, 0)
