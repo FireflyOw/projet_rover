@@ -329,10 +329,10 @@ try:
     while True:
         d = rover.getDistance()
         print(d)
-        if abs((distance_max - d)-ecart) <= tolerance:
+        if abs((distance_max - d)) <= tolerance:
             print("babaaa")
             end =time.time()
-            print(start-end)
+            print("temps:",start-end)
             
 
 
