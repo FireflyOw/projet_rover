@@ -310,7 +310,7 @@ try:
             goForward(speed)
 
 
-        time.sleep(0.02)
+        time.sleep(0.08)
        
 finally:
      rover.cleanup()
