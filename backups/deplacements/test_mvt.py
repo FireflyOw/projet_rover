@@ -321,16 +321,17 @@ mesures = 0
 
 distance_max=100
 tolerance = 1
+d = rover.getDistance()
+time.sleep(1)
 start = time.time()
 
 try:
-   
+    goForward(speed)
+
     while True:  
+        
         d = rover.getDistance()
         print(d)
-        time.sleep(1)
-        goForward(speed)
-
         if abs((distance_max - d)) <= tolerance:
             print("babaaa")
             end =time.time()
