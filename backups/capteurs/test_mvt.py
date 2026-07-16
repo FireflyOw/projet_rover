@@ -301,7 +301,7 @@ ecart = 10
 try:
     while mesures!=10 :
         goForward(speed)
-        if distance_max - distance == ecart :
+        if int(distance_max) - int(distance) == ecart :
             rover.brake()
             time.sleep(2)
             mesures +=1
