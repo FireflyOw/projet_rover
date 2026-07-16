@@ -11,7 +11,7 @@ servoSonar = 0
 # Fonction pour estimer la vitesse de déplacement du rover:
 def calculVitesse(speed):
     vMaxTheorique = 17.6
-    vSeuil = 20
+    vSeuil = 26
     
     if abs(speed) < vSeuil:
         return 0.0
