@@ -280,4 +280,4 @@ def calculVitesse(speed):
 
     return round(vitesse, 2)
 
-print(calculVitesse(speed))
+print(calculVitesse(90))
