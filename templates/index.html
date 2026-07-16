@@ -344,12 +344,16 @@
     [...rows].reverse().slice(0, 10).forEach(r => {
       const tr = document.createElement("tr");
       const time = r.timestamp ? r.timestamp.split(" ")[1] : "—";
+      
+      // On s'assure de créer exactement 7 colonnes (<td>) pour correspondre au <thead>
       tr.innerHTML = `
         <td>${time}</td>
         <td>(${r.grid_x ?? "—"},${r.grid_y ?? "—"})</td>
         <td>${parseFloat(r.temp_c).toFixed(1)} °C</td>
         <td>${parseFloat(r.humidity).toFixed(1)} %</td>
+        <td>${r.pm1 ? parseFloat(r.pm1).toFixed(1) : "—"} µg/m³</td>
         <td>${r.pm2_5 ? parseFloat(r.pm2_5).toFixed(1) : "—"} µg/m³</td>
+        <td>${r.pm10 ? parseFloat(r.pm10).toFixed(1) : "—"} µg/m³</td>
       `;
       tbody.appendChild(tr);
     });
