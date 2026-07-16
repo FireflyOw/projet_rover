@@ -60,7 +60,7 @@ try:
     capteur = DHT22.sensor(pi, 24)
     print("[main.py][DHT22] Capteur initialisé!")
 except (AttributeError, RuntimeError):
-    print("[main.py][DHT22] Capteur non initialisé!")
+    print("[main.py][DHT22] Capteur non initialisé...")
     capteur = None
 
 distance.append(rover.getDistance())
