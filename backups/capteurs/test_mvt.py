@@ -267,16 +267,17 @@ def evitement():
         
 
 
+# Fonction pour estimer la vitesse de déplacement du rover:
+def calculVitesse(speed):
+    vMaxTheorique = 17.6
+    vSeuil = 26
+    
+    if abs(speed) < vSeuil:
+        return 0.0
+    
+    puissance = (abs(speed) - vSeuil) / (100 - vSeuil)
+    vitesse = puissance * vMaxTheorique
 
-CALIBRATED_SPIN_SPEED = 40
+    return round(vitesse, 2)
 
-rover.init(0)
-init_servo()
-time.sleep(1)
-
-duration_test = 3.2  # ajuste cette valeur à chaque essai
-rover.spinRight(CALIBRATED_SPIN_SPEED)
-time.sleep(duration_test)
-rover.brake()
-
-rover.cleanup()
+print(calculVitesse(speed))
