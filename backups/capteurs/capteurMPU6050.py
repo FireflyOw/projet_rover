@@ -87,8 +87,8 @@ try:
         valeur = mesure(adresse, offsets)
 
         print(f"""
-Accéleration (g)    : X = {valeur["ax"] + offsets["ax"]} | Y = {valeur["ay"] + offsets["ay"]} | Z = {valeur["az"] + offsets["az"]}
-Gyroscope (°/s)     : X = {valeur["gx"] + offsets["gx"]} | Y = {valeur["gy"] + offsets["gy"]} | Z = {valeur["gz"] + offsets["gz"]}""")
+Accéleration (g)    : X = {valeur["ax"]} | Y = {valeur["ay"]} | Z = {valeur["az"]}
+Gyroscope (°/s)     : X = {valeur["gx"]} | Y = {valeur["gy"]} | Z = {valeur["gz"]}""")
 
         time.sleep(0.2)
 
