@@ -46,7 +46,7 @@ def mesure(adresse):
 
 try:
     while True:
-        valeur = mesure()
+        valeur = mesure(adresse)
 
         print(f"""
 Accéleration (g)    : X = {valeur["ax"]:} | Y = {valeur["ay"]:} | Z = {valeur["az"]:}
