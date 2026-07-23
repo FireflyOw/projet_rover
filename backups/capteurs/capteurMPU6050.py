@@ -63,7 +63,7 @@ def etalonnage(adresse, echantillons = 100):
             sum_gz += lecture(data[12], data[13]) / 131.0
 
         lecturesValides += 1
-        time.sleep(0.1)
+        time.sleep(0.01)
         
     offsets = {
     "ax": (sum_ax / lecturesValides) - 1.0,
