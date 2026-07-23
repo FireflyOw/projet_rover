@@ -30,9 +30,9 @@ def mesure(adresse, offsets):
         ay = round(lecture(data[2], data[3]) / 16384.0 - offsets["ay"], 2)
         az = round(lecture(data[4], data[5]) / 16384.0 - offsets["az"], 2)
         
-        gx = round(lecture(data[8], data[9]) / 131.0, 1   - offsets["gx"], 2)
-        gy = round(lecture(data[10], data[11]) / 131.0, 1 - offsets["gy"], 2)
-        gz = round(lecture(data[12], data[13]) / 131.0, 1 - offsets["gz"], 2)
+        gx = round(lecture(data[8], data[9]) / 131.0   - offsets["gx"], 2)
+        gy = round(lecture(data[10], data[11]) / 131.0 - offsets["gy"], 2)
+        gz = round(lecture(data[12], data[13]) / 131.0 - offsets["gz"], 2)
 
     return {
         "ax": ax,
