@@ -20,7 +20,7 @@ def lecture(h, l):
     v = (h << 8) | l
     return v - 65536 if v >= 0x8000 else v
 
-def mesure(adresse, offsets, seuilGyro = 0.2):
+def mesure(adresse, offsets, seuilGyro = 1.0):
     count, data = pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 1, 0x3B, 2, 6, 14, 3, 0])
 
     if count < 14:
@@ -47,12 +47,13 @@ def etalonnage(adresse, echantillons = 100):
     sum_ax, sum_ay, sum_az = 0, 0, 0
     sum_gx, sum_gy, sum_gz = 0, 0, 0
     lecturesValides = 0
-    count, data = pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 1, 0x3B, 2, 6, 14, 3, 0])
 
     if count < 14:
         raise RuntimeError(f"Erreur étalonnage: lecture incomplète, {count}/14 octets reçus!")
     else:
         while lecturesValides < echantillons:
+            count, data = pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 1, 0x3B, 2, 6, 14, 3, 0])
+            
             sum_ax += lecture(data[0], data[1]) / 16384.0
             sum_ay += lecture(data[2], data[3]) / 16384.0
             sum_az += lecture(data[4], data[5]) / 16384.0
