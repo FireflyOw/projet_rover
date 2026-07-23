@@ -48,12 +48,12 @@ def etalonnage(adresse, echantillons = 100):
     sum_gx, sum_gy, sum_gz = 0, 0, 0
     lecturesValides = 0
 
-    if count < 14:
-        raise RuntimeError(f"Erreur étalonnage: lecture incomplète, {count}/14 octets reçus!")
-    else:
-        while lecturesValides < echantillons:
-            count, data = pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 1, 0x3B, 2, 6, 14, 3, 0])
-            
+    while lecturesValides < echantillons:
+        count, data = pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 1, 0x3B, 2, 6, 14, 3, 0])
+
+        if count < 14:
+            raise RuntimeError(f"Erreur étalonnage: mesure n°{lecturesValides + 1} invalide, {count}/14 octets reçus!")
+        else:
             sum_ax += lecture(data[0], data[1]) / 16384.0
             sum_ay += lecture(data[2], data[3]) / 16384.0
             sum_az += lecture(data[4], data[5]) / 16384.0
@@ -62,8 +62,8 @@ def etalonnage(adresse, echantillons = 100):
             sum_gy += lecture(data[10], data[11]) / 131.0
             sum_gz += lecture(data[12], data[13]) / 131.0
 
-            lecturesValides += 1
-            time.sleep(0.1)
+        lecturesValides += 1
+        time.sleep(0.1)
         
     offsets = {
     "ax": (sum_ax / lecturesValides) - 1.0,
