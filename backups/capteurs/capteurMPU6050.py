@@ -20,7 +20,7 @@ def lecture(h, l):
     v = (h << 8) | l
     return v - 65536 if v >= 0x8000 else v
 
-def mesure(adresse, offsets, seuilGyro = 1.0):
+def mesure(adresse, offsets, seuilGyro = 0.2):
     count, data = pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 1, 0x3B, 2, 6, 14, 3, 0])
 
     if count < 14:
