@@ -20,7 +20,7 @@ def lecture(h, l):
     v = (h << 8) | l
     return v - 65536 if v >= 0x8000 else v
 
-def mesure(adresse, offsets):
+def mesure(adresse, offsets, seuilGyro = 0.2):
     count, data = pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 1, 0x3B, 2, 6, 14, 3, 0])
 
     if count < 14:
@@ -34,15 +34,12 @@ def mesure(adresse, offsets):
         gy = round(lecture(data[10], data[11]) / 131.0 - offsets["gy"], 2)
         gz = round(lecture(data[12], data[13]) / 131.0 - offsets["gz"], 2)
 
-    return {
-        "ax": ax,
-        "ay": ay,
-        "az": az,
+        gx = 0.0 if abs(gx) < seuilGyro else gx
+        gy = 0.0 if abs(gy) < seuilGyro else gy
+        gz = 0.0 if abs(gz) < seuilGyro else gz
 
-        "gx": gx,
-        "gy": gy,
-        "gz": gz,
-    }
+    return {"ax": ax, "ay": ay, "az": az,
+            "gx": gx, "gy": gy, "gz": gz,}
 
 def etalonnage(adresse, echantillons = 100):
     print(f"[MPU6050] Étalonnage en cours... Ne pas bouger le rover ({echantillons} mesures)")
@@ -55,16 +52,17 @@ def etalonnage(adresse, echantillons = 100):
     if count < 14:
         raise RuntimeError(f"Erreur étalonnage: lecture incomplète, {count}/14 octets reçus!")
     else:
-        sum_ax += lecture(data[0], data[1]) / 16384.0
-        sum_ay += lecture(data[2], data[3]) / 16384.0
-        sum_az += lecture(data[4], data[5]) / 16384.0
-        
-        sum_gx += lecture(data[8], data[9]) / 131.0
-        sum_gy += lecture(data[10], data[11]) / 131.0
-        sum_gz += lecture(data[12], data[13]) / 131.0
+        while lecturesValides < echantillons:
+            sum_ax += lecture(data[0], data[1]) / 16384.0
+            sum_ay += lecture(data[2], data[3]) / 16384.0
+            sum_az += lecture(data[4], data[5]) / 16384.0
+            
+            sum_gx += lecture(data[8], data[9]) / 131.0
+            sum_gy += lecture(data[10], data[11]) / 131.0
+            sum_gz += lecture(data[12], data[13]) / 131.0
 
-        lecturesValides += 1
-        time.sleep(0.1)
+            lecturesValides += 1
+            time.sleep(0.1)
         
     offsets = {
     "ax": (sum_ax / lecturesValides) - 1.0,
