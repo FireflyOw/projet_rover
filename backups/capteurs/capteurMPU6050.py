@@ -26,13 +26,13 @@ def mesure(adresse, offsets):
     if count < 14:
         raise RuntimeError(f"Erreur mesure: lecture incomplète, {count}/14 octets reçus!")
     else:
-        ax = round(lecture(data[0], data[1]) / 16384.0, 2) - offsets["ax"]
-        ay = round(lecture(data[2], data[3]) / 16384.0, 2) - offsets["ay"]
-        az = round(lecture(data[4], data[5]) / 16384.0, 2) - offsets["az"]
+        ax = round(lecture(data[0], data[1]) / 16384.0 - offsets["ax"], 2)
+        ay = round(lecture(data[2], data[3]) / 16384.0 - offsets["ay"], 2)
+        az = round(lecture(data[4], data[5]) / 16384.0 - offsets["az"], 2)
         
-        gx = round(lecture(data[8], data[9]) / 131.0, 1)   - offsets["gx"]
-        gy = round(lecture(data[10], data[11]) / 131.0, 1) - offsets["gy"]
-        gz = round(lecture(data[12], data[13]) / 131.0, 1) - offsets["gz"]
+        gx = round(lecture(data[8], data[9]) / 131.0, 1   - offsets["gx"], 2)
+        gy = round(lecture(data[10], data[11]) / 131.0, 1 - offsets["gy"], 2)
+        gz = round(lecture(data[12], data[13]) / 131.0, 1 - offsets["gz"], 2)
 
     return {
         "ax": ax,
@@ -55,25 +55,25 @@ def etalonnage(adresse, echantillons = 100):
     if count < 14:
         raise RuntimeError(f"Erreur étalonnage: lecture incomplète, {count}/14 octets reçus!")
     else:
-        sum_ax += round(lecture(data[0], data[1]) / 16384.0, 2)
-        sum_ay += round(lecture(data[2], data[3]) / 16384.0, 2)
-        sum_az += round(lecture(data[4], data[5]) / 16384.0, 2)
+        sum_ax += lecture(data[0], data[1]) / 16384.0
+        sum_ay += lecture(data[2], data[3]) / 16384.0
+        sum_az += lecture(data[4], data[5]) / 16384.0
         
-        sum_gx += round(lecture(data[8], data[9]) / 131.0, 1)
-        sum_gy += round(lecture(data[10], data[11]) / 131.0, 1)
-        sum_gz += round(lecture(data[12], data[13]) / 131.0, 1)
+        sum_gx += lecture(data[8], data[9]) / 131.0
+        sum_gy += lecture(data[10], data[11]) / 131.0
+        sum_gz += lecture(data[12], data[13]) / 131.0
 
         lecturesValides += 1
         time.sleep(0.1)
         
     offsets = {
-    "ax": round((sum_ax / lecturesValides) - 1.0, 2),
-    "ay": round((sum_ay / lecturesValides) - 0.0, 2),
-    "az": round((sum_az / lecturesValides) - 0.0, 2),
+    "ax": (sum_ax / lecturesValides) - 1.0,
+    "ay": (sum_ay / lecturesValides) - 0.0,
+    "az": (sum_az / lecturesValides) - 0.0,
 
-    "gx": round((sum_gx / lecturesValides) - 0.0, 2),
-    "gy": round((sum_gy / lecturesValides) - 0.0, 2),
-    "gz": round((sum_gz / lecturesValides) - 0.0, 2),
+    "gx": (sum_gx / lecturesValides) - 0.0,
+    "gy": (sum_gy / lecturesValides) - 0.0,
+    "gz": (sum_gz / lecturesValides) - 0.0,
     }
 
     print(f"[MPU6050] Étalonnage terminé ! Offsets calculés : {offsets}")
