@@ -408,21 +408,20 @@ try:
     goForward(speed)
 
     while True:  
-        
-        d = rover.getDistance()
-        print(d)
-        if abs(( d1 - d)) >= 100 :
-            print("babaaa")
-            end =time.time()
-            print("temps:",end-start)
-            break
-            
-
         valeur = mesure(adresse, offsets)
 
         print(f"""
 Accéleration (g)    : X = {valeur["ax"]} | Y = {valeur["ay"]} | Z = {valeur["az"]}
 Gyroscope (°/s)     : X = {valeur["gx"]} | Y = {valeur["gy"]} | Z = {valeur["gz"]}""")
+        
+        d = rover.getDistance()
+        print(d)
+        
+        if abs(( d1 - d)) >= 100 :
+            print("babaaa")
+            end =time.time()
+            print("temps:",end-start)
+            break
         
         time.sleep(0.02)
        
