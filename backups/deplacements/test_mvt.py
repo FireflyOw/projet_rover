@@ -59,6 +59,11 @@ def evitement():
     print("blabla")
     time.sleep(3)
 
+rover.init(0)
+init_servo()
+time.sleep(1)
+mesures = 0
+
 # ---- Fonctions pour gyro + accéléromètre ---
 SDA, SCL = 25, 5
 adresse = 0x68
@@ -358,17 +363,6 @@ def calculVitesse(speed):
     vitesse = puissance * vMaxTheorique
 
     return round(vitesse, 2)
-
-
-
-
-
-
-
-rover.init(0)
-init_servo()
-time.sleep(1)
-mesures = 0
 
 
 
