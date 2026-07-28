@@ -318,18 +318,7 @@ def calculVitesse(speed):
 
 
 def tourner(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0):
-    """
-    Fait tourner le rover d'un angle donné, en intégrant la vitesse
-    angulaire (axe Z) mesurée par le gyroscope, jusqu'à atteindre l'angle cible.
- 
-    angle_cible : angle à parcourir, en degrés (valeur positive)
-    sens        : "droite" ou "gauche"
-    offsets     : dict renvoyé par etalonnage()
-    vitesse     : vitesse de rotation du rover (PWM)
-    seuilGyro   : zone morte du gyroscope (deg/s), déjà géré par mesure()
-    timeout     : sécurité en secondes, pour éviter une rotation infinie
-                  si le gyroscope ne détecte plus rien
-    """
+   
     if sens == "droite":
         rover.spinRight(vitesse)
     elif sens == "gauche":
@@ -348,7 +337,7 @@ def tourner(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, t
         dernier_temps = maintenant
  
         
-        angle_parcouru += abs(m["gy"]) * dt
+        angle_parcouru += abs(m["gz"]) * dt
  
         if maintenant - debut > timeout:
             print("[tourner] Timeout de sécurité atteint pendant le virage")
