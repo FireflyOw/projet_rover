@@ -363,7 +363,7 @@ try:
     offsets = etalonnage(adresse, echantillons=150)
     time.sleep(0.5)
 
-    tourner(angle_cible=90, sens="droite", offsets=etalonnage(adresse, echantillons=150), vitesse=50, seuilGyro=0.5, timeout=5.0)
+    tourner( offsets ,angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0)
 
 
 finally:
