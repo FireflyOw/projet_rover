@@ -329,7 +329,8 @@ def tourner(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, t
     angle_parcouru = 0.0
     dernier_temps = time.time()
     debut = dernier_temps
- 
+    compteur = 0
+
     while abs(angle_parcouru) < angle_cible:
         m = mesure(adresse, offsets, seuilGyro)
         maintenant = time.time()
@@ -338,6 +339,13 @@ def tourner(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, t
  
         
         angle_parcouru += abs(m["gz"]) * dt
+
+
+        compteur += 1
+        if compteur % 10 == 0:  # affiche 1 fois sur 10 pour ne pas noyer la console
+            print(f"gx={m['gx']:7.2f}  gy={m['gy']:7.2f}  gz={m['gz']:7.2f}  "
+                  f"dt={dt*1000:5.1f}ms  angle_parcouru={angle_parcouru:6.2f}°")
+
  
         if maintenant - debut > timeout:
             print("[tourner] Timeout de sécurité atteint pendant le virage")
@@ -346,6 +354,7 @@ def tourner(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, t
         time.sleep(0.005)
  
     rover.brake()
+    print(f"Nombre total de mesures effectuées : {compteur}")
 
 
 
