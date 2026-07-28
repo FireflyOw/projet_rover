@@ -322,7 +322,7 @@ mesures = 0
 #     pi.stop()
 
 
-def tourner(angle_cible=90, sens="droite", offsets= etalonnage(adresse, echantillons=150), vitesse=50, seuilGyro=0.5, timeout=5.0):
+def tourner(angle_cible=90, sens="droite", offsets, vitesse=50, seuilGyro=0.5, timeout=5.0):
     """
     Fait tourner le rover d'un angle donné, en intégrant la vitesse
     angulaire (axe Z) mesurée par le gyroscope, jusqu'à atteindre l'angle cible.
@@ -363,7 +363,10 @@ def tourner(angle_cible=90, sens="droite", offsets= etalonnage(adresse, echantil
  
     rover.brake()
 
-
+rover.init(0)
+init_servo()
+time.sleep(1)
+mesures = 0
 try:
     offsets = etalonnage(adresse, echantillons=150)
     time.sleep(0.5)
