@@ -54,6 +54,9 @@ def init_servo():
     time.sleep(0.01)
     rover.setServo(servo_Sonar, 0)
 
+rover.init(0)
+init_servo()
+time.sleep(1)
 
 # ---- Fonctions pour gyro + accéléromètre ---
 SDA, SCL = 25, 5
@@ -355,10 +358,8 @@ def tourner(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, t
  
     rover.brake()
 
-rover.init(0)
-init_servo()
-time.sleep(1)
-mesures = 0
+
+
 try:
     offsets = etalonnage(adresse, echantillons=150)
     time.sleep(0.5)
