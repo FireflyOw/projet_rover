@@ -338,7 +338,7 @@ def tourner(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, t
         dernier_temps = maintenant
  
         
-        angle_parcouru += abs(m["gz"]) * dt
+        angle_parcouru += abs(m["gx"]) * dt
 
 
         compteur += 1
