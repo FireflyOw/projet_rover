@@ -54,15 +54,6 @@ def init_servo():
     time.sleep(0.01)
     rover.setServo(servo_Sonar, 0)
 
-def evitement():
-    goRight()
-    print("blabla")
-    time.sleep(3)
-
-rover.init(0)
-init_servo()
-time.sleep(1)
-mesures = 0
 
 # ---- Fonctions pour gyro + accéléromètre ---
 SDA, SCL = 25, 5
@@ -103,7 +94,7 @@ def mesure(adresse, offsets, seuilGyro = 0.5):
         gy = 0.0 if abs(gy) < seuilGyro else gy
         gz = 0.0 if abs(gz) < seuilGyro else gz
 
-    return {"ax": ax, "ay": ay, "az": az,
+    return {"ax": ax, "ay": ay, "az": az,   
             "gx": gx, "gy": gy, "gz": gz,}
 
 def etalonnage(adresse, echantillons = 100):
@@ -244,112 +235,6 @@ def etalonnage(adresse, echantillons = 100):
 #             Spin = False
 
 
-    
-# finally: 
-#    print(len(distance))
-#    rover.cleanup()
-
-# rover.init(0)
-# init_servo()
-# time.sleep(1)
-
-# while True:
-    
-
-#     goForward(speed)
-#     time.sleep(1.5)
-#     rover.brake()
-#     time.sleep(1.5)
-#     goForward(speed)
-#     time.sleep(1.5)
-#     rover.brake()
-#     time.sleep(1.5)
-#     goForward(speed)
-#     time.sleep(1.5)
-#     rover.brake()
-#     time.sleep(1.5)
-#     rover.spinLeft(speed)
-#     time.sleep(1.95)
-#     rover.brake()
-#     time.sleep(1.5)
-#     goForward(speed)
-#     time.sleep(1.5)
-#     rover.brake()
-#     time.sleep(1.5)
-#     goForward(speed)
-#     time.sleep(1.5)
-#     rover.brake()
-#     time.sleep(1.5)
-#     rover.spinLeft(speed)
-#     time.sleep(1.95)
-#     rover.brake()
-#     time.sleep(1.5)
-
-
-# rover.cleanup()
-
-# def demiTour_G() :
-#     rover.spinLeft(speed)
-#     time.sleep(2.45) # fonction 90°
-#     rover.brake()
-#     time.sleep(2)
-#     goForward(speed)
-#     time.sleep(2)
-#     rover.brake()
-#     time.sleep(2)
-#     rover.spinLeft(speed)
-#     time.sleep(2.45) # fonction 90°
-#     rover.brake()
-#     time.sleep(2)
-
-
-# COUNTS_90_DEGRES = 20
-
-# def demiTour_D() :
-#     rover.stepSpinR(speed, COUNTS_90_DEGRES)
-#     time.sleep(0.5)
-#     goForward(speed)
-#     time.sleep(2)
-#     rover.brake()
-#     time.sleep(0.5)
-#     rover.stepSpinR(speed, COUNTS_90_DEGRES)
-#     time.sleep(0.5)
-
-# rover.init(0)
-# init_servo()
-# time.sleep(1)
-
-# x = 0
-# y = 0
-
-# try:
-#     while True:
-#         goForward(speed)
-#         time.sleep(2)
-#         rover.brake()
-#         x +=1
-#         time.sleep(2)
-       
-
-#         if x==3:
-#             demiTour_D()
-#             y +=1
-#             while x !=0:
-#                 goForward(speed)
-#                 time.sleep(2)
-#                 rover.brake()
-#                 x -=1
-#                 time.sleep(2)
-#             demiTour_G()
-
-#         if x==3 and y==3:
-#             break
-
-# finally:
-#     rover.cleanup()
-
-        
-
 
 # Fonction pour estimer la vitesse de déplacement du rover:
 def calculVitesse(speed):
@@ -363,6 +248,17 @@ def calculVitesse(speed):
     vitesse = puissance * vMaxTheorique
 
     return round(vitesse, 2)
+
+
+
+
+
+
+
+rover.init(0)
+init_servo()
+time.sleep(1)
+mesures = 0
 
 
 
@@ -392,36 +288,90 @@ def calculVitesse(speed):
 #      rover.cleanup()
 
 
-distance_max=100
-d1 = rover.getDistance()
-time.sleep(1)
-start = time.time()
+# distance_max=100
+# d1 = rover.getDistance()
+# time.sleep(1)
+# start = time.time()
+
+# try:
+#     offsets = etalonnage(adresse, echantillons=150)
+#     goForward(speed)
+
+#     while True:  
+        
+#         d = rover.getDistance()
+#         print(d)
+#         if abs(( d1 - d)) >= 100 :
+#             print("babaaa")
+#             end =time.time()
+#             print("temps:",end-start)
+#             break
+            
+
+#         valeur = mesure(adresse, offsets)
+
+#         print(f"""
+# Accéleration (g)    : X = {valeur["ax"]} | Y = {valeur["ay"]} | Z = {valeur["az"]}
+# Gyroscope (°/s)     : X = {valeur["gx"]} | Y = {valeur["gy"]} | Z = {valeur["gz"]}""")
+        
+#         time.sleep(0.02)
+       
+# finally:
+#     rover.cleanup()
+#     pi.bb_i2c_close(SDA)
+#     pi.stop()
+
+
+def tourner(angle_cible=90, sens="droite", offsets=etalonnage(adresse, echantillons=150), vitesse=50, seuilGyro=0.5, timeout=5.0):
+    """
+    Fait tourner le rover d'un angle donné, en intégrant la vitesse
+    angulaire (axe Z) mesurée par le gyroscope, jusqu'à atteindre l'angle cible.
+ 
+    angle_cible : angle à parcourir, en degrés (valeur positive)
+    sens        : "droite" ou "gauche"
+    offsets     : dict renvoyé par etalonnage()
+    vitesse     : vitesse de rotation du rover (PWM)
+    seuilGyro   : zone morte du gyroscope (deg/s), déjà géré par mesure()
+    timeout     : sécurité en secondes, pour éviter une rotation infinie
+                  si le gyroscope ne détecte plus rien
+    """
+    if sens == "droite":
+        rover.spinRight(vitesse)
+    elif sens == "gauche":
+        rover.spinLeft(vitesse)
+    else:
+        raise ValueError("sens doit être 'droite' ou 'gauche'")
+ 
+    angle_parcouru = 0.0
+    dernier_temps = time.time()
+    debut = dernier_temps
+ 
+    while abs(angle_parcouru) < angle_cible:
+        m = mesure(adresse, offsets, seuilGyro)
+        maintenant = time.time()
+        dt = maintenant - dernier_temps
+        dernier_temps = maintenant
+ 
+        
+        angle_parcouru += abs(m["gz"]) * dt
+ 
+        if maintenant - debut > timeout:
+            print("[tourner] Timeout de sécurité atteint pendant le virage")
+            break
+ 
+        time.sleep(0.005)
+ 
+    rover.brake()
+
 
 try:
     offsets = etalonnage(adresse, echantillons=150)
-    goForward(speed)
+    time.sleep(0.5)
 
-    while True:  
-        valeur = mesure(adresse, offsets)
+    tourner(angle_cible=90, sens="droite", offsets=etalonnage(adresse, echantillons=150), vitesse=50, seuilGyro=0.5, timeout=5.0)
 
-        print(f"""
-Accéleration (g)    : X = {valeur["ax"]} | Y = {valeur["ay"]} | Z = {valeur["az"]}
-Gyroscope (°/s)     : X = {valeur["gx"]} | Y = {valeur["gy"]} | Z = {valeur["gz"]}""")
-        
-        d = rover.getDistance()
-        print(d)
-        
-        if abs(( d1 - d)) >= 100 :
-            print("babaaa")
-            end =time.time()
-            print("temps:",end-start)
-            break
-        
-        time.sleep(0.02)
-       
+
 finally:
     rover.cleanup()
     pi.bb_i2c_close(SDA)
     pi.stop()
-
-
