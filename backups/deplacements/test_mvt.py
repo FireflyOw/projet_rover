@@ -254,14 +254,6 @@ def calculVitesse(speed):
 
 
 
-
-rover.init(0)
-init_servo()
-time.sleep(1)
-mesures = 0
-
-
-
 # distance_max=100
 # ecart = 10
 # tolerance = 1
