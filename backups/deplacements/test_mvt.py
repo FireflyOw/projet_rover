@@ -366,6 +366,9 @@ try:
         rover.brake()
         time.sleep(1)
         x +=1
+        
+        if x==3 and y==2:
+            break
 
         if x==3:
             demitour_D()
