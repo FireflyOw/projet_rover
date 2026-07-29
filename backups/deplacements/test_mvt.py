@@ -138,14 +138,16 @@ def etalonnage(adresse, echantillons = 100):
 
     return offsets
 
-# def getValidDistance():
-#                 d = rover.getDistance()
-#                 if d > MAX_VALID_DISTANCE:
-#                     return None  
-#                 return d
+MAX_VALID_DISTANCE = 300
+
+def getValidDistance():
+    d = rover.getDistance()
+    if d > MAX_VALID_DISTANCE:
+        return None  
+    return d
 
 
-# Evitement
+# ----------------------------Evitement----------------------------------------------------------------------------------------------------------------
 
 # rover.init(0)
 # init_servo()
@@ -239,7 +241,7 @@ def etalonnage(adresse, echantillons = 100):
 
 
 
-# Fonction pour estimer la vitesse de déplacement du rover:
+#-------------------------------------Fonction pour estimer la vitesse de déplacement du rover:------------------------------------------------------------------
 def calculVitesse(speed):
     vMaxTheorique = 10.5
     vSeuil = 26
@@ -254,36 +256,7 @@ def calculVitesse(speed):
 
 
 
-
-
-
-# distance_max=100
-# ecart = 10
-# tolerance = 1
-
-
-
-# try:
-#     goForward(speed)
-#     while mesures!=10 :
-#         d = rover.getDistance()
-#         print(d)
-#         if abs((distance_max - d) - ecart) <= tolerance:
-#             print("babaaa")
-#             rover.brake()
-#             time.sleep(2)
-#             mesures +=1
-#             ecart +=10
-#             goForward(speed)
-
-
-#         time.sleep(0.02)
-       
-# finally:
-#      rover.cleanup()
-
-
-# distance_max=100
+#--------------------------------------------calcul vitesse rover sur 1m---------------------------------------------------------------------------------
 # d1 = rover.getDistance()
 # time.sleep(1)
 # start = time.time()
@@ -316,8 +289,65 @@ def calculVitesse(speed):
 #     pi.bb_i2c_close(SDA)
 #     pi.stop()
 
+#-------------------------------------------------rotations 90°----------------------------------------------------------------------------------------------
 
-def tourner(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0):
+
+def demitour_D():
+    tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0)
+    goForward(speed)
+    time.sleep(1.5)
+    tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0)  
+
+
+def demitour_G():
+    tourner_90(offsets, angle_cible=90, sens="gauche", vitesse=50, seuilGyro=0.5, timeout=5.0)
+    goForward(speed)
+    time.sleep(1.5)
+    tourner_90(offsets, angle_cible=90, sens="gauche", vitesse=50, seuilGyro=0.5, timeout=5.0)  
+
+
+
+rover.init(0)
+init_servo()
+time.sleep(0.5)
+offsets = etalonnage(adresse, echantillons=150)
+time.sleep(0.5)
+
+x = 0
+y = 0
+
+try:
+    while True:
+        goForward(speed)
+        time.sleep(1.5)
+        rover.brake()
+        x +=1
+
+        if x==3:
+            demitour_D()
+            y +=1
+            while x !=0:
+                goForward(speed)
+                time.sleep(1.5)
+                rover.brake()
+                x -=1
+            demitour_G()
+
+        if x==3 and y==2:
+            break
+
+finally:
+    rover.cleanup()
+    pi.bb_i2c_close(SDA)
+    pi.stop()
+    
+
+
+
+
+
+
+def tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0):
    
     if sens == "droite":
         rover.spinRight(vitesse)
@@ -358,14 +388,14 @@ def tourner(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, t
 
 
 
-try:
-    offsets = etalonnage(adresse, echantillons=150)
-    time.sleep(0.5)
+# try:
+#     offsets = etalonnage(adresse, echantillons=150)
+#     time.sleep(0.5)
 
-    tourner( offsets ,angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0)
+#     tourner_90( offsets ,angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0)
 
 
-finally:
-    rover.cleanup()
-    pi.bb_i2c_close(SDA)
-    pi.stop()
+# finally:
+#     rover.cleanup()
+#     pi.bb_i2c_close(SDA)
+#     pi.stop()
