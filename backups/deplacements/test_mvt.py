@@ -16,7 +16,7 @@ servo_Arrière_G = 11
 servo_Arrière_D = 13
 servo_Sonar = 0
 speed = 100
-
+#--------------------------------------------------------------Fonctions_Mouvement------------------------------------------------------------------------------
 def goForward(speed):
     rover.setServo(servo_Avant_G, 0)
     rover.setServo(servo_Avant_D, 0)
@@ -58,7 +58,7 @@ rover.init(0)
 init_servo()
 time.sleep(1)
 
-# ---- Fonctions pour gyro + accéléromètre ---
+#---------------------------------------------------- Fonctions pour gyro + accéléromètre -------------------------------------------------------------------
 SDA, SCL = 25, 5
 adresse = 0x68
 
@@ -100,6 +100,12 @@ def mesure(adresse, offsets, seuilGyro = 0.5):
     return {"ax": ax, "ay": ay, "az": az,   
             "gx": gx, "gy": gy, "gz": gz,}
 
+
+#-------------------------------------------------------------Etalonnage-------------------------------------------------------------------------------------
+
+
+
+
 def etalonnage(adresse, echantillons = 100):
     print(f"[MPU6050] Étalonnage en cours... Ne pas bouger le rover ({echantillons} mesures)")
 
@@ -137,6 +143,11 @@ def etalonnage(adresse, echantillons = 100):
     print(f"[MPU6050] Étalonnage terminé ! Offsets calculés : {offsets}")
 
     return offsets
+
+
+
+#----------------------------------------------------------Max_Distance_Sonar---------------------------------------------------------------------------------
+
 
 MAX_VALID_DISTANCE = 300
 
@@ -351,7 +362,7 @@ def demitour_G():
     tourner_90(offsets, angle_cible=90, sens="gauche", vitesse=50, seuilGyro=0.5, timeout=5.0)  
 
 
-
+#------------------------------------------------------Grille_3x2----------------------------------------------------------------------------------------
 
 offsets = etalonnage(adresse, echantillons=150)
 time.sleep(0.5)
@@ -366,7 +377,7 @@ try:
         rover.brake()
         time.sleep(1)
         x +=1
-        
+
         if x==3 and y==2:
             break
 
@@ -391,23 +402,3 @@ finally:
     pi.stop()
     
 
-
-
-
-
-
-
-
-
-
-# try:
-#     offsets = etalonnage(adresse, echantillons=150)
-#     time.sleep(0.5)
-
-#     tourner_90( offsets ,angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0)
-
-
-# finally:
-#     rover.cleanup()
-#     pi.bb_i2c_close(SDA)
-#     pi.stop()
