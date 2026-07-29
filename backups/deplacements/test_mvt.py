@@ -307,9 +307,7 @@ def demitour_G():
 
 
 
-rover.init(0)
-init_servo()
-time.sleep(0.5)
+
 offsets = etalonnage(adresse, echantillons=150)
 time.sleep(0.5)
 
