@@ -362,7 +362,7 @@ y = 0
 try:
     while True:
         goForward(speed)
-        time.sleep(1.5)
+        time.sleep(2)
         rover.brake()
         time.sleep(1)
         x +=1
@@ -372,11 +372,12 @@ try:
             y +=1
             while x !=0:
                 goForward(speed)
-                time.sleep(1.5)
+                time.sleep(2)
                 rover.brake()
                 time.sleep(1)
                 x -=1
             demitour_G()
+            y +=+1
 
         if x==3 and y==2:
             break
