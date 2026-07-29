@@ -364,6 +364,7 @@ try:
         goForward(speed)
         time.sleep(1.5)
         rover.brake()
+        time.sleep(1)
         x +=1
 
         if x==3:
@@ -373,6 +374,7 @@ try:
                 goForward(speed)
                 time.sleep(1.5)
                 rover.brake()
+                time.sleep(1)
                 x -=1
             demitour_G()
 
