@@ -292,6 +292,51 @@ def calculVitesse(speed):
 #-------------------------------------------------rotations 90°----------------------------------------------------------------------------------------------
 
 
+
+def tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0):
+   
+    if sens == "droite":
+        rover.spinRight(vitesse)
+    elif sens == "gauche":
+        rover.spinLeft(vitesse)
+    else:
+        raise ValueError("sens doit être 'droite' ou 'gauche'")
+ 
+    angle_parcouru = 0.0
+    dernier_temps = time.time()
+    debut = dernier_temps
+    compteur = 0
+
+    while abs(angle_parcouru) < angle_cible:
+        m = mesure(adresse, offsets, seuilGyro)
+        maintenant = time.time()
+        dt = maintenant - dernier_temps
+        dernier_temps = maintenant
+ 
+        
+        angle_parcouru += abs(m["gx"]) * dt
+
+
+        compteur += 1
+        if compteur % 10 == 0:  # affiche 1 fois sur 10 pour ne pas noyer la console
+            print(f"gx={m['gx']:7.2f}  gy={m['gy']:7.2f}  gz={m['gz']:7.2f}  "
+                  f"dt={dt*1000:5.1f}ms  angle_parcouru={angle_parcouru:6.2f}°")
+
+ 
+        if maintenant - debut > timeout:
+            print("[tourner] Timeout de sécurité atteint pendant le virage")
+            break
+ 
+        time.sleep(0.005)
+ 
+    rover.brake()
+    print(f"Nombre total de mesures effectuées : {compteur}")
+
+
+#----------------------------------------------------------demitour----------------------------------------------------------------------------
+
+
+
 def demitour_D():
     tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0)
     goForward(speed)
@@ -345,44 +390,7 @@ finally:
 
 
 
-def tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0):
-   
-    if sens == "droite":
-        rover.spinRight(vitesse)
-    elif sens == "gauche":
-        rover.spinLeft(vitesse)
-    else:
-        raise ValueError("sens doit être 'droite' ou 'gauche'")
- 
-    angle_parcouru = 0.0
-    dernier_temps = time.time()
-    debut = dernier_temps
-    compteur = 0
 
-    while abs(angle_parcouru) < angle_cible:
-        m = mesure(adresse, offsets, seuilGyro)
-        maintenant = time.time()
-        dt = maintenant - dernier_temps
-        dernier_temps = maintenant
- 
-        
-        angle_parcouru += abs(m["gx"]) * dt
-
-
-        compteur += 1
-        if compteur % 10 == 0:  # affiche 1 fois sur 10 pour ne pas noyer la console
-            print(f"gx={m['gx']:7.2f}  gy={m['gy']:7.2f}  gz={m['gz']:7.2f}  "
-                  f"dt={dt*1000:5.1f}ms  angle_parcouru={angle_parcouru:6.2f}°")
-
- 
-        if maintenant - debut > timeout:
-            print("[tourner] Timeout de sécurité atteint pendant le virage")
-            break
- 
-        time.sleep(0.005)
- 
-    rover.brake()
-    print(f"Nombre total de mesures effectuées : {compteur}")
 
 
 
