@@ -268,37 +268,37 @@ def calculVitesse(speed):
 
 
 #--------------------------------------------calcul vitesse rover sur 1m---------------------------------------------------------------------------------
-d1 = rover.getDistance()
-time.sleep(1)
-start = time.time()
+# d1 = rover.getDistance()
+# time.sleep(1)
+# start = time.time()
 
-try:
-    offsets = etalonnage(adresse, echantillons=150)
-    goForward(speed)
+# try:
+#     offsets = etalonnage(adresse, echantillons=150)
+#     goForward(speed)
 
-    while True:  
+#     while True:  
         
-        d = rover.getDistance()
-        print(d)
-        if abs(( d1 - d)) >= 100 :
-            print("babaaa")
-            end =time.time()
-            print("temps:",end-start)
-            break
+#         d = rover.getDistance()
+#         print(d)
+#         if abs(( d1 - d)) >= 100 :
+#             print("babaaa")
+#             end =time.time()
+#             print("temps:",end-start)
+#             break
             
 
-        valeur = mesure(adresse, offsets)
+#         valeur = mesure(adresse, offsets)
 
-        print(f"""
-Accéleration (g)    : X = {valeur["ax"]} | Y = {valeur["ay"]} | Z = {valeur["az"]}
-Gyroscope (°/s)     : X = {valeur["gx"]} | Y = {valeur["gy"]} | Z = {valeur["gz"]}""")
+#         print(f"""
+# Accéleration (g)    : X = {valeur["ax"]} | Y = {valeur["ay"]} | Z = {valeur["az"]}
+# Gyroscope (°/s)     : X = {valeur["gx"]} | Y = {valeur["gy"]} | Z = {valeur["gz"]}""")
         
-        time.sleep(0.02)
+#         time.sleep(0.02)
        
-finally:
-    rover.cleanup()
-    pi.bb_i2c_close(SDA)
-    pi.stop()
+# finally:
+#     rover.cleanup()
+#     pi.bb_i2c_close(SDA)
+#     pi.stop()
 
 #-------------------------------------------------rotations 90°----------------------------------------------------------------------------------------------
 
@@ -362,43 +362,43 @@ def demitour_G():
     tourner_90(offsets, angle_cible=90, sens="gauche", vitesse=50, seuilGyro=0.5, timeout=5.0)  
 
 
-#------------------------------------------------------Grille_3x2----------------------------------------------------------------------------------------
+#------------------------------------------------------Grille_1.50x1----------------------------------------------------------------------------------------
 
-# offsets = etalonnage(adresse, echantillons=150)
-# time.sleep(0.5)
+offsets = etalonnage(adresse, echantillons=150)
+time.sleep(0.5)
 
-# x = 0
-# y = 0
+x = 0
+y = 0
 
-# try:
-#     while True:
-#         goForward(speed)
-#         time.sleep(2)
-#         rover.brake()
-#         time.sleep(1)
-#         x +=1
+try:
+    while True:
+        goForward(speed)
+        time.sleep(6.315)
+        rover.brake()
+        time.sleep(1)
+        x +=1
 
-#         if x==3 and y==2:
-#             break
+        if x==3 and y==2:
+            break
 
-#         if x==3:
-#             demitour_D()
-#             y +=1
-#             while x !=0:
-#                 goForward(speed)
-#                 time.sleep(2)
-#                 rover.brake()
-#                 time.sleep(1)
-#                 x -=1
-#             demitour_G()
-#             y +=+1
+        if x==3:
+            demitour_D()
+            y +=1
+            while x !=0:
+                goForward(speed)
+                time.sleep(6.315)
+                rover.brake()
+                time.sleep(1)
+                x -=1
+            demitour_G()
+            y +=+1
 
-#         if x==3 and y==2:
-#             break
+        if x==3 and y==2:
+            break
 
-# finally:
-#     rover.cleanup()
-#     pi.bb_i2c_close(SDA)
-#     pi.stop()
+finally:
+    rover.cleanup()
+    pi.bb_i2c_close(SDA)
+    pi.stop()
     
 
