@@ -362,24 +362,76 @@ def demitour_G():
     tourner_90(offsets, angle_cible=90, sens="gauche", vitesse=50, seuilGyro=0.5, timeout=5.0)  
 
 
-def SonarDistance():
+# def SonarDistance():
 
-    d1 = rover.getDistance()
-    time.sleep(1)
+#     d1 = rover.getDistance()
+#     time.sleep(1)
+
+#     goForward(speed)
+
+#     while True:  
+            
+#         d = rover.getDistance()
+#         print(d)
+#         if abs(( d1 - d)) >= 50 :
+#             print("babaaa")
+
+#             break
+
+
+                
+            
+MAX_VALID_DISTANCE = 300
+MAX_JUMP_CM = 15
+SONAR_DELAY = 0.08
+N_MEDIAN = 3
+REQUIRED_CONSECUTIVE = 3
+
+
+def lire_distance_filtree(n=N_MEDIAN):
+    lectures = []
+    for _ in range(n):
+        d = rover.getDistance()
+        if d <= MAX_VALID_DISTANCE:
+            lectures.append(d)
+        time.sleep(SONAR_DELAY)
+    if not lectures:
+        return None
+    lectures.sort()
+    return lectures[len(lectures) // 2]
+
+
+def SonarDistance(taille_case=50):
+    d1 = lire_distance_filtree()
+    while d1 is None:
+        d1 = lire_distance_filtree()
 
     goForward(speed)
 
-    while True:  
-            
-        d = rover.getDistance()
-        print(d)
-        if abs(( d1 - d)) >= 50 :
-            print("babaaa")
+    derniere_distance_valide = d1
+    compteur_confirmation = 0
 
-            break
-                
-            
-        
+    while True:
+        d = lire_distance_filtree()
+
+        if d is None:
+            continue
+
+        # Rejet des sauts physiquement impossibles (bruit ponctuel isolé)
+        if abs(d - derniere_distance_valide) > MAX_JUMP_CM:
+            print(f"Mesure rejetée (saut trop important) : {d:.1f} cm")
+            continue
+
+        derniere_distance_valide = d
+        print(d)
+
+        if abs(d1 - d) >= taille_case:
+            compteur_confirmation += 1
+            if compteur_confirmation >= REQUIRED_CONSECUTIVE:
+                print("babaaa - case atteinte")
+                break
+        else:
+            compteur_confirmation = 0
 
 
 
@@ -407,7 +459,6 @@ y = 0
 try:
     while True:
         SonarDistance()
-        time.sleep(0.08)
         rover.brake()
         time.sleep(1)
         x +=1
@@ -420,7 +471,6 @@ try:
             y +=1
             while x !=0:
                 SonarDistance()
-                time.sleep(0.08)
                 rover.brake()
                 time.sleep(1)
                 x -=1
