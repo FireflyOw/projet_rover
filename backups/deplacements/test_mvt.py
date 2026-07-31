@@ -375,6 +375,7 @@ def SonarDistance():
         print(d)
         if abs(( d1 - d)) >= 50 :
             print("babaaa")
+
             break
                 
             
@@ -406,6 +407,7 @@ y = 0
 try:
     while True:
         SonarDistance()
+        time.sleep(0.08)
         rover.brake()
         time.sleep(1)
         x +=1
@@ -418,6 +420,7 @@ try:
             y +=1
             while x !=0:
                 SonarDistance()
+                time.sleep(0.08)
                 rover.brake()
                 time.sleep(1)
                 x -=1
