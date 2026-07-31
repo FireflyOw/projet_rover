@@ -401,7 +401,7 @@ def lire_distance_filtree(n=N_MEDIAN):
     return lectures[len(lectures) // 2]
 
 
-def SonarDistance(taille_case=50):
+def SonarDistance(taille_case=30):
     d1 = lire_distance_filtree()
     while d1 is None:
         d1 = lire_distance_filtree()
