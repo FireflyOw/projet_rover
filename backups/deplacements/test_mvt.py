@@ -382,37 +382,29 @@ def demitour_G():
                 
             
 MAX_VALID_DISTANCE = 300
-MAX_JUMP_CM = 15
-SONAR_DELAY = 0.08
-N_MEDIAN = 3
-REQUIRED_CONSECUTIVE = 3
+MAX_JUMP_CM = 8
+SONAR_DELAY = 0.03
 
 
-def lire_distance_filtree(n=N_MEDIAN):
-    lectures = []
-    for _ in range(n):
-        d = rover.getDistance()
-        if d <= MAX_VALID_DISTANCE:
-            lectures.append(d)
-        time.sleep(SONAR_DELAY)
-    if not lectures:
+def lire_distance_brute():
+    d = rover.getDistance()
+    if d > MAX_VALID_DISTANCE:
         return None
-    lectures.sort()
-    return lectures[len(lectures) // 2]
+    return d
 
 
 def SonarDistance(taille_case=30):
-    d1 = lire_distance_filtree()
+    d1 = None
     while d1 is None:
-        d1 = lire_distance_filtree()
-
+        d1 = lire_distance_brute()
+        time.sleep(SONAR_DELAY)
     goForward(speed)
 
     derniere_distance_valide = d1
-    compteur_confirmation = 0
 
     while True:
-        d = lire_distance_filtree()
+        d = lire_distance_brute()
+        time.sleep(SONAR_DELAY)
 
         if d is None:
             continue
@@ -426,12 +418,10 @@ def SonarDistance(taille_case=30):
         print(d)
 
         if abs(d1 - d) >= taille_case:
-            compteur_confirmation += 1
-            if compteur_confirmation >= REQUIRED_CONSECUTIVE:
-                print("babaaa - case atteinte")
-                break
-        else:
-            compteur_confirmation = 0
+            rover.brake()
+            print("case atteinte")
+            break
+        
 
 
 
