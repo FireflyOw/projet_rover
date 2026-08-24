@@ -165,6 +165,8 @@ def evitement(offsets) :
             distance.append(rover.getDistance())
             goForward(speed)
 
+        tourner_90(offsets, angle_cible=90, sens="gauche", vitesse=50, seuilGyro=0.5, timeout=5.0)
+
     else :
         spinR = False 
 
@@ -193,6 +195,8 @@ def evitement(offsets) :
         while distance[-1] - nouvelleDistance < distanceParcourue :
             distance.append(rover.getDistance())
             goForward(speed)
+
+        tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0)
 
 def lecture(h, l):
     valeur = (h << 8) | l
