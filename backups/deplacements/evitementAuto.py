@@ -59,6 +59,27 @@ def scan(rover):
 
     return dirL, dirR
 
+# ---- Initialisation rover: ----
+rover.init(0)
+initServos(rover)
+print("[main.py] Rover initialisé!")
+
+# ---- Paramètres mesure: ----
+distance = []
+distSpin = []
+adresse = 0x68
+
+# ---- Paramètres rover: ----
+servoAvG = 9
+servoAvD = 15
+servoArG = 11
+servoArD = 13
+servoSonar = 0
+avancer = False
+spinL = False
+spinR = False
+speed = 70
+
 def tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0):
    
     if sens == "droite":
@@ -116,6 +137,8 @@ def evitement(offsets) :
 
         # Sonar à droite pour regarder si on a passé l'obstacle
         distanceInitiale = rover.getDistance()
+        distance.clear()
+        distance.append(rover.getDistance())
         rover.setServo(servoSonar, 84)
         while distance[-1] < 50 :
             distance.append(rover.getDistance())
@@ -127,6 +150,8 @@ def evitement(offsets) :
         tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0)
 
         rover.setServo(servoSonar, 84)
+        distance.clear()
+        distance.append(rover.getDistance())
         while distance[-1] < 50 :
             distance.append(rover.getDistance())
             goForward(speed) # On avance tant qu'on a pas passé l'obstacle
@@ -231,27 +256,6 @@ def etalonnage(adresse, pi, SDA, echantillons = 100):
     print(f"[MPU6050] Étalonnage terminé ! Offsets calculés : {offsets}")
 
     return offsets
-
-# ---- Initialisation rover: ----
-rover.init(0)
-initServos(rover)
-print("[main.py] Rover initialisé!")
-
-# ---- Paramètres mesure: ----
-distance = []
-distSpin = []
-adresse = 0x68
-
-# ---- Paramètres rover: ----
-servoAvG = 9
-servoAvD = 15
-servoArG = 11
-servoArD = 13
-servoSonar = 0
-avancer = False
-spinL = False
-spinR = False
-speed = 70
 
 # ---- Boucle principale : ----
 run = True
