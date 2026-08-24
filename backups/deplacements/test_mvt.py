@@ -8,7 +8,7 @@ dirMarsRover = os.path.join(racineProjet, "backups", "marsRover")
 sys.path.append(racineProjet)
 sys.path.append(dirMarsRover)
 
-import backups.marsRover.rover as rover
+import marsRover.rover as rover
 
 servo_Avant_G = 9
 servo_Avant_D = 15

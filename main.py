@@ -10,7 +10,7 @@ from app import app                                                         # Se
 # -------------------- Importation des fichiers rover: --------------------
 sys.path.append(os.path.join(os.path.dirname(__file__), "marsRover"))
 
-marsRover.rover as rover
+import marsRover.rover as rover
 
 # -------------------- Démarrage serveur en arrière-plan: --------------------
 flaskThread = threading.Thread(
