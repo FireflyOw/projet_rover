@@ -131,3 +131,66 @@ def ecriture(valeurs=None, grid_x=0, grid_y=0):
         }) 
 
     return "[mesures.py][capteurThread] Mesures enregistrées!"
+
+def lecture(h, l):
+    valeur = (h << 8) | l
+    return valeur - 65536 if valeur >= 0x8000 else valeur
+
+def gyroscope(adresse, pi, SDA, offsets, seuilGyro = 0.2):
+    count, data = pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 1, 0x3B, 2, 6, 14, 3, 0])
+
+    if count < 14:
+        raise RuntimeError(f"Erreur mesure: lecture incomplète, {count}/14 octets reçus!")
+    else:
+        ax = round(lecture(data[0], data[1]) / 16384.0 - offsets["ax"], 2)
+        ay = round(lecture(data[2], data[3]) / 16384.0 - offsets["ay"], 2)
+        az = round(lecture(data[4], data[5]) / 16384.0 - offsets["az"], 2)
+        
+        gx = round(lecture(data[8], data[9]) / 131.0   - offsets["gx"], 2)
+        gy = round(lecture(data[10], data[11]) / 131.0 - offsets["gy"], 2)
+        gz = round(lecture(data[12], data[13]) / 131.0 - offsets["gz"], 2)
+
+        gx = 0.0 if abs(gx) < seuilGyro else gx
+        gy = 0.0 if abs(gy) < seuilGyro else gy
+        gz = 0.0 if abs(gz) < seuilGyro else gz
+
+    return {"ax": ax, "ay": ay, "az": az,
+            "gx": gx, "gy": gy, "gz": gz,}
+
+def etalonnage(adresse, pi, SDA, echantillons = 100):
+    print(f"[MPU6050] Étalonnage en cours... Ne pas bouger le rover ({echantillons} mesures)")
+
+    sum_ax, sum_ay, sum_az = 0, 0, 0
+    sum_gx, sum_gy, sum_gz = 0, 0, 0
+    lecturesValides = 0
+
+    while lecturesValides < echantillons:
+        count, data = pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 1, 0x3B, 2, 6, 14, 3, 0])
+
+        if count < 14:
+            raise RuntimeError(f"Erreur étalonnage: mesure n°{lecturesValides + 1} invalide, {count}/14 octets reçus!")
+        else:
+            sum_ax += lecture(data[0], data[1]) / 16384.0
+            sum_ay += lecture(data[2], data[3]) / 16384.0
+            sum_az += lecture(data[4], data[5]) / 16384.0
+            
+            sum_gx += lecture(data[8], data[9]) / 131.0
+            sum_gy += lecture(data[10], data[11]) / 131.0
+            sum_gz += lecture(data[12], data[13]) / 131.0
+
+        lecturesValides += 1
+        time.sleep(0.01)
+        
+    offsets = {
+    "ax": (sum_ax / lecturesValides) - 1.0,
+    "ay": (sum_ay / lecturesValides) - 0.0,
+    "az": (sum_az / lecturesValides) - 0.0,
+
+    "gx": (sum_gx / lecturesValides) - 0.0,
+    "gy": (sum_gy / lecturesValides) - 0.0,
+    "gz": (sum_gz / lecturesValides) - 0.0,
+    }
+
+    print(f"[MPU6050] Étalonnage terminé ! Offsets calculés : {offsets}")
+
+    return offsets

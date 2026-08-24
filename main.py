@@ -1,18 +1,18 @@
-import time, sys, os, threading, pigpio, config.DHT22 as DHT22
-from mouvements import calculVitesse, goForward, initServos, scan
-from mesures import mesures, infosPi, ecriture
-from app import app
+# -------------------- Importation des bibliothèques --------------------
+#                           et fichiers utiles: 
+# Bibliothèques
+import time, sys, os, threading, pigpio, libraries.DHT22 as DHT22
+# Fonctions des programmes annexes
+from mouvements import initServos, SonarDistance, demitour_D, demitour_G    # Mouvements
+from mesures import mesures, infosPi, ecriture, etalonnage                  # Mesures
+from app import app                                                         # Serveur
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "backups", "marsRover"))
+# -------------------- Importation des fichiers rover: --------------------
+sys.path.append(os.path.join(os.path.dirname(__file__), "marsRover"))
 
-try:
-    import backups.marsRover.rover as rover
-    print("[main.py] rover.py chargé (Raspberry Pi Zero)")
-except RuntimeError:
-    import backups.marsRover.fakeRover as rover
-    print("[main.py] fakeRover.py chargé (PC)")
+marsRover.rover as rover
 
-# ---- Démarrage serveur en arrière-plan: ----
+# -------------------- Démarrage serveur en arrière-plan: --------------------
 flaskThread = threading.Thread(
     target=lambda: app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False),
     daemon=True
@@ -20,48 +20,41 @@ flaskThread = threading.Thread(
 flaskThread.start()
 print("[main.py] Serveur démarré sur le port 5000!\n")
 
-# ---- Paramètres mesure: ----
-width = 3
-lenght = 3
-tempsMesure = 3
-tolerance = 1
-deplacement = 0
-distanceMax = 100
-distanceMesure = 10
-nouvelleMesure = True
-valeurs = {}
-distance = []
-distSpin = []
-
-# ---- Paramètres rover: ----
-avancer = False
-spinL = False
-spinR = False
+# -------------------- Paramètres rover: --------------------
 speed = 70
 posX = 0
 posY = 0
+y = 3
+x = 3
 
-# ---- Initialisation rover: ----
+# -------------------- Initialisation rover: --------------------
 rover.init(0)
 initServos(rover)
 print("[main.py] Rover initialisé!")
 
-# ---- Initialisation capteurs: ----
+# -------------------- Initialisation capteurs et I²C: --------------------
 SDA, SCL = 25, 5
-adresse = 0x40
+adresseHM3301 = 0x40
+adresseMPU6050 = 0x68
 
 print("[main.py] Démarrage capteurs, thread et bus I2C...")
+
 pi = pigpio.pi()
+
+# Sécurité pour ne pas laisser d'ancien bus ouvert
 try:
     pi.bb_i2c_close(SDA)
 except pigpio.error:
     pass
 
-# Ouverture du bus I2C:
+# Ouverture du nouveau bus
 pi.bb_i2c_open(SDA, SCL, 100000)
 time.sleep(0.3)
 print(f"[main.py] Bus I2C ouvert! SDA: {SDA}, SCL: {SCL}")
 
+valeurs = {}
+
+# Initialisation propre du DHT22
 try:
     capteur = DHT22.sensor(pi, 24)
     print("[main.py][DHT22] Capteur initialisé!")
@@ -69,59 +62,81 @@ except (AttributeError, RuntimeError):
     print("[main.py][DHT22] Capteur non initialisé...")
     capteur = None
 
-distance.append(rover.getDistance())
+# Étalonnage du gyroscope
+offsets = etalonnage(adresseMPU6050, pi, SDA)
+time.sleep(0.5)
 
-time.sleep(2)
-nouvelleMesure = False
-print("[main.py] Thread démarré!")
-
-# ---- Boucle principale : ----
+# -------------------- Boucle principale : --------------------
 try:
-    while posY < width:
-        # --- Bloc mesures ---
+    while True:
+        # Déplacement par pas de 50cm
+        SonarDistance()
+
+        # ---- Arrêt pour mesure ----
+        rover.brake()
+
+        mesureCapteurs = mesures(adresseHM3301, capteur, pi, SDA)
+        mesurePi = infosPi()
         
-        distance.append(rover.getDistance())
-        if len(distance) >= 500:
-            distance.pop(0)
+        valeurs.clear()
+        valeurs.update({ **mesureCapteurs, **mesurePi})
 
-        if nouvelleMesure:
-            mesureCapteurs = mesures(adresse, capteur, pi, SDA)
-            mesurePi = infosPi()
-            
-            valeurs.clear()
-            valeurs.update({ **mesureCapteurs, **mesurePi})
-
-            posX += 1
-            if posX > lenght:
-                posX = 0
-                posY += 1
-                
-            print(f"""
---- Mesures: ---                  
+        print(f"""
+--- Mesures environnementales: ---                  
 Temp: {valeurs.get('temperature', 'N/A')}{valeurs.get('uniteTemp')} | Hum: {valeurs.get('humidite', 'N/A')}{valeurs.get('uniteHum')}
 Particules: PM1 = {valeurs.get('pm1_atm', 'N/A')} {valeurs.get('uniteAir')} | PM2.5 = {valeurs.get('pm1_atm', 'N/A')} {valeurs.get('uniteAir')} | PM10 = {valeurs.get('pm1_atm', 'N/A')} {valeurs.get('uniteAir')}
-Distance: {float(distance[-1]):.1f}cm
 --- Pi Zero infos: ---
 CPU: {valeurs.get('cpu', 'N/A')}% ({valeurs.get('cpuTemp', 'N/A')}°C)
 RAM: {valeurs.get('ramUsed', 'N/A')}MB / {valeurs.get('ramTotale', 'N/A')} MB ({valeurs.get('ramPercent', 'N/A')}%)""")
-            
-            print(f"\n{ecriture(valeurs, posX, posY)}")
-            nouvelleMesure = False
-
-        # --- Bloc déplacements ---
-
-        if avancer == False and nouvelleMesure == False:
-            goForward(rover, speed)
-            avancer = True
-            spinL = False
-            spinR = False
         
-        if abs((distanceMax - distance[-1]) - deplacement) <= tolerance:
-            rover.brake()
-            nouvelleMesure = True
-            deplacement += distanceMesure
+        print(f"\n{ecriture(valeurs, posX, posY)}")    
 
-        time.sleep(0.05)
+        # Incrémentation de la position x
+        posX += 1
+        # Si on a complété la grille, on arrête le programme
+        if x==posX and y==posY:
+            break
+
+        # Si on est en bout de ligne, le rover fait un demi-tour
+        if x==posX:
+            demitour_D(speed, offsets)
+            y +=1
+
+            # Même principe que précédemment, mais dans l'autre sens
+            while posX !=0:
+                SonarDistance(speed, rover)
+
+                # ---- Arrêt pour mesure ----
+                rover.brake()
+
+                mesureCapteurs = mesures(adresseHM3301, capteur, pi, SDA)
+                mesurePi = infosPi()
+
+                valeurs.clear()
+                valeurs.update({ **mesureCapteurs, **mesurePi})
+
+                print(f"""
+                --- Mesures environnementales: ---                  
+                Temp: {valeurs.get('temperature', 'N/A')}{valeurs.get('uniteTemp')} | Hum: {valeurs.get('humidite', 'N/A')}{valeurs.get('uniteHum')}
+                Particules: PM1 = {valeurs.get('pm1_atm', 'N/A')} {valeurs.get('uniteAir')} | PM2.5 = {valeurs.get('pm1_atm', 'N/A')} {valeurs.get('uniteAir')} | PM10 = {valeurs.get('pm1_atm', 'N/A')} {valeurs.get('uniteAir')}
+                --- Pi Zero infos: ---
+                CPU: {valeurs.get('cpu', 'N/A')}% ({valeurs.get('cpuTemp', 'N/A')}°C)
+                RAM: {valeurs.get('ramUsed', 'N/A')}MB / {valeurs.get('ramTotale', 'N/A')} MB ({valeurs.get('ramPercent', 'N/A')}%)""")
+
+                print(f"\n{ecriture(valeurs, posX, posY)}") 
+
+                posX -= 1
+
+            # Une fois la ligne complètée, on fait demi-tour dans l'autre sens
+            demitour_G(speed, offsets)
+            posY += 1
+
+        # Si on a complété la grille, on arrête le programme
+        if x==posX and y==posY:
+            break
+
+except KeyboardInterrupt:
+    pass
 
 finally: 
     print("\n[main.py] Nettoyage et fermeture...\n")
