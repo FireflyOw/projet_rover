@@ -346,8 +346,6 @@ def tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5
 
 #----------------------------------------------------------demitour----------------------------------------------------------------------------
 
-
-
 def demitour_D():
     tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0)
     goForward(speed)
@@ -448,31 +446,51 @@ y = 0
 
 try:
     while True:
+        # Déplacement par pas de 50cm
         SonarDistance()
+
+        # ---- Arrêt pour mesure ----
         rover.brake()
         time.sleep(1)
-        x +=1
 
-        if x==3 and y==2:
+        # Incrémentation de la position x
+        posX += 1
+        # Si on a complété la grille, on arrête le programme
+        if x==posX and y==posY:
             break
 
-        if x==3:
-            demitour_D()
+        # Si on est en bout de ligne, le rover fait un demi-tour
+        if x==posX:
+            demitour_D(speed, offsets)
             y +=1
-            while x !=0:
-                SonarDistance()
+
+            # Même principe que précédemment, mais dans l'autre sens
+            while posX !=0:
+                SonarDistance(speed, rover)
+
+                # ---- Arrêt pour mesure ----
                 rover.brake()
                 time.sleep(1)
-                x -=1
-            demitour_G()
-            y +=+1
 
-        if x==3 and y==2:
+                posX -= 1
+
+            # Une fois la ligne complètée, on fait demi-tour dans l'autre sens
+            demitour_G(speed, offsets)
+            posY += 1
+
+        # Si on a complété la grille, on arrête le programme
+        if x==posX and y==posY:
             break
 
-finally:
+except KeyboardInterrupt:
+    pass
+
+finally: 
+    print("\n[main.py] Nettoyage et fermeture...\n")
     rover.cleanup()
-    pi.bb_i2c_close(SDA)
-    pi.stop()
+    try:
+        pi.bb_i2c_close(SDA)
+    except:
+        pass
     
 
