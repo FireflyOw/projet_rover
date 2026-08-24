@@ -115,18 +115,18 @@ def evitement(offsets) :
         spinL = False
 
         # Sonar à droite pour regarder si on a passé l'obstacle
+        distanceInitiale = rover.getDistance()
         rover.setServo(servoSonar, 84)
-        distanceInitiale = 0
-        distanceFinale = 0
         while distance[-1] < 50 :
-            distanceInitiale = rover.getDistance()
             distance.append(rover.getDistance())
             goForward(speed) # On avance tant qu'on a pas passé l'obstacle
 
+        rover.setServo(servoSonar, 0)
         distanceFinale = rover.getDistance()
         distanceParcourue = distanceFinale - distanceInitiale
         tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0)
 
+        rover.setServo(servoSonar, 84)
         while distance[-1] < 50 :
             distance.append(rover.getDistance())
             goForward(speed) # On avance tant qu'on a pas passé l'obstacle
