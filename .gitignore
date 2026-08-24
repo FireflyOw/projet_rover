@@ -4,4 +4,4 @@ __pycache__/
 mesures.csv
 .vscode/
 données/
-config/gitToken.txt
+libraries/gitToken.txt
