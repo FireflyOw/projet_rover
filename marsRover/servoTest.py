@@ -2,7 +2,7 @@
 # servoTest.py
 
 from __future__ import print_function
-import rover
+import marsRover.rover as rover
 
 # Define variables for servo and degrees
 servo = 0 # currently active servo (0 to 15)

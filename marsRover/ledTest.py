@@ -1,7 +1,7 @@
 # Test program for MARS Rover Smart RGB LEDs
 
 from __future__ import print_function
-import rover, time
+import marsRover.rover as rover, time
 
 numLEDs = rover.numPixels
 RED = rover.fromRGB(255,0,0)

@@ -4,7 +4,7 @@
 # Press Ctrl-C to stop
 
 from __future__ import print_function
-import rover, time
+import marsRover.rover as rover, time
 
 #======================================================================
 # Reading single character by forcing stdin to raw mode

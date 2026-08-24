@@ -1,7 +1,7 @@
 # Calibrates and saves Servo Offsets on MARS Rover
 
 from __future__ import print_function
-import rover,time
+import marsRover.rover as rover,time
 
 #======================================================================
 # Reading single character by forcing stdin to raw mode
