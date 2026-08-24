@@ -17,8 +17,8 @@ pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 2, 0x6B, 0x00, 3, 0])
 time.sleep(0.3)
 
 def lecture(h, l):
-    v = (h << 8) | l
-    return v - 65536 if v >= 0x8000 else v
+    valeur = (h << 8) | l
+    return valeur - 65536 if valeur >= 0x8000 else valeur
 
 def mesure(adresse, offsets, seuilGyro = 0.2):
     count, data = pi.bb_i2c_zip(SDA, [4, adresse, 2, 7, 1, 0x3B, 2, 6, 14, 3, 0])
@@ -92,7 +92,7 @@ Gyroscope (°/s)     : X = {valeur["gx"]} | Y = {valeur["gy"]} | Z = {valeur["gz
         time.sleep(0.2)
 
 except KeyboardInterrupt:
-    print("\nTest arrêté proprement.")
+    print("\nNettoyage et fermeture...")
 
 finally:
     pi.bb_i2c_close(SDA)
