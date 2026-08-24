@@ -140,9 +140,11 @@ def evitement(offsets) :
         distance.clear()
         distance.append(rover.getDistance())
         rover.setServo(servoSonar, 84)
+        goForward(speed) # On avance tant qu'on a pas passé l'obstacle
+        
         while distance[-1] < 50 :
             distance.append(rover.getDistance())
-            goForward(speed) # On avance tant qu'on a pas passé l'obstacle
+        rover.brake()
 
         rover.setServo(servoSonar, 0)
         distanceFinale = rover.getDistance()
@@ -152,18 +154,21 @@ def evitement(offsets) :
         rover.setServo(servoSonar, 84)
         distance.clear()
         distance.append(rover.getDistance())
+        goForward(speed) # On avance tant qu'on a pas passé l'obstacle
+
         while distance[-1] < 50 :
             distance.append(rover.getDistance())
-            goForward(speed) # On avance tant qu'on a pas passé l'obstacle
+        rover.brake()
         
         rover.setServo(servoSonar, 0)
         tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0)
 
         nouvelleDistance = rover.getDistance()
+        goForward(speed)
 
         while distance[-1] - nouvelleDistance < distanceParcourue :
             distance.append(rover.getDistance())
-            goForward(speed)
+        rover.brake()
 
         tourner_90(offsets, angle_cible=90, sens="gauche", vitesse=50, seuilGyro=0.5, timeout=5.0)
 
@@ -173,9 +178,11 @@ def evitement(offsets) :
         distanceInitiale = rover.getDistance()
         # Sonar à gauche pour regarder si on a passé l'obstacle
         rover.setServo(servoSonar, -84)
+        goForward(speed) # On avance tant qu'on a pas passé l'obstacle
+
         while distance[-1] < 50 :
             distance.append(rover.getDistance())
-            goForward(speed) # On avance tant qu'on a pas passé l'obstacle
+        rover.brake()
 
         rover.setServo(servoSonar, 0)
         distanceFinale = rover.getDistance()
@@ -183,18 +190,21 @@ def evitement(offsets) :
         tourner_90(offsets, angle_cible=90, sens="gauche", vitesse=50, seuilGyro=0.5, timeout=5.0)
 
         rover.setServo(servoSonar, -84)
+        goForward(speed) # On avance tant qu'on a pas passé l'obstacle
+
         while distance[-1] < 50 :
             distance.append(rover.getDistance())
-            goForward(speed) # On avance tant qu'on a pas passé l'obstacle
+        rover.brake()
         
         rover.setServo(servoSonar, 0)
         tourner_90(offsets, angle_cible=90, sens="gauche", vitesse=50, seuilGyro=0.5, timeout=5.0)
 
         nouvelleDistance = rover.getDistance()
+        goForward(speed)
 
         while distance[-1] - nouvelleDistance < distanceParcourue :
             distance.append(rover.getDistance())
-            goForward(speed)
+        rover.brake()
 
         tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0)
 
