@@ -8,7 +8,7 @@ dirMarsRover = os.path.join(racineProjet, "backups", "marsRover")
 sys.path.append(racineProjet)
 sys.path.append(dirMarsRover)
 
-import backups.marsRover.rover as rover
+import marsRover.rover as rover
 
 # Initialisation des servos:
 def initServos(rover):

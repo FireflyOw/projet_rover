@@ -8,7 +8,7 @@ class gestionI2C:
         self.pi = pi_instance
         self.sda = sda_pin
         self.address = address
-
+    
     def command(self, *cmd):
         payload = [0x00] + list(cmd)
         chain = [4, self.address, 2, 7, len(payload)] + payload + [3, 0]
