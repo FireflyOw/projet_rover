@@ -7,3 +7,4 @@ données/
 marsRover/*
 !marsRover/rover.py
 !marsRover/pca9685.py
+libraries/gitToken.txt
