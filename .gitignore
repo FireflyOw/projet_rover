@@ -4,4 +4,6 @@ __pycache__/
 mesures.csv
 .vscode/
 données/
-libraries/gitToken.txt
+marsRover/*
+!marsRover/rover.py
+!marsRover/pca9685.py
