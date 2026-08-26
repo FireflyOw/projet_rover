@@ -212,7 +212,7 @@ RAM: {valeurs.get('ramUsed', 'N/A')}MB / {valeurs.get('ramTotale', 'N/A')} MB ({
 
         # Si on est en bout de ligne, le rover fait un demi-tour
         if x==posX:
-            demitour_D(speed, offsets)
+            demitour_D(offsets)
             y +=1
 
             # Même principe que précédemment, mais dans l'autre sens
@@ -249,7 +249,7 @@ RAM: {valeurs.get('ramUsed', 'N/A')}MB / {valeurs.get('ramTotale', 'N/A')} MB ({
                 posX -= 1
 
             # Une fois la ligne complètée, on fait demi-tour dans l'autre sens
-            demitour_G(speed, offsets)
+            demitour_G(offsets)
             posY += 1
 
         # Si on a complété la grille, on arrête le programme
