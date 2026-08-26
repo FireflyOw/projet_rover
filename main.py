@@ -75,13 +75,13 @@ def tourner_90(rover, adresse, offsets, angle_cible=90, sens="droite", vitesse=5
 
 def demitour_D(offsets):
     tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0)
-    goForward(speed)
+    goForward(rover, speed)
     time.sleep(1.5)
     tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0)  
 
 def demitour_G(offsets):
     tourner_90(offsets, angle_cible=90, sens="gauche", vitesse=50, seuilGyro=0.5, timeout=5.0)
-    goForward(speed)
+    goForward(rover, speed)
     time.sleep(1.5)
     tourner_90(offsets, angle_cible=90, sens="gauche", vitesse=50, seuilGyro=0.5, timeout=5.0)
 
@@ -96,7 +96,7 @@ def SonarDistance(taille_case=30):
     while d1 is None:
         d1 = lire_distance_brute()
         time.sleep(SONAR_DELAY)
-    goForward(speed)
+    goForward(rover, speed)
 
     derniere_distance_valide = d1
 
