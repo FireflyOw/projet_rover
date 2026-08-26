@@ -28,7 +28,7 @@ class gestionI2C:
 
 SDA, SCL = 25, 5
 # Teste d'abord 0x3C. Si l'écran reste noir, passe à 0x3D.
-adresseOLED = 0x3D 
+adresseOLED = 0x3C 
 
 print("[main.py] Démarrage écran et bus I2C...")
 pi = pigpio.pi()
