@@ -73,13 +73,13 @@ def tourner_90(rover, adresse, offsets, angle_cible=90, sens="droite", vitesse=5
     rover.brake()
     print(f"Nombre total de mesures effectuées : {compteur}")
 
-def demitour_D(speed, offsets):
+def demitour_D(offsets):
     tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0)
     goForward(speed)
     time.sleep(1.5)
     tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0)  
 
-def demitour_G(speed, offsets):
+def demitour_G(offsets):
     tourner_90(offsets, angle_cible=90, sens="gauche", vitesse=50, seuilGyro=0.5, timeout=5.0)
     goForward(speed)
     time.sleep(1.5)
@@ -91,7 +91,7 @@ def lire_distance_brute():
         return None
     return d
 
-def SonarDistance(speed, taille_case=30):
+def SonarDistance(taille_case=30):
     d1 = None
     while d1 is None:
         d1 = lire_distance_brute()
