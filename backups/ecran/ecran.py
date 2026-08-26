@@ -42,13 +42,16 @@ pi.bb_i2c_open(SDA, SCL, 100000)
 time.sleep(0.3)
 print(f"[main.py] Bus I2C ouvert! SDA: {SDA}, SCL: {SCL}")
 
+posX = 2
+posY = 4
+
 try:
     interfaceI2C = gestionI2C(pi, SDA, address=adresseOLED)
     ecran = ssd1306(interfaceI2C, width=128, height=32, rotate=0)
 
     with canvas(ecran) as draw:
-        draw.rectangle(ecran.bounding_box, outline="white", fill="black")
-        draw.text((5, 10), "DFRobot 0.91\" OK", fill="white")
+        draw.text((5, 7), f"Position: {posX};{posY}", fill="white")
+        draw.text((5, 15), "Déplacement ...", fill="white")
 
     print("[main.py] Affichage envoyé! CTRL + C pour arrêter...")
 
