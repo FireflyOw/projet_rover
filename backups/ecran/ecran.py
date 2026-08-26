@@ -51,9 +51,9 @@ try:
     ecran = ssd1306(interfaceI2C, width=128, height=32, rotate=0)
 
     with canvas(ecran) as draw:
-        draw.text((0, 0), ">> DEPLACEMENT EN COURS", fill="white")
-        draw.text((0, 11), f"Case : X={posX} ; Y={posY}", fill="white")
-        draw.text((0, 21), f"Vitesse : {speed}%", fill="white")
+        draw.text((0, 0), f"[MESURE]  X={posX} Y={posY}", fill="white")
+        draw.text((0, 11), f"T:12°C | H:41%", fill="white")
+        draw.text((0, 21), f"PM2.5:2 | Pi:42°C", fill="white")
 
     print("[main.py] Affichage envoyé! CTRL + C pour arrêter...")
 
