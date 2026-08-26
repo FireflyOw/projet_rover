@@ -174,7 +174,7 @@ try:
             draw.text((0, 20), f"Pos: X={posX} ; Y={posY} | V=70%", fill="white")
     
         # Déplacement par pas de 50cm
-        SonarDistance()
+        SonarDistance(speed, rover)
 
         # ---- Arrêt pour mesure ----
         rover.brake()
