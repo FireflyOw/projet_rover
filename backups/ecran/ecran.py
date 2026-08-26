@@ -52,7 +52,6 @@ try:
     with canvas(ecran) as draw:
         draw.text((20, 0), "Deplacement...", fill="white")
         draw.text((0, 11), f"Pos: X={posX} ; Y={posY}", fill="white")
-        draw.text((0, 21), "CPU: 33% | RAM: 42%", fill="white")
         
 
     print("[main.py] Affichage envoyé! CTRL + C pour arrêter...")
