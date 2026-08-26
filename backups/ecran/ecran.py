@@ -27,7 +27,6 @@ class gestionI2C:
         pass
 
 SDA, SCL = 25, 5
-# Teste d'abord 0x3C. Si l'écran reste noir, passe à 0x3D.
 adresseOLED = 0x3C 
 
 print("[main.py] Démarrage écran et bus I2C...")
@@ -59,3 +58,6 @@ try:
 
 except KeyboardInterrupt:
     pass
+
+finally:
+    pi.bb_i2c_close(SDA)
