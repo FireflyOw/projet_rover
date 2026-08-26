@@ -156,6 +156,9 @@ except (AttributeError, RuntimeError):
     print("[main.py][DHT22] Capteur non initialisé...")
     capteur = None
 
+pi.bb_i2c_zip(SDA, [4, adresseMPU6050, 2, 7, 2, 0x6B, 0x00, 3, 0])
+time.sleep(0.3)
+
 # Étalonnage du gyroscope
 offsets = etalonnage(adresseMPU6050, pi, SDA)
 time.sleep(0.5)
