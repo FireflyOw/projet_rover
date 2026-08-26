@@ -44,14 +44,16 @@ print(f"[main.py] Bus I2C ouvert! SDA: {SDA}, SCL: {SCL}")
 
 posX = 2
 posY = 4
+speed = 70
 
 try:
     interfaceI2C = gestionI2C(pi, SDA, address=adresseOLED)
     ecran = ssd1306(interfaceI2C, width=128, height=32, rotate=0)
 
     with canvas(ecran) as draw:
-        draw.text((25, 0), "Deplacement ...", fill="white")
-        draw.text((23, 15), f"X={posX} ; Y={posY}", fill="white")
+        draw.text((0, 0), ">> DEPLACEMENT EN COURS", fill="white")
+        draw.text((0, 11), f"Case : X={posX} ; Y={posY}", fill="white")
+        draw.text((0, 21), f"Vitesse : {speed}%", fill="white")
 
     print("[main.py] Affichage envoyé! CTRL + C pour arrêter...")
 
