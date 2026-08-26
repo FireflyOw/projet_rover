@@ -85,13 +85,13 @@ def demitour_G(speed, offsets):
     time.sleep(1.5)
     tourner_90(offsets, angle_cible=90, sens="gauche", vitesse=50, seuilGyro=0.5, timeout=5.0)
 
-def lire_distance_brute(rover):
+def lire_distance_brute():
     d = rover.getDistance()
     if d > MAX_VALID_DISTANCE:
         return None
     return d
 
-def SonarDistance(speed, rover, taille_case=30):
+def SonarDistance(speed, taille_case=30):
     d1 = None
     while d1 is None:
         d1 = lire_distance_brute()
@@ -174,7 +174,7 @@ try:
             draw.text((0, 20), f"Pos: X={posX} ; Y={posY} | V=70%", fill="white")
     
         # Déplacement par pas de 50cm
-        SonarDistance(speed, rover)
+        SonarDistance(speed)
 
         # ---- Arrêt pour mesure ----
         rover.brake()
@@ -217,7 +217,7 @@ RAM: {valeurs.get('ramUsed', 'N/A')}MB / {valeurs.get('ramTotale', 'N/A')} MB ({
 
             # Même principe que précédemment, mais dans l'autre sens
             while posX !=0:
-                SonarDistance(speed, rover)
+                SonarDistance(speed)
 
                 # ---- Arrêt pour mesure ----
                 rover.brake()
