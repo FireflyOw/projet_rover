@@ -1,6 +1,4 @@
 from __future__ import print_function
-from mesures import gyroscope
-from main import pi, SDA
 import time
 
 # Paramètres rover:
