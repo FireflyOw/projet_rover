@@ -37,7 +37,7 @@ MAX_JUMP_CM = 20
 SONAR_DELAY = 0.03
 
 # Fonctions pour le déplacement du rover sur la grille
-def tourner_90(rover, adresse, offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0):
+def tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5, timeout=5.0):
    
     if sens == "droite":
         rover.spinRight(vitesse)
@@ -52,7 +52,7 @@ def tourner_90(rover, adresse, offsets, angle_cible=90, sens="droite", vitesse=5
     compteur = 0
 
     while abs(angle_parcouru) < angle_cible:
-        m = gyroscope(adresse, pi, SDA, offsets, seuilGyro, seuilGyro)
+        m = gyroscope(adresseMPU6050, pi, SDA, offsets, seuilGyro, seuilGyro)
         maintenant = time.time()
         dt = maintenant - dernier_temps
         dernier_temps = maintenant 
