@@ -52,7 +52,7 @@ def tourner_90(offsets, angle_cible=90, sens="droite", vitesse=50, seuilGyro=0.5
     compteur = 0
 
     while abs(angle_parcouru) < angle_cible:
-        m = gyroscope(adresseMPU6050, pi, SDA, offsets, seuilGyro, seuilGyro)
+        m = gyroscope(adresseMPU6050, pi, SDA, offsets, seuilGyro)
         maintenant = time.time()
         dt = maintenant - dernier_temps
         dernier_temps = maintenant 
