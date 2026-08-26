@@ -65,3 +65,5 @@ except KeyboardInterrupt:
 
 finally:
     pi.bb_i2c_close(SDA)
+    with canvas(ecran) as draw:
+        pass
