@@ -3,8 +3,8 @@
 # Bibliothèques
 import time, sys, os, threading, pigpio, libraries.DHT22 as DHT22
 # Fonctions des programmes annexes
-from mouvements import initServos, goForward, SonarDistance, demitour_D, demitour_G    # Mouvements
-from mesures import mesures, infosPi, ecriture, etalonnage , gyroscope                 # Mesures
+from mouvements import initServos, goForward                                # Mouvements
+from mesures import mesures, infosPi, ecriture, etalonnage , gyroscope      # Mesures
 from app import app                                                         # Serveur
 # Bibliothèque et fonctions écran
 from backups.ecran.ecran import gestionI2C
