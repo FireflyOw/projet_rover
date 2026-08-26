@@ -33,7 +33,7 @@ x = 3
 
 # Paramètres sonar
 MAX_VALID_DISTANCE = 300
-MAX_JUMP_CM = 8 
+MAX_JUMP_CM = 20 
 SONAR_DELAY = 0.03
 
 # Fonctions pour le déplacement du rover sur la grille
