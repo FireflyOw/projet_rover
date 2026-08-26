@@ -50,8 +50,10 @@ try:
     ecran = ssd1306(interfaceI2C, width=128, height=32, rotate=0)
 
     with canvas(ecran) as draw:
-        draw.text((5, 7), f"Position: {posX};{posY}", fill="white")
-        draw.text((5, 15), "Déplacement ...", fill="white")
+        draw.text((60, 5), "Deplacement ...", fill="white")
+        draw.text((3, 15), f"Position: X={posX} ; Y={posY}", fill="white")
+        draw.text((5, 25), "CPU: 33% | RAM 42%", fill="white")
+        
 
     print("[main.py] Affichage envoyé! CTRL + C pour arrêter...")
 
