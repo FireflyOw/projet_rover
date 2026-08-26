@@ -174,7 +174,7 @@ try:
             draw.text((0, 20), f"Pos: X={posX} ; Y={posY} | V=70%", fill="white")
     
         # Déplacement par pas de 50cm
-        SonarDistance(speed)
+        SonarDistance()
 
         # ---- Arrêt pour mesure ----
         rover.brake()
@@ -217,7 +217,7 @@ RAM: {valeurs.get('ramUsed', 'N/A')}MB / {valeurs.get('ramTotale', 'N/A')} MB ({
 
             # Même principe que précédemment, mais dans l'autre sens
             while posX !=0:
-                SonarDistance(speed)
+                SonarDistance()
 
                 # ---- Arrêt pour mesure ----
                 rover.brake()
