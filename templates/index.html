@@ -42,8 +42,8 @@
     /* Sur les écrans d'ordinateur ou de tablette (>= 768px) */
     @media (min-width: 768px) {
       .cards {
-        /* Gauche (1 part), Milieu large (1.8 part), Droite (1 part) */
-        grid-template-columns: 1fr 1.8fr 1fr; 
+        /* Gauche (1.4 part), Milieu (1 part), Droite (1.4 part) */
+        grid-template-columns: 1.4fr 1fr 1.4fr; 
       }
     }
 
@@ -174,14 +174,9 @@
 
 <!-- Cartes valeurs instantanées -->
 <div class="cards">
-  <div class="card">
-    <div class="label">Température</div>
-    <div class="value"><span id="val-temp">—</span><span class="unit">°C</span></div>
-    <div class="updated" id="ts-temp"></div>
-  </div>
 
   <div class="card">
-    <div class="label">Qualité de l'air (Particules fines)</div>
+    <div class="label">Qualité de l'air (HM3301)</div>
     <div class="pm-container">
       <div class="pm-box">
         <div class="pm-title">PM 1.0</div>
@@ -203,9 +198,42 @@
   </div>
 
   <div class="card">
-    <div class="label">Humidité</div>
-    <div class="value"><span id="val-hum">—</span><span class="unit">%</span></div>
-    <div class="updated" id="ts-hum"></div>
+    <div class="label">Ambiance (DHT22)</div>
+    <div class="pm-container" style="grid-template-columns: 1fr 1fr;">
+      <div class="pm-box">
+        <div class="pm-title">Température</div>
+        <div class="pm-value" id="val-temp">—</div>
+        <div class="pm-unit">°C</div>
+      </div>
+      <div class="pm-box">
+        <div class="pm-title">Humidité</div>
+        <div class="pm-value" id="val-hum">—</div>
+        <div class="pm-unit">%</div>
+      </div>
+    </div>
+    <div class="updated" id="ts-temp" style="margin-top: 8px;"></div>
+  </div>
+
+  <div class="card">
+    <div class="label">Infos Système (Pi Zero)</div>
+    <div class="pm-container">
+      <div class="pm-box">
+        <div class="pm-title">CPU</div>
+        <div class="pm-value" id="val-cpu">—</div>
+        <div class="pm-unit">%</div>
+      </div>
+      <div class="pm-box">
+        <div class="pm-title">Temp.</div>
+        <div class="pm-value" id="val-cputemp">—</div>
+        <div class="pm-unit">°C</div>
+      </div>
+      <div class="pm-box">
+        <div class="pm-title">RAM</div>
+        <div class="pm-value" id="val-ram">—</div>
+        <div class="pm-unit">%</div>
+      </div>
+    </div>
+    <div class="updated" id="ts-sys" style="margin-top: 8px;"></div>
   </div>
 </div>
 
@@ -233,7 +261,9 @@
         <th>Position</th>
         <th>Temp.</th>
         <th>Humidité</th>
+        <th>PM1</th>
         <th>PM2.5</th>
+        <th>PM10</th>
       </tr>
     </thead>
     <tbody id="table-body"></tbody>
@@ -314,12 +344,16 @@
     [...rows].reverse().slice(0, 10).forEach(r => {
       const tr = document.createElement("tr");
       const time = r.timestamp ? r.timestamp.split(" ")[1] : "—";
+      
+      // On s'assure de créer exactement 7 colonnes (<td>) pour correspondre au <thead>
       tr.innerHTML = `
         <td>${time}</td>
         <td>(${r.grid_x ?? "—"},${r.grid_y ?? "—"})</td>
         <td>${parseFloat(r.temp_c).toFixed(1)} °C</td>
         <td>${parseFloat(r.humidity).toFixed(1)} %</td>
+        <td>${r.pm1 ? parseFloat(r.pm1).toFixed(1) : "—"} µg/m³</td>
         <td>${r.pm2_5 ? parseFloat(r.pm2_5).toFixed(1) : "—"} µg/m³</td>
+        <td>${r.pm10 ? parseFloat(r.pm10).toFixed(1) : "—"} µg/m³</td>
       `;
       tbody.appendChild(tr);
     });
@@ -329,24 +363,25 @@
   function updateCards(row) {
     if (!row || row.error) return;
 
-    // Mise à jour Température et Humidité (on garde tes lignes d'origine)
-    if (document.getElementById("val-temp")) {
-      document.getElementById("val-temp").textContent = row.temp_c ? parseFloat(row.temp_c).toFixed(1) : "—";
-    }
-    if (document.getElementById("val-hum")) {
-      document.getElementById("val-hum").textContent = row.humidity ? parseFloat(row.humidity).toFixed(1) : "—";
-    }
+    // 1. Mise à jour Ambiance (DHT22)
+    if (document.getElementById("val-temp")) document.getElementById("val-temp").textContent = row.temp_c ? parseFloat(row.temp_c).toFixed(1) : "—";
+    if (document.getElementById("val-hum")) document.getElementById("val-hum").textContent = row.humidity ? parseFloat(row.humidity).toFixed(1) : "—";
 
-    // MISE À JOUR DES 3 PARTICULES (en ciblant les clés exactes de ton CSV)
-    document.getElementById("val-pm1").textContent  = row.pm1 ? parseFloat(row.pm1).toFixed(1) : "—";
-    document.getElementById("val-pm25").textContent = row.pm2_5 ? parseFloat(row.pm2_5).toFixed(1) : "—";
-    document.getElementById("val-pm10").textContent = row.pm10 ? parseFloat(row.pm10).toFixed(1) : "—";
+    // 2. Mise à jour Particules (HM3301)
+    if (document.getElementById("val-pm1")) document.getElementById("val-pm1").textContent = row.pm1 ? parseFloat(row.pm1).toFixed(1) : "—";
+    if (document.getElementById("val-pm25")) document.getElementById("val-pm25").textContent = row.pm2_5 ? parseFloat(row.pm2_5).toFixed(1) : "—";
+    if (document.getElementById("val-pm10")) document.getElementById("val-pm10").textContent = row.pm10 ? parseFloat(row.pm10).toFixed(1) : "—";
 
-    // Gestion de la date/heure de rafraîchissement
+    // 3. Mise à jour Système (Pi Zero)
+    if (document.getElementById("val-cpu")) document.getElementById("val-cpu").textContent = row.cpu ? parseFloat(row.cpu).toFixed(1) : "—";
+    if (document.getElementById("val-cputemp")) document.getElementById("val-cputemp").textContent = row.cpuTemp ? parseFloat(row.cpuTemp).toFixed(1) : "—";
+    if (document.getElementById("val-ram")) document.getElementById("val-ram").textContent = row.ramPercent ? parseFloat(row.ramPercent).toFixed(1) : "—";
+
+    // 4. Gestion des dates/heures de rafraîchissement
     const ts = row.timestamp ?? "";
     if (document.getElementById("ts-temp")) document.getElementById("ts-temp").textContent = ts ? `Dernière mesure : ${ts}` : "";
-    if (document.getElementById("ts-hum"))  document.getElementById("ts-hum").textContent  = ts ? `Dernière mesure : ${ts}` : "";
-    if (document.getElementById("ts-pm"))   document.getElementById("ts-pm").textContent   = ts ? `Dernière mesure : ${ts}` : "";
+    if (document.getElementById("ts-pm")) document.getElementById("ts-pm").textContent = ts ? `Dernière mesure : ${ts}` : "";
+    if (document.getElementById("ts-sys")) document.getElementById("ts-sys").textContent = ts ? `Dernière mesure : ${ts}` : "";
   }
 
   // --- Mise à jour du graphique ---

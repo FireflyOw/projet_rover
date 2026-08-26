@@ -7,7 +7,7 @@ sys.path.append(racineProjet)
 import config.DHT22 as DHT22
 
 pi = pigpio.pi()
-capteur = DHT22.sensor(pi, 25)
+capteur = DHT22.sensor(pi, 24)
 
 while True:
     try:
