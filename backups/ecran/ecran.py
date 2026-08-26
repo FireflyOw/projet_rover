@@ -52,7 +52,7 @@ try:
 
     with canvas(ecran) as draw:
         draw.text((0, 0), f"MESURE en X={posX} ; Y={posY}", fill="white")
-        draw.text((0, 20), f"T= 12°C | H= 41% | Pi= 42°C", fill="white")
+        draw.text((0, 20), f"T=12°C | H=41% | Pi=42°C", fill="white")
 
 
 
